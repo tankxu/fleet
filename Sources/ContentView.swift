@@ -888,6 +888,7 @@ struct ContentView: View {
     @AppStorage(MinimalModeTitlebarDebugSettings.trafficLightTabBarInsetKey) private var titlebarTrafficLightTabBarInset = MinimalModeTitlebarDebugSettings.defaultTrafficLightTabBarInset
     @AppStorage(MinimalModeTitlebarDebugSettings.trafficLightTitlebarLeadingInsetKey) private var titlebarTrafficLightTitlebarLeadingInset = MinimalModeTitlebarDebugSettings.defaultTrafficLightTitlebarLeadingInset
     @AppStorage(PaneChromeSettings.activePaneBorderColorKey) private var activePaneBorderColorHex = PaneChromeSettings.defaultColorHex
+    @AppStorage("fleetCanvasEnabled") private var fleetCanvasEnabled = false
     @AppStorage(CmuxExtensionSidebarSelection.defaultsKey)
     private var selectedLeftSidebarProviderId = CmuxExtensionSidebarSelection.defaultProviderId
     @LiveSetting(\.betaFeatures.extensions) private var leftSidebarExtensionsExperimentalEnabled
@@ -1847,6 +1848,7 @@ struct ContentView: View {
     }
 
     private func terminalContent(appearance: WindowAppearanceSnapshot) -> some View {
+        if fleetCanvasEnabled { return AnyView(fleetCanvasContent(appearance: appearance)) }
         let mountedWorkspaceIdSet = Set(mountedWorkspaceIds)
         let mountedWorkspaces = tabManager.tabs.filter { mountedWorkspaceIdSet.contains($0.id) }
         let selectedWorkspaceId = tabManager.selectedTabId
@@ -1900,6 +1902,23 @@ struct ContentView: View {
             titlebarPadding: titlebarPadding,
             hostingSafeAreaTop: hostingSafeAreaTop
         ))
+    }
+
+    private func fleetCanvasContent(appearance: WindowAppearanceSnapshot) -> some View {
+        GeometryReader { proxy in
+            let columns = max(1, Int((max(1, proxy.size.width) + 18) / 620))
+            let grid = Array(repeating: GridItem(.flexible(minimum: 460), spacing: 18), count: columns)
+            ScrollView {
+                LazyVGrid(columns: grid, spacing: 18) {
+                    ForEach(tabManager.tabs) { workspace in
+                        FleetWorkspaceCard(workspace: workspace, isSelected: workspace.id == tabManager.selectedTabId, appearance: appearance) {
+                            tabManager.selectedTabId = workspace.id
+                        }
+                    }
+                }.padding(18)
+            }.background(Color.black.opacity(0.13))
+        }
+        .modifier(WorkspacePresentationModeContentTopPaddingModifier(isFullScreen: isFullScreen, titlebarPadding: titlebarPadding, hostingSafeAreaTop: hostingSafeAreaTop))
     }
 
     private func terminalContentWithSidebarDropOverlay(appearance: WindowAppearanceSnapshot) -> some View {
@@ -2577,7 +2596,9 @@ struct ContentView: View {
         // and terminal sit directly on the window background.
         let useWithinWindow = sidebarBlendMode == SidebarBlendModeOption.withinWindow.rawValue
             && !sidebarMatchTerminalBackground
-        if retainsDefaultAppKitSidebarWhenHidden {
+        if fleetCanvasEnabled {
+            layout = AnyView(terminalContentWithRightSidebarPanel(appearance: appearance))
+        } else if retainsDefaultAppKitSidebarWhenHidden {
             // Native sidebar identity is independent of presentation. Keep its
             // full-width subtree mounted behind a zero-width clipping shell so
             // hide/show and backdrop changes cannot cold-start the table.
@@ -2800,6 +2821,11 @@ struct ContentView: View {
                 lastSidebarSelectionIndex = tabManager.tabs.firstIndex { $0.id == newValue }
             }
             updateTitlebarText()
+        })
+
+        view = AnyView(view.onChange(of: fleetCanvasEnabled) { _ in
+            reconcileMountedWorkspaceIds()
+            schedulePortalGeometrySynchronize()
         })
 
         view = AnyView(view.onChange(of: showModifierHoldHints) { _, _ in
@@ -3501,6 +3527,13 @@ struct ContentView: View {
         let currentTabs = tabs ?? tabManager.tabs
         let orderedTabIds = currentTabs.map { $0.id }
         let effectiveSelectedId = selectedId ?? tabManager.selectedTabId
+        if fleetCanvasEnabled {
+            mountedWorkspaceIds = orderedTabIds
+            let changes = WorkspacePortalRenderingPlan(previousStatesByWorkspaceId: lastReconciledPortalRenderingStatesByWorkspaceId, mountedWorkspaceIds: Set(orderedTabIds), orderedWorkspaceIds: orderedTabIds).applying(to: &lastReconciledPortalRenderingStatesByWorkspaceId)
+            let workspaces = Dictionary(currentTabs.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+            for change in changes { workspaces[change.workspaceId]?.setPortalRenderingEnabled(change.isEnabled, reason: "fleetCanvas") }
+            return
+        }
         let handoffPinnedIds = retiringWorkspaceId.map { Set([ $0 ]) } ?? []
         let pinnedIds = handoffPinnedIds
             .union(tabManager.mountedBackgroundWorkspaceLoadIds)
@@ -10847,6 +10880,46 @@ extension SidebarDragState {
 /// so pressing/releasing the modifier key while the menu is up does not flip
 /// the underlying row's shortcut badges (which would be visible around the
 /// open context menu). All other rows transition live.
+private struct FleetWorkspaceCard: View {
+    @ObservedObject var workspace: Workspace
+    let isSelected: Bool
+    let appearance: WindowAppearanceSnapshot
+    let onSelect: () -> Void
+
+    private var panelTitles: [String] {
+        workspace.orderedPanelIds.prefix(3).compactMap { id in
+            guard let panel = workspace.panels[id] else { return nil }
+            return workspace.resolvedPanelTitle(panelId: id, fallback: panel.displayTitle)
+        }
+    }
+
+    private var completedAgentCount: Int {
+        workspace.restoredAgentResumeStatesByPanelId.values.filter { $0 == .completedAgentExit }.count
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Button(action: onSelect) {
+                HStack(spacing: 10) {
+                    Image(systemName: "rectangle.split.2x2").foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(panelTitles.isEmpty ? workspace.title : panelTitles.joined(separator: "  ·  ")).cmuxFont(size: 13, weight: .semibold).lineLimit(1)
+                        Text("\(workspace.panels.count)  ·  \(completedAgentCount) ✓").cmuxFont(size: 11, weight: .regular).foregroundStyle(Color.secondary)
+                    }
+                    Spacer(minLength: 8)
+                    Text(workspace.presentedCurrentDirectory).cmuxFont(size: 11, weight: .regular).foregroundStyle(Color.secondary).lineLimit(1)
+                }.padding(.horizontal, 12).padding(.vertical, 9).contentShape(Rectangle())
+            }.buttonStyle(.plain).background(Color(nsColor: appearance.resolvedChromeBackgroundColor).opacity(0.72))
+            Divider()
+            WorkspaceContentView(workspace: workspace, isWorkspaceVisible: true, isWorkspaceInputActive: isSelected, rightSidebarOwnsInputFocus: false, isFullScreen: false, workspacePortalPriority: isSelected ? 2 : 0, windowAppearance: appearance, onThemeRefreshRequest: { _, _, _, _ in })
+        }
+        .frame(minHeight: 360, maxHeight: .infinity)
+        .background(Color(nsColor: appearance.terminalBackgroundColor))
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay { RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(isSelected ? Color.accentColor.opacity(0.9) : Color.white.opacity(0.13), lineWidth: isSelected ? 2 : 1) }
+    }
+}
+
 struct VerticalTabsSidebar: View, Equatable {
     // Equatable gates only parent-driven re-evaluation: closures and
     // Bindings are excluded on purpose (recreated per parent eval but

@@ -1023,6 +1023,7 @@ struct TitlebarControlsView: View {
     private let titlebarShortcutHintYOffset = ShortcutHintDebugSettings.defaultTitlebarHintY
     private let alwaysShowShortcutHints = ShortcutHintDebugSettings().alwaysShowHints
     @LiveSetting(\.shortcuts.showModifierHoldHints) private var showModifierHoldHints
+    @AppStorage("fleetCanvasEnabled") private var fleetCanvasEnabled = false
 
     private struct TitlebarHintLayoutItem: Identifiable {
         let action: KeyboardShortcutSettings.Action
@@ -1148,6 +1149,17 @@ struct TitlebarControlsView: View {
                 sidebarIconLabel(config: config, iconGeometryKeyPrefix: "titlebarControl_toggleSidebarIcon")
             }
             .safeHelp(KeyboardShortcutSettings.Action.toggleSidebar.tooltip(String(localized: "titlebar.sidebar.tooltip", defaultValue: "Show or hide the sidebar")))
+
+            TitlebarControlButton(
+                config: config,
+                foregroundColor: foregroundColor,
+                accessibilityIdentifier: "titlebarControl.toggleFleetCanvas",
+                accessibilityLabel: String(localized: "titlebar.fleetCanvas.accessibilityLabel", defaultValue: "Toggle Fleet Canvas"),
+                action: { fleetCanvasEnabled.toggle() }
+            ) {
+                iconLabel(systemName: "square.grid.2x2", config: config, iconGeometryKeyPrefix: "titlebarControl_toggleFleetCanvasIcon")
+            }
+            .safeHelp(String(localized: "titlebar.fleetCanvas.tooltip", defaultValue: "Show or hide Fleet Canvas"))
 
             TitlebarControlButton(
                 config: config,

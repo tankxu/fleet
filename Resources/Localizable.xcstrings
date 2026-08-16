@@ -266820,6 +266820,24 @@
         "zh-Hant": { "stringUnit": { "state": "translated", "value": "無法啟動必要的 CLI。請檢查安裝後再試一次。" } }
       }
     },
+    "titlebar.fleetCanvas.accessibilityLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Toggle Fleet Canvas" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "フリートキャンバスを切り替える" } },
+        "zh-Hans": { "stringUnit": { "state": "translated", "value": "切换工作区画布" } },
+        "zh-Hant": { "stringUnit": { "state": "translated", "value": "切換工作區畫布" } }
+      }
+    },
+    "titlebar.fleetCanvas.tooltip": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Show or hide Fleet Canvas" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "フリートキャンバスを表示または非表示にする" } },
+        "zh-Hans": { "stringUnit": { "state": "translated", "value": "显示或隐藏工作区画布" } },
+        "zh-Hant": { "stringUnit": { "state": "translated", "value": "顯示或隱藏工作區畫布" } }
+      }
+    },
     "cli.coderouter.error.notFound": {
       "extractionState": "manual",
       "localizations": {
