@@ -1906,16 +1906,18 @@ struct ContentView: View {
 
     private func fleetCanvasContent(appearance: WindowAppearanceSnapshot) -> some View {
         GeometryReader { proxy in
-            let columns = max(1, Int((max(1, proxy.size.width) + 18) / 620))
-            let grid = Array(repeating: GridItem(.flexible(minimum: 460), spacing: 18), count: columns)
+            // A large display should naturally settle into the requested 3-up
+            // project board instead of keeping terminal-sized single columns.
+            let columns = max(1, Int((max(1, proxy.size.width) + 16) / 520))
+            let grid = Array(repeating: GridItem(.flexible(minimum: 420), spacing: 16), count: columns)
             ScrollView {
-                LazyVGrid(columns: grid, spacing: 18) {
+                LazyVGrid(columns: grid, spacing: 16) {
                     ForEach(tabManager.tabs) { workspace in
                         FleetWorkspaceCard(workspace: workspace, isSelected: workspace.id == tabManager.selectedTabId, appearance: appearance) {
                             tabManager.selectedTabId = workspace.id
                         }
                     }
-                }.padding(18)
+                }.padding(16)
             }.background(Color.black.opacity(0.13))
         }
         .modifier(WorkspacePresentationModeContentTopPaddingModifier(isFullScreen: isFullScreen, titlebarPadding: titlebarPadding, hostingSafeAreaTop: hostingSafeAreaTop))
@@ -10897,23 +10899,90 @@ private struct FleetWorkspaceCard: View {
         workspace.restoredAgentResumeStatesByPanelId.values.filter { $0 == .completedAgentExit }.count
     }
 
+    private var runningAgentCount: Int {
+        SidebarAgentActivitySummary.activeCodingAgentCount(
+            statesByPanelId: workspace.agentLifecycleStatesByPanelId
+        )
+    }
+
+    private var needsInputAgentCount: Int {
+        workspace.agentLifecycleStatesByPanelId.values.reduce(0) { count, states in
+            count + states.values.filter { $0 == .needsInput }.count
+        }
+    }
+
+    private var agentNames: [String] {
+        let restored = workspace.orderedPanelIds.compactMap { panelId in
+            workspace.restoredAgentSnapshotsByPanelId[panelId]?.kind.rawValue
+        }
+        let live = workspace.agentLifecycleStatesByPanelId.values.flatMap(\.keys).map { key in
+            key.split(separator: ".", maxSplits: 1).first.map(String.init) ?? key
+        }
+        var seen = Set<String>()
+        return (restored + live).filter { seen.insert($0).inserted }
+    }
+
+    private var agentCount: Int {
+        max(agentNames.count, runningAgentCount + needsInputAgentCount + completedAgentCount)
+    }
+
+    private var cardTitle: String {
+        let names = agentNames.prefix(3).map { $0.capitalized }
+        if !names.isEmpty {
+            let overflow = agentNames.count - names.count
+            return names.joined(separator: "  ·  ") + (overflow > 0 ? "  +\(overflow)" : "")
+        }
+        return panelTitles.isEmpty ? workspace.title : panelTitles.joined(separator: "  ·  ")
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             Button(action: onSelect) {
-                HStack(spacing: 10) {
-                    Image(systemName: "rectangle.split.2x2").foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(panelTitles.isEmpty ? workspace.title : panelTitles.joined(separator: "  ·  ")).cmuxFont(size: 13, weight: .semibold).lineLimit(1)
-                        Text("\(workspace.panels.count)  ·  \(completedAgentCount) ✓").cmuxFont(size: 11, weight: .regular).foregroundStyle(Color.secondary)
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 9) {
+                        Image(systemName: "square.grid.2x2.fill")
+                            .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
+                        Text(cardTitle)
+                            .cmuxFont(size: 13, weight: .semibold)
+                            .lineLimit(1)
+                        Spacer(minLength: 8)
+                        Text("\(workspace.panels.count) panels")
+                            .cmuxFont(size: 10, weight: .medium)
+                            .foregroundStyle(Color.secondary)
                     }
-                    Spacer(minLength: 8)
-                    Text(workspace.presentedCurrentDirectory ?? "").cmuxFont(size: 11, weight: .regular).foregroundStyle(Color.secondary).lineLimit(1)
-                }.padding(.horizontal, 12).padding(.vertical, 9).contentShape(Rectangle())
+                    HStack(spacing: 8) {
+                        if agentCount > 0 {
+                            Label("\(agentCount) agents", systemImage: "person.2.fill")
+                                .foregroundStyle(Color.secondary)
+                        }
+                        if runningAgentCount > 0 {
+                            Label("\(runningAgentCount) running", systemImage: "bolt.fill")
+                                .foregroundStyle(Color.cyan)
+                        }
+                        if needsInputAgentCount > 0 {
+                            Label("\(needsInputAgentCount) needs input", systemImage: "exclamationmark.circle.fill")
+                                .foregroundStyle(Color.orange)
+                        }
+                        if completedAgentCount > 0 {
+                            Label("\(completedAgentCount) done", systemImage: "checkmark.circle.fill")
+                                .foregroundStyle(Color.green)
+                        }
+                        Spacer(minLength: 4)
+                        Text(workspace.presentedCurrentDirectory ?? "")
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                            .foregroundStyle(Color.secondary)
+                    }
+                    .cmuxFont(size: 10, weight: .medium)
+                }
+                .padding(.horizontal, 13)
+                .padding(.vertical, 10)
+                .contentShape(Rectangle())
             }.buttonStyle(.plain).background(Color(nsColor: appearance.compositedTerminalBackgroundColor).opacity(0.72))
             Divider()
             WorkspaceContentView(workspace: workspace, isWorkspaceVisible: true, isWorkspaceInputActive: isSelected, rightSidebarOwnsInputFocus: false, isFullScreen: false, workspacePortalPriority: isSelected ? 2 : 0, windowAppearance: appearance, onThemeRefreshRequest: { _, _, _, _ in })
         }
-        .frame(minHeight: 360, maxHeight: .infinity)
+        .frame(minHeight: 320, maxHeight: .infinity)
         .background(Color(nsColor: appearance.terminalBackgroundColor))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .overlay { RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(isSelected ? Color.accentColor.opacity(0.9) : Color.white.opacity(0.13), lineWidth: isSelected ? 2 : 1) }
