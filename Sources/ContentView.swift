@@ -1847,14 +1847,14 @@ struct ContentView: View {
         return FullscreenControlsPlacement(leadingPadding: 10, topPadding: 2)
     }
 
-    private func terminalContent(appearance: WindowAppearanceSnapshot) -> some View {
+    private func terminalContent(appearance: WindowAppearanceSnapshot) -> AnyView {
         if fleetCanvasEnabled { return AnyView(fleetCanvasContent(appearance: appearance)) }
         let mountedWorkspaceIdSet = Set(mountedWorkspaceIds)
         let mountedWorkspaces = tabManager.tabs.filter { mountedWorkspaceIdSet.contains($0.id) }
         let selectedWorkspaceId = tabManager.selectedTabId
         let retiringWorkspaceId = self.retiringWorkspaceId
 
-        return ZStack {
+        return AnyView(ZStack {
             ZStack {
                 ForEach(mountedWorkspaces) { tab in
                     let isSelectedWorkspace = selectedWorkspaceId == tab.id
@@ -1901,7 +1901,7 @@ struct ContentView: View {
             isFullScreen: isFullScreen,
             titlebarPadding: titlebarPadding,
             hostingSafeAreaTop: hostingSafeAreaTop
-        ))
+        )))
     }
 
     private func fleetCanvasContent(appearance: WindowAppearanceSnapshot) -> some View {
@@ -10907,7 +10907,7 @@ private struct FleetWorkspaceCard: View {
                         Text("\(workspace.panels.count)  ·  \(completedAgentCount) ✓").cmuxFont(size: 11, weight: .regular).foregroundStyle(Color.secondary)
                     }
                     Spacer(minLength: 8)
-                    Text(workspace.presentedCurrentDirectory).cmuxFont(size: 11, weight: .regular).foregroundStyle(Color.secondary).lineLimit(1)
+                    Text(workspace.presentedCurrentDirectory ?? "").cmuxFont(size: 11, weight: .regular).foregroundStyle(Color.secondary).lineLimit(1)
                 }.padding(.horizontal, 12).padding(.vertical, 9).contentShape(Rectangle())
             }.buttonStyle(.plain).background(Color(nsColor: appearance.resolvedChromeBackgroundColor).opacity(0.72))
             Divider()
