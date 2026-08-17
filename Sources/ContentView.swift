@@ -1920,14 +1920,27 @@ struct ContentView: View {
             ZStack {
                 LinearGradient(
                     colors: [
-                        Color(red: 0.075, green: 0.075, blue: 0.075),
-                        Color(red: 0.105, green: 0.105, blue: 0.10),
-                        Color(red: 0.065, green: 0.075, blue: 0.07)
+                        Color(red: 0.10, green: 0.12, blue: 0.11),
+                        Color(red: 0.045, green: 0.055, blue: 0.05)
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
-                .overlay(.ultraThinMaterial.opacity(0.30))
+                .overlay(alignment: .topLeading) {
+                    RadialGradient(
+                        colors: [chatGPTCanvasGreen.opacity(0.22), .clear],
+                        center: .topLeading,
+                        startRadius: 18,
+                        endRadius: 540
+                    )
+                }
+
+                // Prefer macOS 26's NSGlassEffectView at runtime. The fallback
+                // is NSVisualEffectView on older systems, so this does not make
+                // the fleet canvas depend on a deployment-target bump.
+                FleetCanvasGlassBackground(
+                    tintColor: NSColor(red: 0.06, green: 0.075, blue: 0.07, alpha: 0.56)
+                )
 
                 ScrollView {
                     LazyVGrid(columns: grid, spacing: 16) {
@@ -1941,6 +1954,10 @@ struct ContentView: View {
             }
         }
         .modifier(WorkspacePresentationModeContentTopPaddingModifier(isFullScreen: isFullScreen, titlebarPadding: titlebarPadding, hostingSafeAreaTop: hostingSafeAreaTop))
+    }
+
+    private var chatGPTCanvasGreen: Color {
+        Color(red: 0.07, green: 0.64, blue: 0.50)
     }
 
     private func terminalContentWithSidebarDropOverlay(appearance: WindowAppearanceSnapshot) -> some View {
@@ -2211,18 +2228,22 @@ struct ContentView: View {
                             .allowsHitTesting(false)
                     }
 
-                    // Draggable folder icon + focused command name
-                    if let directory = focusedDirectory {
-                        DetachedFolderDragIcon(directory: directory)
-                            .frame(width: 16, height: 16)
-                            .padding(.leading, -6)
-                    }
+                    // A fleet board owns its identity in the individual card
+                    // headers. Keeping the focused workspace path here wastes
+                    // titlebar space and implies a single-workspace view.
+                    if !fleetCanvasEnabled {
+                        if let directory = focusedDirectory {
+                            DetachedFolderDragIcon(directory: directory)
+                                .frame(width: 16, height: 16)
+                                .padding(.leading, -6)
+                        }
 
-                    Text(titlebarText)
-                        .cmuxFont(size: 13, weight: .bold)
-                        .foregroundColor(fakeTitlebarTextColor(appearance: appearance))
-                        .lineLimit(1)
-                        .allowsHitTesting(false)
+                        Text(titlebarText)
+                            .cmuxFont(size: 13, weight: .bold)
+                            .foregroundColor(fakeTitlebarTextColor(appearance: appearance))
+                            .lineLimit(1)
+                            .allowsHitTesting(false)
+                    }
 
                     Spacer()
 
@@ -11008,9 +11029,11 @@ private struct FleetWorkspaceCard: View {
         }
         .frame(height: height)
         .background {
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(.regularMaterial)
-                .overlay(Color(nsColor: appearance.terminalBackgroundColor).opacity(0.34))
+            FleetCanvasGlassBackground(
+                tintColor: appearance.terminalBackgroundColor.withAlphaComponent(0.52),
+                cornerRadius: 14
+            )
+            .overlay(Color.black.opacity(0.12))
         }
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .overlay {
@@ -11018,6 +11041,47 @@ private struct FleetWorkspaceCard: View {
                 .stroke(isSelected ? chatGPTGreen.opacity(0.92) : Color.white.opacity(0.15), lineWidth: isSelected ? 2 : 1)
         }
         .shadow(color: Color.black.opacity(0.30), radius: 14, y: 7)
+    }
+}
+
+/// The visual board uses the actual macOS 26 `NSGlassEffectView` whenever it
+/// exists at runtime. `NSVisualEffectView` remains the native fallback for
+/// previous releases, keeping the same source compatible with the project
+/// deployment target.
+private struct FleetCanvasGlassBackground: NSViewRepresentable {
+    let tintColor: NSColor?
+    var cornerRadius: CGFloat = 0
+
+    func makeNSView(context: Context) -> NSView {
+        let view: NSView
+        if let glassClass = NSClassFromString("NSGlassEffectView") as? NSView.Type {
+            view = glassClass.init(frame: .zero)
+        } else {
+            let effect = NSVisualEffectView(frame: .zero)
+            effect.material = .hudWindow
+            effect.blendingMode = .withinWindow
+            effect.state = .active
+            view = effect
+        }
+        view.autoresizingMask = [.width, .height]
+        view.wantsLayer = true
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {
+        nsView.layer?.cornerRadius = cornerRadius
+        nsView.layer?.masksToBounds = cornerRadius > 0
+
+        if nsView.className == "NSGlassEffectView" {
+            let tintSelector = NSSelectorFromString("setTintColor:")
+            if nsView.responds(to: tintSelector) {
+                nsView.perform(tintSelector, with: tintColor)
+            }
+        } else if let effect = nsView as? NSVisualEffectView {
+            effect.material = .hudWindow
+            effect.blendingMode = .withinWindow
+            effect.state = .active
+        }
     }
 }
 
