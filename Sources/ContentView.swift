@@ -1910,6 +1910,13 @@ struct ContentView: View {
             // project board instead of keeping terminal-sized single columns.
             let columns = max(1, Int((max(1, proxy.size.width) + 16) / 520))
             let grid = Array(repeating: GridItem(.flexible(minimum: 420), spacing: 16), count: columns)
+            let workspaceCount = max(1, tabManager.tabs.count)
+            let rows = max(1, Int(ceil(Double(workspaceCount) / Double(columns))))
+            let verticalPadding: CGFloat = 16
+            let cardHeight = max(
+                260,
+                (max(1, proxy.size.height) - (verticalPadding * 2) - (CGFloat(rows - 1) * 16)) / CGFloat(rows)
+            )
             ZStack {
                 LinearGradient(
                     colors: [
@@ -1925,7 +1932,7 @@ struct ContentView: View {
                 ScrollView {
                     LazyVGrid(columns: grid, spacing: 16) {
                         ForEach(tabManager.tabs) { workspace in
-                            FleetWorkspaceCard(workspace: workspace, isSelected: workspace.id == tabManager.selectedTabId, appearance: appearance) {
+                            FleetWorkspaceCard(workspace: workspace, isSelected: workspace.id == tabManager.selectedTabId, appearance: appearance, height: cardHeight) {
                                 tabManager.selectedTabId = workspace.id
                             }
                         }
@@ -10899,6 +10906,7 @@ private struct FleetWorkspaceCard: View {
     @ObservedObject var workspace: Workspace
     let isSelected: Bool
     let appearance: WindowAppearanceSnapshot
+    let height: CGFloat
     let onSelect: () -> Void
     private let chatGPTGreen = Color(red: 0.07, green: 0.64, blue: 0.50)
 
@@ -10996,9 +11004,9 @@ private struct FleetWorkspaceCard: View {
             .buttonStyle(.plain)
             .background(.thinMaterial.opacity(0.78))
             Divider()
-            WorkspaceContentView(workspace: workspace, isWorkspaceVisible: true, isWorkspaceInputActive: isSelected, rightSidebarOwnsInputFocus: false, isFullScreen: false, workspacePortalPriority: isSelected ? 2 : 0, windowAppearance: appearance, onThemeRefreshRequest: { _, _, _, _ in })
+            WorkspaceContentView(workspace: workspace, isWorkspaceVisible: true, isWorkspaceInputActive: isSelected, rendersInactiveWorkspaceContent: true, rightSidebarOwnsInputFocus: false, isFullScreen: false, workspacePortalPriority: isSelected ? 2 : 0, windowAppearance: appearance, onThemeRefreshRequest: { _, _, _, _ in })
         }
-        .frame(minHeight: 320, maxHeight: .infinity)
+        .frame(height: height)
         .background {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .fill(.regularMaterial)

@@ -165,6 +165,10 @@ struct WorkspaceContentView: View {
     @ObservedObject var workspace: Workspace
     let isWorkspaceVisible: Bool
     let isWorkspaceInputActive: Bool
+    /// Canvas previews must keep Bonsplit's AppKit hierarchy rendered even
+    /// while another workspace owns keyboard input. `isInteractive` also
+    /// controls Bonsplit visibility, not just event handling.
+    var rendersInactiveWorkspaceContent: Bool = false
     /// True when the right sidebar (Dock / Files / Find) owns keyboard focus in
     /// this window. The main pane dims its focus ring while this is true so main
     /// and Dock focus are mutually exclusive. Does not affect input-activeness
@@ -220,7 +224,9 @@ struct WorkspaceContentView: View {
 
         // Inactive workspaces are kept alive in a ZStack (for state preservation) but their
         // AppKit-backed views can still intercept drags. Disable drop acceptance for them.
-        let _ = { workspace.bonsplitController.isInteractive = isWorkspaceInputActive }()
+        let _ = {
+            workspace.bonsplitController.isInteractive = isWorkspaceInputActive || rendersInactiveWorkspaceContent
+        }()
 
         // Wire up file drop handling so bonsplit's PaneDragContainerView can forward
         // Finder file drops to the correct terminal panel.
