@@ -1913,6 +1913,7 @@ struct ContentView: View {
             let workspaceCount = max(1, tabManager.tabs.count)
             let rows = max(1, Int(ceil(Double(workspaceCount) / Double(columns))))
             let verticalPadding: CGFloat = 16
+            let boardWidth = max(1, proxy.size.width - (verticalPadding * 2))
             let cardHeight = max(
                 260,
                 (max(1, proxy.size.height) - (verticalPadding * 2) - (CGFloat(rows - 1) * 16)) / CGFloat(rows)
@@ -1920,15 +1921,15 @@ struct ContentView: View {
             ZStack {
                 LinearGradient(
                     colors: [
-                        Color(red: 0.10, green: 0.12, blue: 0.11),
-                        Color(red: 0.045, green: 0.055, blue: 0.05)
+                        Color(red: 0.10, green: 0.12, blue: 0.11).opacity(0.30),
+                        Color(red: 0.045, green: 0.055, blue: 0.05).opacity(0.22)
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
                 .overlay(alignment: .topLeading) {
                     RadialGradient(
-                        colors: [chatGPTCanvasGreen.opacity(0.22), .clear],
+                        colors: [chatGPTCanvasGreen.opacity(0.12), .clear],
                         center: .topLeading,
                         startRadius: 18,
                         endRadius: 540
@@ -1939,7 +1940,7 @@ struct ContentView: View {
                 // is NSVisualEffectView on older systems, so this does not make
                 // the fleet canvas depend on a deployment-target bump.
                 FleetCanvasGlassBackground(
-                    tintColor: NSColor(red: 0.06, green: 0.075, blue: 0.07, alpha: 0.56)
+                    tintColor: NSColor(red: 0.06, green: 0.075, blue: 0.07, alpha: 0.16)
                 )
 
                 ScrollView {
@@ -1949,7 +1950,12 @@ struct ContentView: View {
                                 tabManager.selectedTabId = workspace.id
                             }
                         }
-                    }.padding(16)
+                    }
+                    // A ScrollView proposes an unconstrained width to its
+                    // child. Re-propose the board width so 2-up and 3-up cards
+                    // stretch across the canvas instead of hugging the left.
+                    .frame(width: boardWidth, alignment: .leading)
+                    .padding(16)
                 }
             }
         }
@@ -2640,7 +2646,14 @@ struct ContentView: View {
         let useWithinWindow = sidebarBlendMode == SidebarBlendModeOption.withinWindow.rawValue
             && !sidebarMatchTerminalBackground
         if fleetCanvasEnabled {
-            layout = AnyView(terminalContentWithRightSidebarPanel(appearance: appearance))
+            // A hidden right sidebar must not remain in the HStack's sizing
+            // negotiation. Otherwise the canvas receives only the left
+            // column's width and leaves a large dead strip on the right.
+            layout = rightSidebarVisible
+                ? AnyView(terminalContentWithRightSidebarPanel(appearance: appearance)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity))
+                : AnyView(terminalContentWithSidebarDropOverlay(appearance: appearance)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity))
         } else if retainsDefaultAppKitSidebarWhenHidden {
             // Native sidebar identity is independent of presentation. Keep its
             // full-width subtree mounted behind a zero-width clipping shell so
@@ -2696,6 +2709,11 @@ struct ContentView: View {
 
         return AnyView(
             layout
+                // The root ZStack offers the full window, but an AnyView-wrapped
+                // fleet layout otherwise keeps its content-derived ideal width.
+                // Claim the proposal here so a hidden sidebar cannot leave an
+                // unowned strip beside the canvas.
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .overlay(alignment: .leading) {
                     if sidebarState.isVisible {
                         sidebarResizerOverlay
@@ -2744,9 +2762,11 @@ struct ContentView: View {
         let appearance = windowAppearanceSnapshot
         var view = AnyView(
             ZStack(alignment: .topLeading) {
-                WindowBackdropLayer(role: .windowRoot, snapshot: appearance)
-                    .ignoresSafeArea()
-                    .allowsHitTesting(false)
+                if !fleetCanvasEnabled {
+                    WindowBackdropLayer(role: .windowRoot, snapshot: appearance)
+                        .ignoresSafeArea()
+                        .allowsHitTesting(false)
+                }
 
                 contentAndSidebarLayout(appearance: appearance)
 
@@ -3466,12 +3486,13 @@ struct ContentView: View {
         let commandPaletteOverlayView = AnyView(commandPaletteOverlay)
         let appKitWindowMutationID = appearance.appKitWindowMutationID(
             windowBackgroundPolicy: windowChrome.windowBackgroundPolicy
-        )
-        let mainWindowAccessor = WindowAccessor(refreshID: appKitWindowMutationID) { [appearance, commandPaletteOverlayView] window in
+        ) + "|fleetCanvas=\(fleetCanvasEnabled)"
+        let mainWindowAccessor = WindowAccessor(refreshID: appKitWindowMutationID) { [appearance, commandPaletteOverlayView, fleetCanvasEnabled] window in
             configureMainWindowChrome(
                 window,
                 appearance: appearance,
-                commandPaletteOverlayView: commandPaletteOverlayView
+                commandPaletteOverlayView: commandPaletteOverlayView,
+                fleetCanvasEnabled: fleetCanvasEnabled
             )
         }
         view = AnyView(view.background(mainWindowAccessor))
@@ -3490,7 +3511,8 @@ struct ContentView: View {
     private func configureMainWindowChrome(
         _ window: NSWindow,
         appearance: WindowAppearanceSnapshot,
-        commandPaletteOverlayView: AnyView
+        commandPaletteOverlayView: AnyView,
+        fleetCanvasEnabled: Bool
     ) {
         window.identifier = NSUserInterfaceItemIdentifier(windowIdentifier)
         window.isRestorable = false
@@ -3533,6 +3555,17 @@ struct ContentView: View {
         }
 #endif
         let backdropResult = windowChrome.backdropController.apply(plan: backdropPlan, to: window)
+        // `behindWindow` materials only become visibly translucent when the
+        // window compositor itself is transparent. Canvas is the one mode
+        // intentionally designed as an overview overlay, so make that opt-in
+        // explicit and restore the normal terminal background on exit.
+        if fleetCanvasEnabled {
+            window.isOpaque = false
+            window.backgroundColor = .clear
+        } else if !backdropResult.usesWindowGlass {
+            window.isOpaque = true
+            window.backgroundColor = appearance.compositedTerminalBackgroundColor
+        }
         if backdropResult.didChangeGlassRoot {
             refreshTmuxWorkspacePaneWindowOverlay(in: window)
             commandPaletteWindowOverlayController(for: window)
@@ -11025,15 +11058,15 @@ private struct FleetWorkspaceCard: View {
             .buttonStyle(.plain)
             .background(.thinMaterial.opacity(0.78))
             Divider()
-            WorkspaceContentView(workspace: workspace, isWorkspaceVisible: true, isWorkspaceInputActive: isSelected, rendersInactiveWorkspaceContent: true, rightSidebarOwnsInputFocus: false, isFullScreen: false, workspacePortalPriority: isSelected ? 2 : 0, windowAppearance: appearance, onThemeRefreshRequest: { _, _, _, _ in })
+            WorkspaceContentView(workspace: workspace, isWorkspaceVisible: true, isWorkspaceInputActive: isSelected, rendersInactiveWorkspaceContent: true, onWorkspaceInputRequested: onSelect, rightSidebarOwnsInputFocus: false, isFullScreen: false, workspacePortalPriority: isSelected ? 2 : 0, windowAppearance: appearance, onThemeRefreshRequest: { _, _, _, _ in })
         }
         .frame(height: height)
         .background {
             FleetCanvasGlassBackground(
-                tintColor: appearance.terminalBackgroundColor.withAlphaComponent(0.52),
+                tintColor: appearance.terminalBackgroundColor.withAlphaComponent(0.18),
                 cornerRadius: 14
             )
-            .overlay(Color.black.opacity(0.12))
+            .overlay(Color.black.opacity(0.04))
         }
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .overlay {
@@ -11058,8 +11091,8 @@ private struct FleetCanvasGlassBackground: NSViewRepresentable {
             view = glassClass.init(frame: .zero)
         } else {
             let effect = NSVisualEffectView(frame: .zero)
-            effect.material = .hudWindow
-            effect.blendingMode = .withinWindow
+            effect.material = .underWindowBackground
+            effect.blendingMode = .behindWindow
             effect.state = .active
             view = effect
         }
@@ -11071,6 +11104,7 @@ private struct FleetCanvasGlassBackground: NSViewRepresentable {
     func updateNSView(_ nsView: NSView, context: Context) {
         nsView.layer?.cornerRadius = cornerRadius
         nsView.layer?.masksToBounds = cornerRadius > 0
+        nsView.layer?.backgroundColor = NSColor.clear.cgColor
 
         if nsView.className == "NSGlassEffectView" {
             let tintSelector = NSSelectorFromString("setTintColor:")
@@ -11078,8 +11112,8 @@ private struct FleetCanvasGlassBackground: NSViewRepresentable {
                 nsView.perform(tintSelector, with: tintColor)
             }
         } else if let effect = nsView as? NSVisualEffectView {
-            effect.material = .hudWindow
-            effect.blendingMode = .withinWindow
+            effect.material = .underWindowBackground
+            effect.blendingMode = .behindWindow
             effect.state = .active
         }
     }

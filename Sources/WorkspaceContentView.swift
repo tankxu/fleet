@@ -169,6 +169,10 @@ struct WorkspaceContentView: View {
     /// while another workspace owns keyboard input. `isInteractive` also
     /// controls Bonsplit visibility, not just event handling.
     var rendersInactiveWorkspaceContent: Bool = false
+    /// A canvas card's AppKit terminal can become first responder before
+    /// SwiftUI sees a card-header click. Ask the owning board to select that
+    /// workspace so visual selection and keyboard focus stay in sync.
+    var onWorkspaceInputRequested: (() -> Void)? = nil
     /// True when the right sidebar (Dock / Files / Find) owns keyboard focus in
     /// this window. The main pane dims its focus ring while this is true so main
     /// and Dock focus are mutually exclusive. Does not affect input-activeness
@@ -311,10 +315,13 @@ struct WorkspaceContentView: View {
                         appearance: appearance, windowAppearance: windowAppearance, customSidebarTabManager: workspace.owningTabManager,
                         hasUnreadNotification: showsNotificationRing && !usesWorkspacePaneOverlay,
                         onFocus: {
+                            guard isWorkspaceInputActive else {
+                                onWorkspaceInputRequested?()
+                                return
+                            }
                             // Keep bonsplit focus in sync with the AppKit first responder for the
                             // active workspace. This prevents divergence between the blue focused-tab
                             // indicator and where keyboard input/flash-focus actually lands.
-                            guard isWorkspaceInputActive else { return }
                             guard workspace.panels[panel.id] != nil else { return }
                             workspace.focusPanel(
                                 panel.id,
@@ -323,7 +330,10 @@ struct WorkspaceContentView: View {
                             )
                         },
                         onRequestPanelFocus: {
-                            guard isWorkspaceInputActive else { return }
+                            guard isWorkspaceInputActive else {
+                                onWorkspaceInputRequested?()
+                                return
+                            }
                             guard workspace.panels[panel.id] != nil else { return }
                             AppDelegate.shared?.noteMainPanelKeyboardFocusIntent(
                                 workspaceId: workspace.id,
