@@ -10909,7 +10909,7 @@ private struct FleetWorkspaceCard: View {
                     Spacer(minLength: 8)
                     Text(workspace.presentedCurrentDirectory ?? "").cmuxFont(size: 11, weight: .regular).foregroundStyle(Color.secondary).lineLimit(1)
                 }.padding(.horizontal, 12).padding(.vertical, 9).contentShape(Rectangle())
-            }.buttonStyle(.plain).background(Color(nsColor: appearance.resolvedChromeBackgroundColor).opacity(0.72))
+            }.buttonStyle(.plain).background(Color(nsColor: appearance.compositedTerminalBackgroundColor).opacity(0.72))
             Divider()
             WorkspaceContentView(workspace: workspace, isWorkspaceVisible: true, isWorkspaceInputActive: isSelected, rightSidebarOwnsInputFocus: false, isFullScreen: false, workspacePortalPriority: isSelected ? 2 : 0, windowAppearance: appearance, onThemeRefreshRequest: { _, _, _, _ in })
         }
