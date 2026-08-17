@@ -1910,15 +1910,28 @@ struct ContentView: View {
             // project board instead of keeping terminal-sized single columns.
             let columns = max(1, Int((max(1, proxy.size.width) + 16) / 520))
             let grid = Array(repeating: GridItem(.flexible(minimum: 420), spacing: 16), count: columns)
-            ScrollView {
-                LazyVGrid(columns: grid, spacing: 16) {
-                    ForEach(tabManager.tabs) { workspace in
-                        FleetWorkspaceCard(workspace: workspace, isSelected: workspace.id == tabManager.selectedTabId, appearance: appearance) {
-                            tabManager.selectedTabId = workspace.id
+            ZStack {
+                LinearGradient(
+                    colors: [
+                        Color(red: 0.075, green: 0.075, blue: 0.075),
+                        Color(red: 0.105, green: 0.105, blue: 0.10),
+                        Color(red: 0.065, green: 0.075, blue: 0.07)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .overlay(.ultraThinMaterial.opacity(0.30))
+
+                ScrollView {
+                    LazyVGrid(columns: grid, spacing: 16) {
+                        ForEach(tabManager.tabs) { workspace in
+                            FleetWorkspaceCard(workspace: workspace, isSelected: workspace.id == tabManager.selectedTabId, appearance: appearance) {
+                                tabManager.selectedTabId = workspace.id
+                            }
                         }
-                    }
-                }.padding(16)
-            }.background(Color.black.opacity(0.13))
+                    }.padding(16)
+                }
+            }
         }
         .modifier(WorkspacePresentationModeContentTopPaddingModifier(isFullScreen: isFullScreen, titlebarPadding: titlebarPadding, hostingSafeAreaTop: hostingSafeAreaTop))
     }
@@ -10887,6 +10900,7 @@ private struct FleetWorkspaceCard: View {
     let isSelected: Bool
     let appearance: WindowAppearanceSnapshot
     let onSelect: () -> Void
+    private let chatGPTGreen = Color(red: 0.07, green: 0.64, blue: 0.50)
 
     private var panelTitles: [String] {
         workspace.orderedPanelIds.prefix(3).compactMap { id in
@@ -10978,14 +10992,24 @@ private struct FleetWorkspaceCard: View {
                 .padding(.horizontal, 13)
                 .padding(.vertical, 10)
                 .contentShape(Rectangle())
-            }.buttonStyle(.plain).background(Color(nsColor: appearance.compositedTerminalBackgroundColor).opacity(0.72))
+            }
+            .buttonStyle(.plain)
+            .background(.thinMaterial.opacity(0.78))
             Divider()
             WorkspaceContentView(workspace: workspace, isWorkspaceVisible: true, isWorkspaceInputActive: isSelected, rightSidebarOwnsInputFocus: false, isFullScreen: false, workspacePortalPriority: isSelected ? 2 : 0, windowAppearance: appearance, onThemeRefreshRequest: { _, _, _, _ in })
         }
         .frame(minHeight: 320, maxHeight: .infinity)
-        .background(Color(nsColor: appearance.terminalBackgroundColor))
+        .background {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(.regularMaterial)
+                .overlay(Color(nsColor: appearance.terminalBackgroundColor).opacity(0.34))
+        }
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .overlay { RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(isSelected ? Color.accentColor.opacity(0.9) : Color.white.opacity(0.13), lineWidth: isSelected ? 2 : 1) }
+        .overlay {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(isSelected ? chatGPTGreen.opacity(0.92) : Color.white.opacity(0.15), lineWidth: isSelected ? 2 : 1)
+        }
+        .shadow(color: Color.black.opacity(0.30), radius: 14, y: 7)
     }
 }
 
