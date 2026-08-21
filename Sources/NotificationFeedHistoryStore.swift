@@ -1,3 +1,4 @@
+import CmuxFoundation
 import Foundation
 
 /// Main-actor owner of the durable, chronological notification feed.
@@ -155,7 +156,7 @@ final class NotificationFeedHistoryStore {
             options: .regularExpression
         )
         return resolvedAppSupport
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent(
                 "notification-feed-history-\(safeBundleID).json",
                 isDirectory: false

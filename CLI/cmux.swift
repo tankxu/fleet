@@ -17188,7 +17188,7 @@ struct CMUXCLI {
             Usage: cmux reload-config
 
             Run the same configuration reload as the Reload Configuration shortcut.
-            This reloads Ghostty config, re-reads ~/.config/cmux/cmux.json, and refreshes terminals.
+            This reloads Ghostty config, re-reads \(FleetAppIdentity.configFileDisplayPath), and refreshes terminals.
 
             Example:
               cmux reload-config
@@ -17859,7 +17859,7 @@ struct CMUXCLI {
         case "sidebar":
             return String(localized: "cli.sidebar.usage", defaultValue: """
             Usage: cmux sidebar <validate|reload|select|open> [name|--all] [--json]
-            Validate, reload, select, or open custom sidebars from ~/.config/cmux/sidebars.
+            Validate, reload, select, or open custom sidebars from \(FleetAppIdentity.configDirectoryDisplayPath)/sidebars.
             Commands:
               validate [name]   Validate all custom sidebars, or one named sidebar
               reload [name]     Validate all sidebars, then reload every valid one
@@ -36887,7 +36887,7 @@ export default CMUXSessionRestore;
           Before editing, back up any existing cmux.json file to a timestamped .bak copy.
           Use printed curl commands to fetch the latest docs/schema; prefer Ghostty config for terminal behavior Ghostty already supports.
           Ghostty config lives at ~/.config/ghostty/config (terminal transparency, blur, font, theme, keybinds, etc.).
-          `cmux reload-config` reloads BOTH Ghostty config and ~/.config/cmux/cmux.json, then refreshes terminals in place. No app restart needed.
+          `cmux reload-config` reloads BOTH Ghostty config and \(FleetAppIdentity.configFileDisplayPath), then refreshes terminals in place. No app restart needed.
 
         Commands:
           welcome

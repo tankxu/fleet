@@ -1,5 +1,6 @@
 import CmuxSettings
 import Foundation
+import CmuxFoundation
 
 extension CmuxSettingsFileStore {
     static func defaultTemplate() -> String {
@@ -11,7 +12,7 @@ extension CmuxSettingsFileStore {
             "  // This file uses JSON with comments (JSONC).",
             "  // Uncomment and edit any setting to make it file-managed.",
             "  // Remove a setting to fall back to the value saved in Settings.",
-            "  // cmux creates this template on launch when ~/.config/cmux/cmux.json is missing.",
+            "  // This template is created on launch when \(FleetAppIdentity.configFileDisplayPath) is missing.",
             "  // Legacy settings.json files are read only as fallback for keys not present here.",
             "",
         ]

@@ -1,10 +1,11 @@
 import Foundation
+import CmuxFoundation
 
 extension CMUXCLI {
     static let settingsDocsURL = "https://cmux.com/docs/configuration#cmux-json"
     static let settingsSchemaURL = "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json"
-    static let primarySettingsDisplayPath = "~/.config/cmux/cmux.json"
-    static let legacySettingsDisplayPath = "~/.config/cmux/settings.json"
+    static let primarySettingsDisplayPath = FleetAppIdentity.configFileDisplayPath
+    static let legacySettingsDisplayPath = FleetAppIdentity.configDirectoryDisplayPath + "/settings.json"
     static let fallbackSettingsDisplayPath = "~/Library/Application Support/com.cmuxterm.app/settings.json"
     static let ghosttyConfigDisplayPath = "~/.config/ghostty/config"
 
@@ -103,7 +104,7 @@ extension CMUXCLI {
         DocsReference(
             topic: "dock",
             aliases: ["doc", "controls", "right-sidebar", "dock-json"],
-            summary: "Custom right-sidebar terminal controls from .cmux/dock.json or ~/.config/cmux/dock.json.",
+            summary: "Custom right-sidebar terminal controls from .cmux/dock.json or \(FleetAppIdentity.configDirectoryDisplayPath)/dock.json.",
             webURL: "https://cmux.com/docs/dock",
             rawResources: [
                 DocsResource(label: "dock docs", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/docs/dock.md"),
@@ -118,14 +119,14 @@ extension CMUXCLI {
         DocsReference(
             topic: "sidebars",
             aliases: ["sidebar", "custom-sidebar", "custom-sidebars", "vibe-sidebar"],
-            summary: "Vibe-code a custom sidebar: a runtime-interpreted SwiftUI-style file in ~/.config/cmux/sidebars/ (beta).",
+            summary: "Vibe-code a custom sidebar: a runtime-interpreted SwiftUI-style file in \(FleetAppIdentity.configDirectoryDisplayPath)/sidebars/ (beta).",
             webURL: "https://cmux.com/docs/custom-sidebars",
             rawResources: [
                 DocsResource(label: "custom sidebar authoring guide", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/docs/custom-sidebars.md"),
             ],
             commands: [
-                "mkdir -p ~/.config/cmux/sidebars",
-                "cat > ~/.config/cmux/sidebars/mine.swift   # write a SwiftUI-style view, then right-click the sidebar button to pick it",
+                "mkdir -p \(FleetAppIdentity.configDirectoryDisplayPath)/sidebars",
+                "cat > \(FleetAppIdentity.configDirectoryDisplayPath)/sidebars/mine.swift   # write a SwiftUI-style view, then right-click the sidebar button to pick it",
                 "cmux docs api   # discover cmux() action methods/params",
             ]
         ),
@@ -182,7 +183,7 @@ extension CMUXCLI {
         This command does not require a running cmux app or socket.
 
         Agents:
-          Use `cmux docs settings` before editing ~/.config/cmux/cmux.json.
+          Use `cmux docs settings` before editing \(FleetAppIdentity.configFileDisplayPath).
           Use `cmux docs dock` before creating or editing .cmux/dock.json.
           Back up any existing cmux.json file to a timestamped .bak copy before editing so the user can revert.
           Fetch raw resources with the printed curl commands when you need the latest schema.

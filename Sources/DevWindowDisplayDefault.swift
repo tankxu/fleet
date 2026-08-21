@@ -1,6 +1,7 @@
 import AppKit
 import CmuxSettings
 import CmuxSettingsUI
+import CmuxFoundation
 
 /// Shared, cross-tag default for which display new cmux DEV windows open on.
 ///
@@ -23,7 +24,7 @@ enum DevWindowDisplayDefault {
     /// ignored.
     static var legacyFileURL: URL {
         FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent(".config/cmux/dev-window-display")
+            .appendingPathComponent(FleetAppIdentity.configDirectoryRelativePath + "/dev-window-display")
     }
 
     /// The trimmed display name in the legacy file, or `nil` when absent/empty.

@@ -1,6 +1,7 @@
 import CMUXAgentLaunch
 import Foundation
 import OSLog
+import CmuxFoundation
 
 struct CmuxVaultConfigDefinition: Codable, Hashable, Sendable {
     var agents: [CmuxVaultAgentRegistration]
@@ -493,7 +494,7 @@ struct CmuxVaultAgentRegistry: Sendable {
         fileManager: FileManager
     ) -> [String] {
         let home = (homeDirectory as NSString).standardizingPath
-        var paths = [(home as NSString).appendingPathComponent(".config/cmux/cmux.json")]
+        var paths = [(home as NSString).appendingPathComponent(FleetAppIdentity.configFileRelativePath)]
         let startingDirectory = workingDirectory?.trimmingCharacters(in: .whitespacesAndNewlines)
             ?? environment["PWD"]?.trimmingCharacters(in: .whitespacesAndNewlines)
         if let startingDirectory, !startingDirectory.isEmpty,

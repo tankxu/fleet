@@ -888,7 +888,7 @@ struct ContentView: View {
     @AppStorage(MinimalModeTitlebarDebugSettings.trafficLightTabBarInsetKey) private var titlebarTrafficLightTabBarInset = MinimalModeTitlebarDebugSettings.defaultTrafficLightTabBarInset
     @AppStorage(MinimalModeTitlebarDebugSettings.trafficLightTitlebarLeadingInsetKey) private var titlebarTrafficLightTitlebarLeadingInset = MinimalModeTitlebarDebugSettings.defaultTrafficLightTitlebarLeadingInset
     @AppStorage(PaneChromeSettings.activePaneBorderColorKey) private var activePaneBorderColorHex = PaneChromeSettings.defaultColorHex
-    @AppStorage("fleetCanvasEnabled") private var fleetCanvasEnabled = false
+    @AppStorage(FleetCanvasSettings.enabledKey) private var fleetCanvasEnabled = false
     @AppStorage(CmuxExtensionSidebarSelection.defaultsKey)
     private var selectedLeftSidebarProviderId = CmuxExtensionSidebarSelection.defaultProviderId
     @LiveSetting(\.betaFeatures.extensions) private var leftSidebarExtensionsExperimentalEnabled
@@ -1905,65 +1905,12 @@ struct ContentView: View {
     }
 
     private func fleetCanvasContent(appearance: WindowAppearanceSnapshot) -> some View {
-        GeometryReader { proxy in
-            // A large display should naturally settle into the requested 3-up
-            // project board instead of keeping terminal-sized single columns.
-            let columns = max(1, Int((max(1, proxy.size.width) + 16) / 520))
-            let grid = Array(repeating: GridItem(.flexible(minimum: 420), spacing: 16), count: columns)
-            let workspaceCount = max(1, tabManager.tabs.count)
-            let rows = max(1, Int(ceil(Double(workspaceCount) / Double(columns))))
-            let verticalPadding: CGFloat = 16
-            let boardWidth = max(1, proxy.size.width - (verticalPadding * 2))
-            let cardHeight = max(
-                260,
-                (max(1, proxy.size.height) - (verticalPadding * 2) - (CGFloat(rows - 1) * 16)) / CGFloat(rows)
-            )
-            ZStack {
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.10, green: 0.12, blue: 0.11).opacity(0.30),
-                        Color(red: 0.045, green: 0.055, blue: 0.05).opacity(0.22)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .overlay(alignment: .topLeading) {
-                    RadialGradient(
-                        colors: [chatGPTCanvasGreen.opacity(0.12), .clear],
-                        center: .topLeading,
-                        startRadius: 18,
-                        endRadius: 540
-                    )
-                }
-
-                // Prefer macOS 26's NSGlassEffectView at runtime. The fallback
-                // is NSVisualEffectView on older systems, so this does not make
-                // the fleet canvas depend on a deployment-target bump.
-                FleetCanvasGlassBackground(
-                    tintColor: NSColor(red: 0.06, green: 0.075, blue: 0.07, alpha: 0.16)
-                )
-
-                ScrollView {
-                    LazyVGrid(columns: grid, spacing: 16) {
-                        ForEach(tabManager.tabs) { workspace in
-                            FleetWorkspaceCard(workspace: workspace, isSelected: workspace.id == tabManager.selectedTabId, appearance: appearance, height: cardHeight) {
-                                tabManager.selectedTabId = workspace.id
-                            }
-                        }
-                    }
-                    // A ScrollView proposes an unconstrained width to its
-                    // child. Re-propose the board width so 2-up and 3-up cards
-                    // stretch across the canvas instead of hugging the left.
-                    .frame(width: boardWidth, alignment: .leading)
-                    .padding(16)
-                }
-            }
-        }
-        .modifier(WorkspacePresentationModeContentTopPaddingModifier(isFullScreen: isFullScreen, titlebarPadding: titlebarPadding, hostingSafeAreaTop: hostingSafeAreaTop))
-    }
-
-    private var chatGPTCanvasGreen: Color {
-        Color(red: 0.07, green: 0.64, blue: 0.50)
+        FleetCanvasBoardView(tabManager: tabManager, appearance: appearance)
+            .modifier(WorkspacePresentationModeContentTopPaddingModifier(
+                isFullScreen: isFullScreen,
+                titlebarPadding: titlebarPadding,
+                hostingSafeAreaTop: hostingSafeAreaTop
+            ))
     }
 
     private func terminalContentWithSidebarDropOverlay(appearance: WindowAppearanceSnapshot) -> some View {
@@ -2014,7 +1961,17 @@ struct ContentView: View {
         @ViewBuilder content: () -> Content
     ) -> some View {
         ZStack(alignment: alignment) {
-            sidebarBackdropLayer(width: width, role: role, appearance: appearance)
+            // Canvas mode runs on a transparent window, so the right sidebar
+            // sits on glass. It *replaces* the terminal backdrop rather than
+            // layering over it: the backdrop is opaque, and glass over an
+            // opaque fill is just a tint.
+            if fleetCanvasEnabled, role == .rightSidebar {
+                FleetCanvasGlassSurface(depth: .sidebar)
+                    .frame(width: width)
+                    .allowsHitTesting(false)
+            } else {
+                sidebarBackdropLayer(width: width, role: role, appearance: appearance)
+            }
             content()
                 .environment(\.colorScheme, appearance.sidebarContentColorScheme)
         }
@@ -10638,7 +10595,7 @@ enum CmuxExtensionSidebarSelection {
         if let override = customSidebarsDirectoryOverrideForTesting { return override }
         #endif
         return FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent(".config/cmux/sidebars", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.configDirectoryRelativePath + "/sidebars", isDirectory: true)
     }
 
     /// One provider descriptor per `<name>.swift`/`<name>.json` file in the
@@ -10956,169 +10913,6 @@ extension SidebarDragState {
 /// so pressing/releasing the modifier key while the menu is up does not flip
 /// the underlying row's shortcut badges (which would be visible around the
 /// open context menu). All other rows transition live.
-private struct FleetWorkspaceCard: View {
-    @ObservedObject var workspace: Workspace
-    let isSelected: Bool
-    let appearance: WindowAppearanceSnapshot
-    let height: CGFloat
-    let onSelect: () -> Void
-    private let chatGPTGreen = Color(red: 0.07, green: 0.64, blue: 0.50)
-
-    private var panelTitles: [String] {
-        workspace.orderedPanelIds.prefix(3).compactMap { id in
-            guard let panel = workspace.panels[id] else { return nil }
-            return workspace.resolvedPanelTitle(panelId: id, fallback: panel.displayTitle)
-        }
-    }
-
-    private var completedAgentCount: Int {
-        workspace.restoredAgentResumeStatesByPanelId.values.filter { $0 == .completedAgentExit }.count
-    }
-
-    private var runningAgentCount: Int {
-        SidebarAgentActivitySummary.activeCodingAgentCount(
-            statesByPanelId: workspace.agentLifecycleStatesByPanelId
-        )
-    }
-
-    private var needsInputAgentCount: Int {
-        workspace.agentLifecycleStatesByPanelId.values.reduce(0) { count, states in
-            count + states.values.filter { $0 == .needsInput }.count
-        }
-    }
-
-    private var agentNames: [String] {
-        let restored = workspace.orderedPanelIds.compactMap { panelId in
-            workspace.restoredAgentSnapshotsByPanelId[panelId]?.kind.rawValue
-        }
-        let live = workspace.agentLifecycleStatesByPanelId.values.flatMap(\.keys).map { key in
-            key.split(separator: ".", maxSplits: 1).first.map(String.init) ?? key
-        }
-        var seen = Set<String>()
-        return (restored + live).filter { seen.insert($0).inserted }
-    }
-
-    private var agentCount: Int {
-        max(agentNames.count, runningAgentCount + needsInputAgentCount + completedAgentCount)
-    }
-
-    private var cardTitle: String {
-        let names = agentNames.prefix(3).map { $0.capitalized }
-        if !names.isEmpty {
-            let overflow = agentNames.count - names.count
-            return names.joined(separator: "  ·  ") + (overflow > 0 ? "  +\(overflow)" : "")
-        }
-        return panelTitles.isEmpty ? workspace.title : panelTitles.joined(separator: "  ·  ")
-    }
-
-    var body: some View {
-        VStack(spacing: 0) {
-            Button(action: onSelect) {
-                VStack(alignment: .leading, spacing: 6) {
-                    HStack(spacing: 9) {
-                        Image(systemName: "square.grid.2x2.fill")
-                            .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
-                        Text(cardTitle)
-                            .cmuxFont(size: 13, weight: .semibold)
-                            .lineLimit(1)
-                        Spacer(minLength: 8)
-                        Text("\(workspace.panels.count) panels")
-                            .cmuxFont(size: 10, weight: .medium)
-                            .foregroundStyle(Color.secondary)
-                    }
-                    HStack(spacing: 8) {
-                        if agentCount > 0 {
-                            Label("\(agentCount) agents", systemImage: "person.2.fill")
-                                .foregroundStyle(Color.secondary)
-                        }
-                        if runningAgentCount > 0 {
-                            Label("\(runningAgentCount) running", systemImage: "bolt.fill")
-                                .foregroundStyle(Color.cyan)
-                        }
-                        if needsInputAgentCount > 0 {
-                            Label("\(needsInputAgentCount) needs input", systemImage: "exclamationmark.circle.fill")
-                                .foregroundStyle(Color.orange)
-                        }
-                        if completedAgentCount > 0 {
-                            Label("\(completedAgentCount) done", systemImage: "checkmark.circle.fill")
-                                .foregroundStyle(Color.green)
-                        }
-                        Spacer(minLength: 4)
-                        Text(workspace.presentedCurrentDirectory ?? "")
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                            .foregroundStyle(Color.secondary)
-                    }
-                    .cmuxFont(size: 10, weight: .medium)
-                }
-                .padding(.horizontal, 13)
-                .padding(.vertical, 10)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .background(.thinMaterial.opacity(0.78))
-            Divider()
-            WorkspaceContentView(workspace: workspace, isWorkspaceVisible: true, isWorkspaceInputActive: isSelected, rendersInactiveWorkspaceContent: true, onWorkspaceInputRequested: onSelect, rightSidebarOwnsInputFocus: false, isFullScreen: false, workspacePortalPriority: isSelected ? 2 : 0, windowAppearance: appearance, onThemeRefreshRequest: { _, _, _, _ in })
-        }
-        .frame(height: height)
-        .background {
-            FleetCanvasGlassBackground(
-                tintColor: appearance.terminalBackgroundColor.withAlphaComponent(0.18),
-                cornerRadius: 14
-            )
-            .overlay(Color.black.opacity(0.04))
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(isSelected ? chatGPTGreen.opacity(0.92) : Color.white.opacity(0.15), lineWidth: isSelected ? 2 : 1)
-        }
-        .shadow(color: Color.black.opacity(0.30), radius: 14, y: 7)
-    }
-}
-
-/// The visual board uses the actual macOS 26 `NSGlassEffectView` whenever it
-/// exists at runtime. `NSVisualEffectView` remains the native fallback for
-/// previous releases, keeping the same source compatible with the project
-/// deployment target.
-private struct FleetCanvasGlassBackground: NSViewRepresentable {
-    let tintColor: NSColor?
-    var cornerRadius: CGFloat = 0
-
-    func makeNSView(context: Context) -> NSView {
-        let view: NSView
-        if let glassClass = NSClassFromString("NSGlassEffectView") as? NSView.Type {
-            view = glassClass.init(frame: .zero)
-        } else {
-            let effect = NSVisualEffectView(frame: .zero)
-            effect.material = .underWindowBackground
-            effect.blendingMode = .behindWindow
-            effect.state = .active
-            view = effect
-        }
-        view.autoresizingMask = [.width, .height]
-        view.wantsLayer = true
-        return view
-    }
-
-    func updateNSView(_ nsView: NSView, context: Context) {
-        nsView.layer?.cornerRadius = cornerRadius
-        nsView.layer?.masksToBounds = cornerRadius > 0
-        nsView.layer?.backgroundColor = NSColor.clear.cgColor
-
-        if nsView.className == "NSGlassEffectView" {
-            let tintSelector = NSSelectorFromString("setTintColor:")
-            if nsView.responds(to: tintSelector) {
-                nsView.perform(tintSelector, with: tintColor)
-            }
-        } else if let effect = nsView as? NSVisualEffectView {
-            effect.material = .underWindowBackground
-            effect.blendingMode = .behindWindow
-            effect.state = .active
-        }
-    }
-}
-
 struct VerticalTabsSidebar: View, Equatable {
     // Equatable gates only parent-driven re-evaluation: closures and
     // Bindings are excluded on purpose (recreated per parent eval but

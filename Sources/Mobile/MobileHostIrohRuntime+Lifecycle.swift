@@ -1,5 +1,6 @@
 import CMUXMobileCore
 import CmuxAuthRuntime
+import CmuxFoundation
 import CmuxIrohTransport
 import Foundation
 
@@ -601,7 +602,7 @@ extension MobileHostIrohRuntime {
             in: .userDomainMask
         )[0]
         return applicationSupport
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent("iroh-debug", isDirectory: true)
             .appendingPathComponent(bundleScope, isDirectory: true)
             .appendingPathComponent(service, isDirectory: true)

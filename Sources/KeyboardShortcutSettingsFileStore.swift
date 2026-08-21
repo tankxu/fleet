@@ -17,12 +17,12 @@ final class CmuxSettingsFileStore {
 
     static var defaultPrimaryPath: String {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        return (home as NSString).appendingPathComponent(".config/cmux/cmux.json")
+        return (home as NSString).appendingPathComponent(FleetAppIdentity.configFileRelativePath)
     }
 
     static var defaultFallbackPath: String? {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        return (home as NSString).appendingPathComponent(".config/cmux/settings.json")
+        return (home as NSString).appendingPathComponent(FleetAppIdentity.configDirectoryRelativePath + "/settings.json")
     }
 
     static var defaultApplicationSupportFallbackPath: String? {

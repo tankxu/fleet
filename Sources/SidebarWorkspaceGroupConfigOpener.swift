@@ -1,4 +1,5 @@
 import AppKit
+import CmuxFoundation
 import CmuxWorkspaces
 import Foundation
 
@@ -34,7 +35,7 @@ enum SidebarWorkspaceGroupConfigOpener {
     ) -> URL {
         let configURL = home
             .appendingPathComponent(".config", isDirectory: true)
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent("cmux.json", isDirectory: false)
         if !FileManager.default.fileExists(atPath: configURL.path) {
             try? FileManager.default.createDirectory(

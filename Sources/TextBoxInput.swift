@@ -565,7 +565,7 @@ private enum TextBoxDraftAttachmentStorage {
             return nil
         }
         let directory = appSupportDirectory
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent(directoryName, isDirectory: true)
         if createIfMissing {
             do {
@@ -1058,7 +1058,7 @@ private struct TextBoxMentionCompletionPopoverView: View {
                                     .frame(maxWidth: .infinity, minHeight: 24, alignment: .leading)
                                     .background {
                                         RoundedRectangle(cornerRadius: 5, style: .continuous)
-                                            .fill(index == selectionIndex ? Color.accentColor.opacity(0.24) : Color.clear)
+                                            .fill(index == selectionIndex ? cmuxAccentColor().opacity(0.24) : Color.clear)
                                     }
                             }
                             .buttonStyle(.plain)

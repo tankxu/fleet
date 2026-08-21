@@ -16,6 +16,9 @@ let package = Package(
     dependencies: [
         // WorkspaceGroupNewPlacement (the typed setting value for new
         // in-group workspace placement) is owned by CmuxSettings.
+        // FleetAppIdentity keys the Session/ snapshot directory to the running
+        // app, so Fleet and cmux never restore from one another's snapshots.
+        .package(path: "../CmuxFoundation"),
         .package(path: "../CmuxSettings"),
         // Bonsplit drives the Window/ tmux pane-overlay geometry.
         .package(path: "../../../vendor/bonsplit"),
@@ -28,6 +31,7 @@ let package = Package(
         .target(
             name: "CmuxWorkspaces",
             dependencies: [
+                .product(name: "CmuxFoundation", package: "CmuxFoundation"),
                 .product(name: "CmuxSettings", package: "CmuxSettings"),
                 .product(name: "Bonsplit", package: "bonsplit"),
                 .product(name: "CMUXDebugLog", package: "CMUXDebugLog"),

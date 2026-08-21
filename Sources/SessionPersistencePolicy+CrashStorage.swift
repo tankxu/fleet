@@ -1,5 +1,6 @@
-import Foundation
+import CmuxFoundation
 import CmuxTerminalCore
+import Foundation
 
 extension SessionPersistencePolicy {
     static func defaultCmuxCrashDirectoryURL(
@@ -8,7 +9,7 @@ extension SessionPersistencePolicy {
         homeDirectory
             .appendingPathComponent(".local", isDirectory: true)
             .appendingPathComponent("state", isDirectory: true)
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent("crash", isDirectory: true)
     }
 
@@ -21,7 +22,7 @@ extension SessionPersistencePolicy {
            !xdgStateHome.isEmpty {
             urls.append(
                 URL(fileURLWithPath: (xdgStateHome as NSString).expandingTildeInPath, isDirectory: true)
-                    .appendingPathComponent("cmux", isDirectory: true)
+                    .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
                     .appendingPathComponent("crash", isDirectory: true)
             )
         }

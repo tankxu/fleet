@@ -1,6 +1,7 @@
+import AppKit
 import CMUXAuthCore
 import CmuxAuthRuntime
-import AppKit
+import CmuxFoundation
 import Foundation
 import StackAuth
 
@@ -207,7 +208,7 @@ struct MacAuthComposition {
             in: .userDomainMask
         ).first ?? URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library/Application Support")
         return support
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent(bundleIdentifier ?? "cmux", isDirectory: true)
     }
 

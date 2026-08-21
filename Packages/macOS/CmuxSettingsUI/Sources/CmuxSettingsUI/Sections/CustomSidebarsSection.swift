@@ -1,5 +1,6 @@
 import CmuxSettings
 import SwiftUI
+import CmuxFoundation
 
 /// **Custom Sidebars** section — the user/agent-authored sidebar
 /// surface: the enable toggle (shared with the Beta Features gate) and
@@ -33,7 +34,7 @@ public struct CustomSidebarsSection: View {
                 rendererRow
                 SettingsCardDivider()
                 SettingsCardNote(
-                    String(localized: "settings.customSidebars.note", defaultValue: "Custom sidebars are SwiftUI-style files in ~/.config/cmux/sidebars. Pick one from the sidebar toggle button's right-click menu; edits hot-reload on save. Use the in-app renderer only for sidebars you trust.")
+                    String(format: String(localized: "settings.customSidebars.note", defaultValue: "Custom sidebars are SwiftUI-style files in %@. Pick one from the sidebar toggle button's right-click menu; edits hot-reload on save. Use the in-app renderer only for sidebars you trust."), FleetAppIdentity.configDirectoryDisplayPath + "/sidebars")
                 )
             }
         }
@@ -55,7 +56,7 @@ public struct CustomSidebarsSection: View {
             searchAnchorID: "setting:customSidebars:enabled",
             String(localized: "settings.customSidebars.enabled", defaultValue: "Show Custom Sidebars"),
             subtitle: enabled.current
-                ? String(localized: "settings.customSidebars.enabled.subtitleOn", defaultValue: "Lists your sidebars from ~/.config/cmux/sidebars in the sidebar picker.")
+                ? String(format: String(localized: "settings.customSidebars.enabled.subtitleOn", defaultValue: "Lists your sidebars from %@ in the sidebar picker."), FleetAppIdentity.configDirectoryDisplayPath + "/sidebars")
                 : String(localized: "settings.customSidebars.enabled.subtitleOff", defaultValue: "Hides custom sidebars from the sidebar picker until you enable them here.")
         ) {
             Toggle("", isOn: Binding(get: { enabled.current }, set: { enabled.set($0) }))

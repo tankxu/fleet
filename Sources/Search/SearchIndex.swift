@@ -1,3 +1,4 @@
+import CmuxFoundation
 import Foundation
 import SQLite3
 
@@ -481,7 +482,7 @@ actor SearchIndex {
 extension URL {
     static var cmuxSearchDatabaseURL: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent("search.db", isDirectory: false)
     }
 }

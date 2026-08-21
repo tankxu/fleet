@@ -1,4 +1,5 @@
 public import Foundation
+import CmuxFoundation
 
 /// Filesystem-backed staging and finalization for mobile task attachments.
 ///
@@ -53,7 +54,7 @@ public struct MobileTaskAttachmentStore {
     public static func defaultRootURL(homeDirectory: URL) -> URL {
         homeDirectory
             .appendingPathComponent(".cache", isDirectory: true)
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent("task-attachments", isDirectory: true)
     }
 

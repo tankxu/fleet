@@ -1,3 +1,4 @@
+import AppKit
 import Bonsplit
 import CmuxFoundation
 import Combine
@@ -333,6 +334,16 @@ enum CmuxConfigTerminalCommandTarget: String, Codable, Sendable, Hashable {
     case currentTerminal
     case newTabInCurrentPane
 
+    /// Send to the current terminal when it is sitting at an idle prompt, and
+    /// split a new pane otherwise.
+    ///
+    /// Exists because the two static targets are both wrong for launching an
+    /// agent: `currentTerminal` would type into whatever is already running
+    /// there, and `newTabInCurrentPane` buries the agent behind a tab even when
+    /// the visible terminal was free. An unknown activity state counts as busy —
+    /// interrupting real work is worse than an extra pane.
+    case currentTerminalWhenIdle
+
     static let defaultForActions: CmuxConfigTerminalCommandTarget = .newTabInCurrentPane
 }
 
@@ -358,14 +369,19 @@ enum CmuxConfigAgentKind: Sendable, Hashable {
         }
     }
 
+    /// Presentation icon for the agent.
+    ///
+    /// Uses the bundled agent marks — the same artwork the sidebar and the fleet
+    /// board use — so a button reads as the actual agent. SF Symbols remain only
+    /// where no mark is bundled.
     var defaultIcon: CmuxButtonIcon {
         switch self {
         case .codex:
-            return .symbol("sparkles")
+            return .asset("AgentIcons/Codex")
         case .claudeCode:
-            return .symbol("brain.head.profile")
+            return .asset("AgentIcons/Claude")
         case .opencode:
-            return .symbol("chevron.left.forwardslash.chevron.right")
+            return .asset("AgentIcons/OpenCode")
         case .custom:
             return .symbol("terminal")
         }
@@ -408,12 +424,25 @@ enum CmuxButtonIcon: Codable, Sendable, Hashable {
     case symbol(String)
     case emoji(String, scale: Double = 1)
     case imagePath(String)
+    /// An image bundled in the app's asset catalog, e.g. `AgentIcons/Claude`.
+    ///
+    /// Distinct from `imagePath`, which resolves a file next to a config and is
+    /// subject to project-local trust checks. Bundled assets are app resources:
+    /// always available, never untrusted, and the only way to put a real agent
+    /// logo on a button — an SF Symbol stand-in cannot say "this is Claude".
+    case asset(String)
 
     var symbolName: String {
         if case .symbol(let name) = self {
             return name
         }
         return "questionmark.circle"
+    }
+
+    /// Asset-catalog name, when this icon is a bundled asset.
+    var assetName: String? {
+        if case .asset(let name) = self { return name }
+        return nil
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -437,6 +466,8 @@ enum CmuxButtonIcon: Codable, Sendable, Hashable {
             )
         case "image", "file":
             self = .imagePath(try Self.trimmedString(forKey: .path, in: container))
+        case "asset", "bundled":
+            self = .asset(try Self.trimmedString(forKey: .name, in: container))
         default:
             throw DecodingError.dataCorruptedError(
                 forKey: .type,
@@ -461,6 +492,9 @@ enum CmuxButtonIcon: Codable, Sendable, Hashable {
         case .imagePath(let path):
             try container.encode("image", forKey: .type)
             try container.encode(path, forKey: .path)
+        case .asset(let name):
+            try container.encode("asset", forKey: .type)
+            try container.encode(name, forKey: .name)
         }
     }
 
@@ -474,6 +508,15 @@ enum CmuxButtonIcon: Codable, Sendable, Hashable {
             return .systemImage(name)
         case .emoji(let value, let scale):
             return .emoji(value, scale: scale)
+        case .asset(let name):
+            // Bonsplit takes raw image data, so the catalog image is rasterized
+            // once here rather than teaching the split package about asset
+            // catalogs.
+            guard let data = Self.bundledAssetPNGData(named: name) else {
+                NSLog("[CmuxConfig] icon asset is missing: %@", name)
+                return .systemImage("questionmark.circle")
+            }
+            return .imageData(data)
         case .imagePath(let path):
             guard let preparedImage = Self.preparedImageAsset(
                 path,
@@ -488,6 +531,25 @@ enum CmuxButtonIcon: Codable, Sendable, Hashable {
             }
             return .imageData(preparedImage.data)
         }
+    }
+
+    /// PNG data for a bundled asset, at a size that stays sharp on Retina.
+    static func bundledAssetPNGData(named name: String, side: CGFloat = 40) -> Data? {
+        guard let image = NSImage(named: name) else { return nil }
+        let target = NSSize(width: side, height: side)
+        let rendered = NSImage(size: target)
+        rendered.lockFocus()
+        NSGraphicsContext.current?.imageInterpolation = .high
+        image.draw(
+            in: NSRect(origin: .zero, size: target),
+            from: .zero,
+            operation: .sourceOver,
+            fraction: 1
+        )
+        rendered.unlockFocus()
+        guard let tiff = rendered.tiffRepresentation,
+              let rep = NSBitmapImageRep(data: tiff) else { return nil }
+        return rep.representation(using: .png, properties: [:])
     }
 
     func projectLocalImageFingerprint(configSourcePath: String?, globalConfigPath: String) -> String? {
@@ -941,7 +1003,42 @@ struct CmuxSurfaceTabBarButton: Codable, Sendable, Hashable, Identifiable {
 
     static let mobileConnect = actionReference(CmuxSurfaceTabBarBuiltInAction.mobileConnect.configID)
 
+    /// Launches an agent in the pane's own working directory.
+    ///
+    /// `currentTerminalWhenIdle` is what makes this a one-click action rather than
+    /// a gamble: an idle prompt takes the command directly, a busy one gets a new
+    /// pane beside it.
+    static func agentLaunch(
+        _ agent: CmuxConfigAgentKind,
+        title: String,
+        tooltip: String
+    ) -> CmuxSurfaceTabBarButton {
+        CmuxSurfaceTabBarButton(
+            id: "cmux.agent.\(agent.commandName)",
+            title: title,
+            icon: agent.defaultIcon,
+            tooltip: tooltip,
+            action: .agent(agent, args: nil),
+            confirm: nil,
+            terminalCommandTarget: .currentTerminalWhenIdle
+        )
+    }
+
+    static let claudeCode = agentLaunch(
+        .claudeCode,
+        title: String(localized: "surfaceTabBar.agent.claudeCode.title", defaultValue: "Claude"),
+        tooltip: String(localized: "surfaceTabBar.agent.claudeCode.tooltip", defaultValue: "Start Claude Code here")
+    )
+
+    static let codex = agentLaunch(
+        .codex,
+        title: String(localized: "surfaceTabBar.agent.codex.title", defaultValue: "Codex"),
+        tooltip: String(localized: "surfaceTabBar.agent.codex.tooltip", defaultValue: "Start Codex here")
+    )
+
     static let defaults: [CmuxSurfaceTabBarButton] = [
+        .claudeCode,
+        .codex,
         .newTerminal,
         .newBrowser,
         .splitRight,
@@ -1718,7 +1815,7 @@ final class CmuxConfigStore: ObservableObject {
 
     nonisolated static func defaultGlobalConfigPath() -> String {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        return (home as NSString).appendingPathComponent(".config/cmux/cmux.json")
+        return (home as NSString).appendingPathComponent(FleetAppIdentity.configFileRelativePath)
     }
 
     private struct ActionEntry {

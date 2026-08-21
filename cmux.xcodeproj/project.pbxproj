@@ -264,6 +264,7 @@ C0DE71B10000000000000001 /* AppDelegate+AgentChatNotifications.swift in Sources 
 		C0DE35860000000000000001 /* BackgroundWorkspacePrimeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE35860000000000000002 /* BackgroundWorkspacePrimeCoordinator.swift */; };
 		A50012F1 /* Backport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50012F0 /* Backport.swift */; };
 		B057B0017E57B0017E57B001 /* Bonsplit in Frameworks */ = {isa = PBXBuildFile; productRef = A5001262 /* Bonsplit */; };
+		FC1EE700000000000000003C /* BonsplitChromeAccentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000003D /* BonsplitChromeAccentTests.swift */; };
 		74060000000000000000001B /* BonsplitConfiguration+RemoteTmuxEmbedded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74060000000000000000001A /* BonsplitConfiguration+RemoteTmuxEmbedded.swift */; };
 		D0B10010A1B2C3D4E5F60001 /* BonsplitTabBarDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B10011A1B2C3D4E5F60001 /* BonsplitTabBarDebug.swift */; };
 		D0B10002A1B2C3D4E5F60001 /* BonsplitTabBarPassThrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B10003A1B2C3D4E5F60001 /* BonsplitTabBarPassThrough.swift */; };
@@ -1151,6 +1152,49 @@ C0DE71B10000000000000001 /* AppDelegate+AgentChatNotifications.swift in Sources 
 		D0E0F0B4A1B2C3D4E5F60718 /* FindSelectionShortcutUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E0F0B5A1B2C3D4E5F60718 /* FindSelectionShortcutUITests.swift */; };
 		F1A0C0DE0000000000000002 /* FindTextFieldSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A0C0DE0000000000000001 /* FindTextFieldSupport.swift */; };
 		C0F15A000000000000000001 /* FishShellIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F15A000000000000000002 /* FishShellIntegrationTests.swift */; };
+		FC1EE7000000000000000063 /* FleetAppIdentityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000064 /* FleetAppIdentityTests.swift */; };
+		FC1EE7000000000000000000 /* FleetCanvasAutomaticReorderGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000001 /* FleetCanvasAutomaticReorderGate.swift */; };
+		FC1EE700000000000000005F /* FleetCanvasBoardDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000060 /* FleetCanvasBoardDropDelegate.swift */; };
+		FC1EE7000000000000000002 /* FleetCanvasBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000003 /* FleetCanvasBoardView.swift */; };
+		FC1EE7000000000000000004 /* FleetCanvasCardDragPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000005 /* FleetCanvasCardDragPreview.swift */; };
+		FC1EE7000000000000000061 /* FleetCanvasCardDropBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000062 /* FleetCanvasCardDropBridge.swift */; };
+		FC1EE700000000000000005B /* FleetCanvasDropIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000005C /* FleetCanvasDropIntent.swift */; };
+		FC1EE700000000000000005D /* FleetCanvasDropResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000005E /* FleetCanvasDropResolver.swift */; };
+		FC1EE7000000000000000006 /* FleetCanvasDropResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000007 /* FleetCanvasDropResolverTests.swift */; };
+		FC1EE7000000000000000008 /* FleetCanvasDropTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000009 /* FleetCanvasDropTarget.swift */; };
+		FC1EE700000000000000004F /* FleetCanvasDropTargetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000050 /* FleetCanvasDropTargetTests.swift */; };
+		FC1EE700000000000000000A /* FleetCanvasGlassDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000000B /* FleetCanvasGlassDepth.swift */; };
+		FC1EE700000000000000000C /* FleetCanvasGlassSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000000D /* FleetCanvasGlassSurface.swift */; };
+		FC1EE7000000000000000059 /* FleetCanvasGroupingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000005A /* FleetCanvasGroupingTests.swift */; };
+		FC1EE700000000000000000E /* FleetCanvasLayoutEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000000F /* FleetCanvasLayoutEdge.swift */; };
+		FC1EE7000000000000000012 /* FleetCanvasLayoutNode+Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000013 /* FleetCanvasLayoutNode+Editing.swift */; };
+		FC1EE7000000000000000010 /* FleetCanvasLayoutNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000011 /* FleetCanvasLayoutNode.swift */; };
+		FC1EE700000000000000004B /* FleetCanvasLayoutNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000004C /* FleetCanvasLayoutNodeTests.swift */; };
+		FC1EE7000000000000000014 /* FleetCanvasLayoutPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000015 /* FleetCanvasLayoutPath.swift */; };
+		FC1EE7000000000000000016 /* FleetCanvasLayoutSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000017 /* FleetCanvasLayoutSolution.swift */; };
+		FC1EE700000000000000004D /* FleetCanvasLayoutSolutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000004E /* FleetCanvasLayoutSolutionTests.swift */; };
+		FC1EE7000000000000000018 /* FleetCanvasLayoutTreeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000019 /* FleetCanvasLayoutTreeStore.swift */; };
+		FC1EE7000000000000000051 /* FleetCanvasLayoutTreeStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000052 /* FleetCanvasLayoutTreeStoreTests.swift */; };
+		FC1EE7000000000000000053 /* FleetCanvasLayoutWeightDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000054 /* FleetCanvasLayoutWeightDrag.swift */; };
+		FC1EE7000000000000000055 /* FleetCanvasLayoutWeightDragTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000056 /* FleetCanvasLayoutWeightDragTests.swift */; };
+		FC1EE700000000000000001A /* FleetCanvasResizeAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000001B /* FleetCanvasResizeAxis.swift */; };
+		FC1EE700000000000000001C /* FleetCanvasResizeHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000001D /* FleetCanvasResizeHandle.swift */; };
+		FC1EE700000000000000001E /* FleetCanvasResizePointerArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000001F /* FleetCanvasResizePointerArea.swift */; };
+		FC1EE7000000000000000020 /* FleetCanvasSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000021 /* FleetCanvasSettings.swift */; };
+		FC1EE7000000000000000022 /* FleetCanvasSplitAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000023 /* FleetCanvasSplitAxis.swift */; };
+		FC1EE7000000000000000024 /* FleetCanvasTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000025 /* FleetCanvasTheme.swift */; };
+		FC1EE7000000000000000026 /* FleetCanvasVisualEffectBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000027 /* FleetCanvasVisualEffectBackground.swift */; };
+		FC1EE7000000000000000028 /* FleetWorkspaceAgentCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000029 /* FleetWorkspaceAgentCatalog.swift */; };
+		FC1EE7000000000000000040 /* FleetWorkspaceAgentCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000041 /* FleetWorkspaceAgentCatalogTests.swift */; };
+		FC1EE700000000000000002A /* FleetWorkspaceAgentPresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000002B /* FleetWorkspaceAgentPresence.swift */; };
+		FC1EE700000000000000002C /* FleetWorkspaceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000002D /* FleetWorkspaceCard.swift */; };
+		FC1EE700000000000000002E /* FleetWorkspaceCardIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000002F /* FleetWorkspaceCardIcon.swift */; };
+		FC1EE7000000000000000030 /* FleetWorkspaceCardIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000031 /* FleetWorkspaceCardIconView.swift */; };
+		FC1EE7000000000000000032 /* FleetWorkspaceCardIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000033 /* FleetWorkspaceCardIdentity.swift */; };
+		FC1EE700000000000000003E /* FleetWorkspaceCardIdentityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000003F /* FleetWorkspaceCardIdentityTests.swift */; };
+		FC1EE7000000000000000034 /* FleetWorkspacePanelSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000035 /* FleetWorkspacePanelSnapshot.swift */; };
+		FC1EE7000000000000000036 /* FleetWorkspaceSessionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000037 /* FleetWorkspaceSessionTitle.swift */; };
+		FC1EE7000000000000000042 /* FleetWorkspaceSessionTitleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000043 /* FleetWorkspaceSessionTitleTests.swift */; };
 		F17A5F010000000000000001 /* FocusedPanelFlashShortcutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A5F020000000000000002 /* FocusedPanelFlashShortcutTests.swift */; };
 		F0C05170000000000000002 /* FocusHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C05170000000000000001 /* FocusHistory.swift */; };
 		FE00AA20C1B2C3D4E5F60718 /* FocusHistoryBracketShortcutRoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00AA21C1B2C3D4E5F60718 /* FocusHistoryBracketShortcutRoutingTests.swift */; };
@@ -2447,6 +2491,8 @@ C0DE71B10000000000000001 /* AppDelegate+AgentChatNotifications.swift in Sources 
 		D4A9923A0000000000000001 /* TerminalStartupRestoreCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A9923A0000000000000002 /* TerminalStartupRestoreCoordinator.swift */; };
 		99230001992300019923000E /* TerminalStartupRestoreFailureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99230001992300019923000D /* TerminalStartupRestoreFailureTests.swift */; };
 		D36A00090000000000000001 /* TerminalSurface+RendererRealizationSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36A00090000000000000002 /* TerminalSurface+RendererRealizationSurface.swift */; };
+		FC1EE7000000000000000038 /* TerminalSurfaceFocusPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000039 /* TerminalSurfaceFocusPolicy.swift */; };
+		FC1EE7000000000000000048 /* TerminalSurfaceFocusPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000049 /* TerminalSurfaceFocusPolicyTests.swift */; };
 		D3052001000000000000001 /* TerminalSurfaceResizePolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3052001000000000000002 /* TerminalSurfaceResizePolicyTests.swift */; };
 		C750500000000000000000B1 /* TerminalSurfaceRuntimeWiring.swift in Sources */ = {isa = PBXBuildFile; fileRef = C750500000000000000000B2 /* TerminalSurfaceRuntimeWiring.swift */; };
 		A91C0D0F0000000000000002 /* TerminalTabIconRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91C0D0F0000000000000001 /* TerminalTabIconRegressionTests.swift */; };
@@ -2609,6 +2655,7 @@ C0DE71B10000000000000001 /* AppDelegate+AgentChatNotifications.swift in Sources 
 		D7632B13A1B2C3D4E5F60718 /* WKWebView+CmuxPrintOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7632B14A1B2C3D4E5F60718 /* WKWebView+CmuxPrintOperation.swift */; };
 		C0DE43000000000000000007 /* Workspace+AgentChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE43000000000000000008 /* Workspace+AgentChat.swift */; };
 		A6AC73020000000000000001 /* Workspace+AgentLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AC73020000000000000002 /* Workspace+AgentLifecycle.swift */; };
+		FC1EE7000000000000000057 /* Workspace+AgentQuickLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000058 /* Workspace+AgentQuickLaunch.swift */; };
 		8777E0018777E0018777E001 /* Workspace+AttentionFlashRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8777E0028777E0028777E002 /* Workspace+AttentionFlashRouting.swift */; };
 		CA52B0150000000000000000 /* Workspace+CanvasLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA52C0150000000000000000 /* Workspace+CanvasLayout.swift */; };
 		C54860020000000000000001 /* Workspace+CmuxNavigationDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54860020000000000000002 /* Workspace+CmuxNavigationDescriptor.swift */; };
@@ -2659,8 +2706,11 @@ C0DE71B10000000000000001 /* AppDelegate+AgentChatNotifications.swift in Sources 
 		D7AB00000000000000000011 /* WorkspaceAdjacentPaneMoveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AB00000000000000000012 /* WorkspaceAdjacentPaneMoveTests.swift */; };
 		A11EAE000000000000000000 /* WorkspaceAppearanceConfigResolutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11EAE000000000000000001 /* WorkspaceAppearanceConfigResolutionTests.swift */; };
 		A11EAD000000000000000000 /* WorkspaceAppearanceResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11EAD000000000000000001 /* WorkspaceAppearanceResolution.swift */; };
+		FC1EE7000000000000000044 /* WorkspaceAttentionAccentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000045 /* WorkspaceAttentionAccentTests.swift */; };
 		A85630010000000000000002 /* WorkspaceAttentionColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85630010000000000000001 /* WorkspaceAttentionColor.swift */; };
 		A5F0C0010000000000000002 /* WorkspaceAttentionFlashRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0C0010000000000000001 /* WorkspaceAttentionFlashRingView.swift */; };
+		FC1EE700000000000000003A /* WorkspaceAttentionRingPulse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000003B /* WorkspaceAttentionRingPulse.swift */; };
+		FC1EE7000000000000000046 /* WorkspaceAttentionRingPulseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000047 /* WorkspaceAttentionRingPulseTests.swift */; };
 		CA52B0160000000000000000 /* WorkspaceCanvasHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA52C0160000000000000000 /* WorkspaceCanvasHostView.swift */; };
 		B2929B53F4CC4C9D972771EC /* WorkspaceChecklistAttachmentQuickLookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981070E40BA4F53B8406CE4 /* WorkspaceChecklistAttachmentQuickLookController.swift */; };
 		D7AB3605C10DEF0000000003 /* WorkspaceCloseTabsBatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AB3605C10DEF0000000004 /* WorkspaceCloseTabsBatching.swift */; };
@@ -3121,6 +3171,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 		0673572C53588696D70F32A9 /* BackgroundPrimeStartableSurfaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundPrimeStartableSurfaceTests.swift; sourceTree = "<group>"; };
 		C0DE35860000000000000002 /* BackgroundWorkspacePrimeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundWorkspacePrimeCoordinator.swift; sourceTree = "<group>"; };
 		A50012F0 /* Backport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backport.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000003D /* BonsplitChromeAccentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonsplitChromeAccentTests.swift; sourceTree = "<group>"; };
 		74060000000000000000001A /* BonsplitConfiguration+RemoteTmuxEmbedded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BonsplitConfiguration+RemoteTmuxEmbedded.swift"; sourceTree = "<group>"; };
 		D0B10011A1B2C3D4E5F60001 /* BonsplitTabBarDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonsplitTabBarDebug.swift; sourceTree = "<group>"; };
 		D0B10003A1B2C3D4E5F60001 /* BonsplitTabBarPassThrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonsplitTabBarPassThrough.swift; sourceTree = "<group>"; };
@@ -3934,6 +3985,49 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 		D0E0F0B5A1B2C3D4E5F60718 /* FindSelectionShortcutUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindSelectionShortcutUITests.swift; sourceTree = "<group>"; };
 		F1A0C0DE0000000000000001 /* FindTextFieldSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Find/FindTextFieldSupport.swift; sourceTree = "<group>"; };
 		C0F15A000000000000000002 /* FishShellIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishShellIntegrationTests.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000064 /* FleetAppIdentityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetAppIdentityTests.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000001 /* FleetCanvasAutomaticReorderGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasAutomaticReorderGate.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000060 /* FleetCanvasBoardDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasBoardDropDelegate.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000003 /* FleetCanvasBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasBoardView.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000005 /* FleetCanvasCardDragPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasCardDragPreview.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000062 /* FleetCanvasCardDropBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasCardDropBridge.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000005C /* FleetCanvasDropIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasDropIntent.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000005E /* FleetCanvasDropResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasDropResolver.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000007 /* FleetCanvasDropResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasDropResolverTests.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000009 /* FleetCanvasDropTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasDropTarget.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000050 /* FleetCanvasDropTargetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasDropTargetTests.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000000B /* FleetCanvasGlassDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasGlassDepth.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000000D /* FleetCanvasGlassSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasGlassSurface.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000005A /* FleetCanvasGroupingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasGroupingTests.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000000F /* FleetCanvasLayoutEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutEdge.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000013 /* FleetCanvasLayoutNode+Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FleetCanvasLayoutNode+Editing.swift"; sourceTree = "<group>"; };
+		FC1EE7000000000000000011 /* FleetCanvasLayoutNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutNode.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000004C /* FleetCanvasLayoutNodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutNodeTests.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000015 /* FleetCanvasLayoutPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutPath.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000017 /* FleetCanvasLayoutSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutSolution.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000004E /* FleetCanvasLayoutSolutionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutSolutionTests.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000019 /* FleetCanvasLayoutTreeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutTreeStore.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000052 /* FleetCanvasLayoutTreeStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutTreeStoreTests.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000054 /* FleetCanvasLayoutWeightDrag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutWeightDrag.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000056 /* FleetCanvasLayoutWeightDragTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasLayoutWeightDragTests.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000001B /* FleetCanvasResizeAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasResizeAxis.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000001D /* FleetCanvasResizeHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasResizeHandle.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000001F /* FleetCanvasResizePointerArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasResizePointerArea.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000021 /* FleetCanvasSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasSettings.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000023 /* FleetCanvasSplitAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasSplitAxis.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000025 /* FleetCanvasTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasTheme.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000027 /* FleetCanvasVisualEffectBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasVisualEffectBackground.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000029 /* FleetWorkspaceAgentCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceAgentCatalog.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000041 /* FleetWorkspaceAgentCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceAgentCatalogTests.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000002B /* FleetWorkspaceAgentPresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceAgentPresence.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000002D /* FleetWorkspaceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceCard.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000002F /* FleetWorkspaceCardIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceCardIcon.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000031 /* FleetWorkspaceCardIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceCardIconView.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000033 /* FleetWorkspaceCardIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceCardIdentity.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000003F /* FleetWorkspaceCardIdentityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceCardIdentityTests.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000035 /* FleetWorkspacePanelSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspacePanelSnapshot.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000037 /* FleetWorkspaceSessionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceSessionTitle.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000043 /* FleetWorkspaceSessionTitleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceSessionTitleTests.swift; sourceTree = "<group>"; };
 		F17A5F020000000000000002 /* FocusedPanelFlashShortcutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedPanelFlashShortcutTests.swift; sourceTree = "<group>"; };
 		F0C05170000000000000001 /* FocusHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusHistory.swift; sourceTree = "<group>"; };
 		FE00AA21C1B2C3D4E5F60718 /* FocusHistoryBracketShortcutRoutingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusHistoryBracketShortcutRoutingTests.swift; sourceTree = "<group>"; };
@@ -5212,6 +5306,8 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 		D4A9923A0000000000000002 /* TerminalStartupRestoreCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalStartupRestoreCoordinator.swift; sourceTree = "<group>"; };
 		99230001992300019923000D /* TerminalStartupRestoreFailureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalStartupRestoreFailureTests.swift; sourceTree = "<group>"; };
 		D36A00090000000000000002 /* TerminalSurface+RendererRealizationSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/TerminalSurface+RendererRealizationSurface.swift"; sourceTree = "<group>"; };
+		FC1EE7000000000000000039 /* TerminalSurfaceFocusPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSurfaceFocusPolicy.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000049 /* TerminalSurfaceFocusPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSurfaceFocusPolicyTests.swift; sourceTree = "<group>"; };
 		D3052001000000000000002 /* TerminalSurfaceResizePolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSurfaceResizePolicyTests.swift; sourceTree = "<group>"; };
 		C750500000000000000000B2 /* TerminalSurfaceRuntimeWiring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSurfaceRuntimeWiring.swift; sourceTree = "<group>"; };
 		A91C0D0F0000000000000001 /* TerminalTabIconRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalTabIconRegressionTests.swift; sourceTree = "<group>"; };
@@ -5375,6 +5471,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 		D7632B14A1B2C3D4E5F60718 /* WKWebView+CmuxPrintOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Panels/WKWebView+CmuxPrintOperation.swift"; sourceTree = "<group>"; };
 		C0DE43000000000000000008 /* Workspace+AgentChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workspace+AgentChat.swift"; sourceTree = "<group>"; };
 		A6AC73020000000000000002 /* Workspace+AgentLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workspace+AgentLifecycle.swift"; sourceTree = "<group>"; };
+		FC1EE7000000000000000058 /* Workspace+AgentQuickLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workspace+AgentQuickLaunch.swift"; sourceTree = "<group>"; };
 		8777E0028777E0028777E002 /* Workspace+AttentionFlashRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workspace+AttentionFlashRouting.swift"; sourceTree = "<group>"; };
 		CA52C0150000000000000000 /* Workspace+CanvasLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workspace+CanvasLayout.swift"; sourceTree = "<group>"; };
 		C54860020000000000000002 /* Workspace+CmuxNavigationDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workspace+CmuxNavigationDescriptor.swift"; sourceTree = "<group>"; };
@@ -5425,8 +5522,11 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 		D7AB00000000000000000012 /* WorkspaceAdjacentPaneMoveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAdjacentPaneMoveTests.swift; sourceTree = "<group>"; };
 		A11EAE000000000000000001 /* WorkspaceAppearanceConfigResolutionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAppearanceConfigResolutionTests.swift; sourceTree = "<group>"; };
 		A11EAD000000000000000001 /* WorkspaceAppearanceResolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAppearanceResolution.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000045 /* WorkspaceAttentionAccentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAttentionAccentTests.swift; sourceTree = "<group>"; };
 		A85630010000000000000001 /* WorkspaceAttentionColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panels/WorkspaceAttentionColor.swift; sourceTree = "<group>"; };
 		A5F0C0010000000000000001 /* WorkspaceAttentionFlashRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panels/WorkspaceAttentionFlashRingView.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000003B /* WorkspaceAttentionRingPulse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAttentionRingPulse.swift; sourceTree = "<group>"; };
+		FC1EE7000000000000000047 /* WorkspaceAttentionRingPulseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAttentionRingPulseTests.swift; sourceTree = "<group>"; };
 		CA52C0160000000000000000 /* WorkspaceCanvasHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceCanvasHostView.swift"; sourceTree = "<group>"; };
 		3981070E40BA4F53B8406CE4 /* WorkspaceChecklistAttachmentQuickLookController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceChecklistAttachmentQuickLookController.swift; sourceTree = "<group>"; };
 		D7AB3605C10DEF0000000004 /* WorkspaceCloseTabsBatching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCloseTabsBatching.swift; sourceTree = "<group>"; };
@@ -7596,6 +7696,10 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				C57B00050000000000000002 /* CmuxExtensionSidebarSelection+CustomSidebarName.swift */,
 				59065015952E1B5BE5E23519 /* Mobile */,
 				31B04B98376C9BA8B9E44DCB /* TerminalViewportUITestRecorder.swift */,
+				FC1EE700000000000000004A /* FleetCanvas */,
+				FC1EE7000000000000000039 /* TerminalSurfaceFocusPolicy.swift */,
+				FC1EE700000000000000003B /* WorkspaceAttentionRingPulse.swift */,
+				FC1EE7000000000000000058 /* Workspace+AgentQuickLaunch.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -8453,6 +8557,21 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				B8B056D80000000000000002 /* MobileHostIdentityTests.swift */,
 				A7C0F0010000000000000001 /* MacPairedMacBackupPublisherScopeTests.swift */,
 				5E2701030000000000000002 /* MacSentryStartupPolicyTests.swift */,
+				FC1EE700000000000000003D /* BonsplitChromeAccentTests.swift */,
+				FC1EE700000000000000003F /* FleetWorkspaceCardIdentityTests.swift */,
+				FC1EE7000000000000000041 /* FleetWorkspaceAgentCatalogTests.swift */,
+				FC1EE7000000000000000043 /* FleetWorkspaceSessionTitleTests.swift */,
+				FC1EE7000000000000000045 /* WorkspaceAttentionAccentTests.swift */,
+				FC1EE7000000000000000047 /* WorkspaceAttentionRingPulseTests.swift */,
+				FC1EE7000000000000000049 /* TerminalSurfaceFocusPolicyTests.swift */,
+				FC1EE700000000000000004C /* FleetCanvasLayoutNodeTests.swift */,
+				FC1EE700000000000000004E /* FleetCanvasLayoutSolutionTests.swift */,
+				FC1EE7000000000000000050 /* FleetCanvasDropTargetTests.swift */,
+				FC1EE7000000000000000052 /* FleetCanvasLayoutTreeStoreTests.swift */,
+				FC1EE7000000000000000056 /* FleetCanvasLayoutWeightDragTests.swift */,
+				FC1EE7000000000000000007 /* FleetCanvasDropResolverTests.swift */,
+				FC1EE700000000000000005A /* FleetCanvasGroupingTests.swift */,
+				FC1EE7000000000000000064 /* FleetAppIdentityTests.swift */,
 			);
 			path = cmuxTests;
 			sourceTree = "<group>";
@@ -8478,6 +8597,45 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 			);
 			name = Feed;
 			path = Feed;
+			sourceTree = "<group>";
+		};
+		FC1EE700000000000000004A /* FleetCanvas */ = {
+			isa = PBXGroup;
+			children = (
+				FC1EE7000000000000000001 /* FleetCanvasAutomaticReorderGate.swift */,
+				FC1EE7000000000000000003 /* FleetCanvasBoardView.swift */,
+				FC1EE7000000000000000005 /* FleetCanvasCardDragPreview.swift */,
+				FC1EE7000000000000000009 /* FleetCanvasDropTarget.swift */,
+				FC1EE700000000000000000B /* FleetCanvasGlassDepth.swift */,
+				FC1EE700000000000000000D /* FleetCanvasGlassSurface.swift */,
+				FC1EE700000000000000000F /* FleetCanvasLayoutEdge.swift */,
+				FC1EE7000000000000000011 /* FleetCanvasLayoutNode.swift */,
+				FC1EE7000000000000000013 /* FleetCanvasLayoutNode+Editing.swift */,
+				FC1EE7000000000000000015 /* FleetCanvasLayoutPath.swift */,
+				FC1EE7000000000000000017 /* FleetCanvasLayoutSolution.swift */,
+				FC1EE7000000000000000019 /* FleetCanvasLayoutTreeStore.swift */,
+				FC1EE700000000000000001B /* FleetCanvasResizeAxis.swift */,
+				FC1EE700000000000000001D /* FleetCanvasResizeHandle.swift */,
+				FC1EE700000000000000001F /* FleetCanvasResizePointerArea.swift */,
+				FC1EE7000000000000000021 /* FleetCanvasSettings.swift */,
+				FC1EE7000000000000000023 /* FleetCanvasSplitAxis.swift */,
+				FC1EE7000000000000000025 /* FleetCanvasTheme.swift */,
+				FC1EE7000000000000000027 /* FleetCanvasVisualEffectBackground.swift */,
+				FC1EE7000000000000000029 /* FleetWorkspaceAgentCatalog.swift */,
+				FC1EE700000000000000002B /* FleetWorkspaceAgentPresence.swift */,
+				FC1EE700000000000000002D /* FleetWorkspaceCard.swift */,
+				FC1EE700000000000000002F /* FleetWorkspaceCardIcon.swift */,
+				FC1EE7000000000000000031 /* FleetWorkspaceCardIconView.swift */,
+				FC1EE7000000000000000033 /* FleetWorkspaceCardIdentity.swift */,
+				FC1EE7000000000000000035 /* FleetWorkspacePanelSnapshot.swift */,
+				FC1EE7000000000000000037 /* FleetWorkspaceSessionTitle.swift */,
+				FC1EE7000000000000000054 /* FleetCanvasLayoutWeightDrag.swift */,
+				FC1EE700000000000000005C /* FleetCanvasDropIntent.swift */,
+				FC1EE700000000000000005E /* FleetCanvasDropResolver.swift */,
+				FC1EE7000000000000000060 /* FleetCanvasBoardDropDelegate.swift */,
+				FC1EE7000000000000000062 /* FleetCanvasCardDropBridge.swift */,
+			);
+			path = FleetCanvas;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -9592,6 +9750,38 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 					F11E52270000000000005227 /* FilePreviewWordWrapSettings.swift in Sources */,
 				A5001445A5001445A5001445 /* FilePreviewWorkspaceOpenSupport.swift in Sources */,
 				F1A0C0DE0000000000000002 /* FindTextFieldSupport.swift in Sources */,
+				FC1EE7000000000000000000 /* FleetCanvasAutomaticReorderGate.swift in Sources */,
+				FC1EE700000000000000005F /* FleetCanvasBoardDropDelegate.swift in Sources */,
+				FC1EE7000000000000000002 /* FleetCanvasBoardView.swift in Sources */,
+				FC1EE7000000000000000004 /* FleetCanvasCardDragPreview.swift in Sources */,
+				FC1EE7000000000000000061 /* FleetCanvasCardDropBridge.swift in Sources */,
+				FC1EE700000000000000005B /* FleetCanvasDropIntent.swift in Sources */,
+				FC1EE700000000000000005D /* FleetCanvasDropResolver.swift in Sources */,
+				FC1EE7000000000000000008 /* FleetCanvasDropTarget.swift in Sources */,
+				FC1EE700000000000000000A /* FleetCanvasGlassDepth.swift in Sources */,
+				FC1EE700000000000000000C /* FleetCanvasGlassSurface.swift in Sources */,
+				FC1EE700000000000000000E /* FleetCanvasLayoutEdge.swift in Sources */,
+				FC1EE7000000000000000012 /* FleetCanvasLayoutNode+Editing.swift in Sources */,
+				FC1EE7000000000000000010 /* FleetCanvasLayoutNode.swift in Sources */,
+				FC1EE7000000000000000014 /* FleetCanvasLayoutPath.swift in Sources */,
+				FC1EE7000000000000000016 /* FleetCanvasLayoutSolution.swift in Sources */,
+				FC1EE7000000000000000018 /* FleetCanvasLayoutTreeStore.swift in Sources */,
+				FC1EE7000000000000000053 /* FleetCanvasLayoutWeightDrag.swift in Sources */,
+				FC1EE700000000000000001A /* FleetCanvasResizeAxis.swift in Sources */,
+				FC1EE700000000000000001C /* FleetCanvasResizeHandle.swift in Sources */,
+				FC1EE700000000000000001E /* FleetCanvasResizePointerArea.swift in Sources */,
+				FC1EE7000000000000000020 /* FleetCanvasSettings.swift in Sources */,
+				FC1EE7000000000000000022 /* FleetCanvasSplitAxis.swift in Sources */,
+				FC1EE7000000000000000024 /* FleetCanvasTheme.swift in Sources */,
+				FC1EE7000000000000000026 /* FleetCanvasVisualEffectBackground.swift in Sources */,
+				FC1EE7000000000000000028 /* FleetWorkspaceAgentCatalog.swift in Sources */,
+				FC1EE700000000000000002A /* FleetWorkspaceAgentPresence.swift in Sources */,
+				FC1EE700000000000000002C /* FleetWorkspaceCard.swift in Sources */,
+				FC1EE700000000000000002E /* FleetWorkspaceCardIcon.swift in Sources */,
+				FC1EE7000000000000000030 /* FleetWorkspaceCardIconView.swift in Sources */,
+				FC1EE7000000000000000032 /* FleetWorkspaceCardIdentity.swift in Sources */,
+				FC1EE7000000000000000034 /* FleetWorkspacePanelSnapshot.swift in Sources */,
+				FC1EE7000000000000000036 /* FleetWorkspaceSessionTitle.swift in Sources */,
 				F0C05170000000000000002 /* FocusHistory.swift in Sources */,
 				C4160A020000000000000001 /* FocusHistoryMenuInvalidator.swift in Sources */,
 				5E55400000000000000000D1 /* FocusStealingResponderConformances.swift in Sources */,
@@ -10496,6 +10686,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				A5001543 /* TerminalSSHSessionDetector.swift in Sources */,
 				D4A9923A0000000000000001 /* TerminalStartupRestoreCoordinator.swift in Sources */,
 				D36A00090000000000000001 /* TerminalSurface+RendererRealizationSurface.swift in Sources */,
+				FC1EE7000000000000000038 /* TerminalSurfaceFocusPolicy.swift in Sources */,
 				C750500000000000000000B1 /* TerminalSurfaceRuntimeWiring.swift in Sources */,
 				F83620020000000000000001 /* TerminalTTYSessionIdentity.swift in Sources */,
 				EC010A01 /* TerminalUploadCommand.swift in Sources */,
@@ -10615,6 +10806,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				D7632B13A1B2C3D4E5F60718 /* WKWebView+CmuxPrintOperation.swift in Sources */,
 				C0DE43000000000000000007 /* Workspace+AgentChat.swift in Sources */,
 				A6AC73020000000000000001 /* Workspace+AgentLifecycle.swift in Sources */,
+				FC1EE7000000000000000057 /* Workspace+AgentQuickLaunch.swift in Sources */,
 				8777E0018777E0018777E001 /* Workspace+AttentionFlashRouting.swift in Sources */,
 				CA52B0150000000000000000 /* Workspace+CanvasLayout.swift in Sources */,
 				C54860020000000000000001 /* Workspace+CmuxNavigationDescriptor.swift in Sources */,
@@ -10663,6 +10855,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				A11EAD000000000000000000 /* WorkspaceAppearanceResolution.swift in Sources */,
 				A85630010000000000000002 /* WorkspaceAttentionColor.swift in Sources */,
 				A5F0C0010000000000000002 /* WorkspaceAttentionFlashRingView.swift in Sources */,
+				FC1EE700000000000000003A /* WorkspaceAttentionRingPulse.swift in Sources */,
 				CA52B0160000000000000000 /* WorkspaceCanvasHostView.swift in Sources */,
 				B2929B53F4CC4C9D972771EC /* WorkspaceChecklistAttachmentQuickLookController.swift in Sources */,
 				D7AB3605C10DEF0000000003 /* WorkspaceCloseTabsBatching.swift in Sources */,
@@ -11026,6 +11219,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				A4ECF22C62724853A72D6BDE /* AutoNamingGrokAdapterTests.swift in Sources */,
 				74AB3F34FE3B4974A3A5D264 /* AutoNamingHookPayloadAdapterTests.swift in Sources */,
 				B00FC393AB29CFA85FB6D9F5 /* BackgroundPrimeStartableSurfaceTests.swift in Sources */,
+				FC1EE700000000000000003C /* BonsplitChromeAccentTests.swift in Sources */,
 				D3622000A1B2C3D4E5F60718 /* BrowserArrowKeyForwardingTests.swift in Sources */,
 				8054B0030000000000000003 /* BrowserAutomationRecoveryLifecycleTests.swift in Sources */,
 				BCBC0A0E0000000000000D01 /* BrowserChromeMetricsTests.swift in Sources */,
@@ -11244,6 +11438,17 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				FE002103 /* FileSearchRipgrepParserTests.swift in Sources */,
 				C35610000000000000000001 /* FinderFileDropRegressionTests.swift in Sources */,
 				C0F15A000000000000000001 /* FishShellIntegrationTests.swift in Sources */,
+				FC1EE7000000000000000063 /* FleetAppIdentityTests.swift in Sources */,
+				FC1EE7000000000000000006 /* FleetCanvasDropResolverTests.swift in Sources */,
+				FC1EE700000000000000004F /* FleetCanvasDropTargetTests.swift in Sources */,
+				FC1EE7000000000000000059 /* FleetCanvasGroupingTests.swift in Sources */,
+				FC1EE700000000000000004B /* FleetCanvasLayoutNodeTests.swift in Sources */,
+				FC1EE700000000000000004D /* FleetCanvasLayoutSolutionTests.swift in Sources */,
+				FC1EE7000000000000000051 /* FleetCanvasLayoutTreeStoreTests.swift in Sources */,
+				FC1EE7000000000000000055 /* FleetCanvasLayoutWeightDragTests.swift in Sources */,
+				FC1EE7000000000000000040 /* FleetWorkspaceAgentCatalogTests.swift in Sources */,
+				FC1EE700000000000000003E /* FleetWorkspaceCardIdentityTests.swift in Sources */,
+				FC1EE7000000000000000042 /* FleetWorkspaceSessionTitleTests.swift in Sources */,
 				F17A5F010000000000000001 /* FocusedPanelFlashShortcutTests.swift in Sources */,
 				FE00AA20C1B2C3D4E5F60718 /* FocusHistoryBracketShortcutRoutingTests.swift in Sources */,
 				C0DE86540000000000000002 /* FocusHistoryScopeTests.swift in Sources */,
@@ -11574,6 +11779,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				A11E5E1E0000000000000011 /* TerminalSelectionAccessibilityIngressGateTests.swift in Sources */,
 				A11E5E1E0000000000000003 /* TerminalSelectionAccessibilityNotifier.swift in Sources */,
 				99230001992300019923000E /* TerminalStartupRestoreFailureTests.swift in Sources */,
+				FC1EE7000000000000000048 /* TerminalSurfaceFocusPolicyTests.swift in Sources */,
 				D3052001000000000000001 /* TerminalSurfaceResizePolicyTests.swift in Sources */,
 				A91C0D0F0000000000000002 /* TerminalTabIconRegressionTests.swift in Sources */,
 				EC010C01 /* TerminalUploadCommandTests.swift in Sources */,
@@ -11618,6 +11824,8 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				C7D41E01 /* WorkspaceActionSaveDialogAccessoryTests.swift in Sources */,
 				D7AB00000000000000000011 /* WorkspaceAdjacentPaneMoveTests.swift in Sources */,
 				A11EAE000000000000000000 /* WorkspaceAppearanceConfigResolutionTests.swift in Sources */,
+				FC1EE7000000000000000044 /* WorkspaceAttentionAccentTests.swift in Sources */,
+				FC1EE7000000000000000046 /* WorkspaceAttentionRingPulseTests.swift in Sources */,
 				D7AB3605C10DEF0000000001 /* WorkspaceCloseTabsContextMenuTests.swift in Sources */,
 				F7000000A1B2C3D4E5F60718 /* WorkspaceContentViewVisibilityTests.swift in Sources */,
 				D1A700000000000000000008 /* WorkspaceCreateIdempotencyRecoveryTests.swift in Sources */,
@@ -11770,6 +11978,8 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 		A5001082 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CMUX_APP_DISPLAY_NAME = "Fleet DEV";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Debug";
 				CMUX_AUTH_CALLBACK_SCHEME = "cmux-dev";
 				CMUX_IROH_RELAY_POLICY_KEY_ID = "cmux-staging-relay-policy-2026-07";
@@ -11820,8 +12030,10 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 		A5001083 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CMUX_APP_DISPLAY_NAME = "Fleet";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CMUX_AUTH_CALLBACK_SCHEME = cmux;
+				CMUX_AUTH_CALLBACK_SCHEME = fleet;
 				CMUX_IROH_RELAY_POLICY_KEY_ID = "cmux-production-relay-policy-2026-07";
 				CMUX_IROH_RELAY_POLICY_NEXT_KEY_ID = "cmux-production-relay-policy-2026-08";
 				CMUX_IROH_RELAY_POLICY_NEXT_PUBLIC_KEY_BASE64 = "k+FND+WlELCkHs9QnWg1TfTuHXBwyv2907umX+mUOOU=";
@@ -11854,8 +12066,9 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 					"-framework",
 					Carbon,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cmuxterm.app;
-				PRODUCT_NAME = cmux;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tankxu.fleet;
+				PRODUCT_MODULE_NAME = cmux;
+				PRODUCT_NAME = Fleet;
 				SPARKLE_PUBLIC_KEY = "avjcgKibf1FTvhIjLBxhd+0HSpsXU4D0IGlVk8cgqRc=";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "cmux-Bridging-Header.h";
@@ -11959,7 +12172,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.64.22;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cmuxterm.app.docktileplugin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tankxu.fleet.docktileplugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;

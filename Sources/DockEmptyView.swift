@@ -107,7 +107,7 @@ struct DockEmptyView: View {
 
             Choose where to write the config:
             - In a repository or project directory, create or edit `.cmux/dock.json` so teammates can share it.
-            - For a personal default outside a repo, create or edit `~/.config/cmux/dock.json`.
+            - For a personal default outside a repo, create or edit `\(FleetAppIdentity.configDirectoryDisplayPath)/dock.json`.
             - If both exist, project `.cmux/dock.json` is more specific for that project. Nested project configs apply to that directory tree; use the nearest relevant project config instead of writing unrelated controls globally.
             - If there is no repo and no clear project root, use the global config only after confirming the user wants a personal Dock.
 

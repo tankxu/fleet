@@ -1,3 +1,4 @@
+import CmuxFoundation
 import Darwin
 import Foundation
 
@@ -95,7 +96,7 @@ extension TerminalController {
                     : "_"
             }
             return appSupport
-                .appendingPathComponent("cmux", isDirectory: true)
+                .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
                 .appendingPathComponent(
                     "workspace-create-tombstones-\(String(bundleID))-v1.json",
                     isDirectory: false

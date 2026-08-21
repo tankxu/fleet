@@ -1,4 +1,5 @@
 import CMUXMobileCore
+import CmuxFoundation
 import CmuxSettings
 import Foundation
 
@@ -54,7 +55,7 @@ enum MobileHostIdentity {
         ) else {
             return nil
         }
-        let directory = appSupport.appendingPathComponent("cmux", isDirectory: true)
+        let directory = appSupport.appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
         if !fileManager.fileExists(atPath: directory.path) {
             try? fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
         }

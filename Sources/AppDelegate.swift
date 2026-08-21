@@ -1240,7 +1240,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
             in: .userDomainMask
         ).first?
             .appendingPathComponent("Logs", isDirectory: true)
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent("hangs", isDirectory: true)
         let captureStore = hangDirectory.map {
             MainThreadHangCaptureStore(

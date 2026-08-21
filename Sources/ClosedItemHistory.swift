@@ -1,6 +1,7 @@
-import Foundation
-import Combine
 import Bonsplit
+import CmuxFoundation
+import Combine
+import Foundation
 import OSLog
 
 private let closedItemHistoryLogger = Logger(
@@ -672,7 +673,7 @@ final class ClosedItemHistoryStore: ObservableObject {
             options: .regularExpression
         )
         return resolvedAppSupport
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent("closed-item-history-\(safeBundleId).json", isDirectory: false)
     }
 

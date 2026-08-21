@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import CmuxFoundation
 
 extension DockSplitStore {
     // MARK: - Config resolution
@@ -239,7 +240,7 @@ extension DockSplitStore {
             return URL(fileURLWithPath: testPath)
         }
         return FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent(".config/cmux/dock.json", isDirectory: false)
+            .appendingPathComponent(FleetAppIdentity.configDirectoryRelativePath + "/dock.json", isDirectory: false)
     }
 
     nonisolated private static func existingDirectory(_ rawPath: String) -> String? {

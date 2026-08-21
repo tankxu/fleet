@@ -1,3 +1,4 @@
+import CmuxFoundation
 import Darwin
 import Foundation
 
@@ -36,7 +37,7 @@ actor PhonePushQueueStore {
             in: .userDomainMask
         ).first ?? FileManager.default.temporaryDirectory
         return Self(fileURL: root
-            .appendingPathComponent("cmux", isDirectory: true)
+            .appendingPathComponent(FleetAppIdentity.stateDirectoryName, isDirectory: true)
             .appendingPathComponent("phone-push-queue-v1.json"))
     }
 

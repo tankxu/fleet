@@ -163,7 +163,7 @@ public struct BetaFeaturesSection: View {
             searchAnchorID: "setting:betaFeatures:customSidebars",
             String(localized: "settings.betaFeatures.customSidebars", defaultValue: "Custom Sidebars"),
             subtitle: customSidebars.current
-                ? String(localized: "settings.betaFeatures.customSidebars.subtitleOn", defaultValue: "Lists your sidebars from ~/.config/cmux/sidebars in the sidebar picker, rendered in an isolated helper process.")
+                ? String(format: String(localized: "settings.betaFeatures.customSidebars.subtitleOn", defaultValue: "Lists your sidebars from %@ in the sidebar picker, rendered in an isolated helper process."), FleetAppIdentity.configDirectoryDisplayPath + "/sidebars")
                 : String(localized: "settings.betaFeatures.customSidebars.subtitleOff", defaultValue: "Hides custom sidebars from the sidebar picker until you enable them here.")
         ) {
             Toggle("", isOn: Binding(get: { customSidebars.current }, set: { customSidebars.set($0) }))
