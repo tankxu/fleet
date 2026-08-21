@@ -1,6 +1,6 @@
 import Foundation
 
-/// Errors surfaced by the `cmux remotes` flow.
+/// Errors surfaced by the `fleet remotes` flow.
 enum RemotesClientError: Error, CustomStringConvertible, Equatable {
     case notSignedIn
     case sessionRefreshFailed
@@ -21,7 +21,7 @@ enum RemotesClientError: Error, CustomStringConvertible, Equatable {
     var description: String {
         switch self {
         case .notSignedIn:
-            return "Not signed in. Run `cmux auth login`, then retry."
+            return "Not signed in. Run `fleet auth login`, then retry."
         case .sessionRefreshFailed:
             return "Signed in, but cmux could not refresh your session (network or server issue). Retry in a moment."
         case let .invalidRoute(value):
@@ -38,11 +38,11 @@ enum RemotesClientError: Error, CustomStringConvertible, Equatable {
                 address. A plain LAN IP or hostname would show in the device list but fail to connect.
                 """
         case .noRoutes:
-            return "At least one --route host:port is required. Example: cmux remotes add my-mac --route 100.64.1.2:51001"
+            return "At least one --route host:port is required. Example: fleet remotes add my-mac --route 100.64.1.2:51001"
         case .emptyName:
-            return "A non-empty remote name is required. Example: cmux remotes add my-mac --route 100.64.1.2:51001"
+            return "A non-empty remote name is required. Example: fleet remotes add my-mac --route 100.64.1.2:51001"
         case let .notFound(target):
-            return "No remote matching '\(target)'. Run `cmux remotes list` to see registered remotes."
+            return "No remote matching '\(target)'. Run `fleet remotes list` to see registered remotes."
         case let .httpStatus(status, body):
             return RemotesClient.formatHTTPError(status: status, body: body)
         case let .malformedResponse(message):

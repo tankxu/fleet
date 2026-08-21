@@ -32,7 +32,7 @@ struct ConfigSettingsView: View {
             if currentSnapshot.hasStandaloneGhosttyConfig {
                 return String(
                     localized: "settings.config.banner.synced",
-                    defaultValue: "This is a generated preview of the effective config. Edit the cmux tab to change what cmux reads."
+                    defaultValue: "This is a generated preview of the effective config. Edit the fleet tab to change what cmux reads."
                 )
             }
             return String(
@@ -247,7 +247,7 @@ struct ConfigSettingsView: View {
                         localized:
                             "settings.config.status.saved",
                         defaultValue:
-                            "Saved to cmux config and reloaded."
+                            "Saved to fleet config and reloaded."
                     )
                     statusIsError = false
                 }
@@ -272,7 +272,7 @@ struct ConfigSettingsView: View {
             NSSound.beep()
             statusMessage = String(
                 localized: "settings.config.status.saveFailed",
-                defaultValue: "Couldn't save the cmux config."
+                defaultValue: "Couldn't save the fleet config."
             )
             statusIsError = true
         }
@@ -310,7 +310,7 @@ struct ConfigSettingsView: View {
             NSSound.beep()
             statusMessage = String(
                 localized: "settings.config.status.openFailed",
-                defaultValue: "Couldn't open the cmux config."
+                defaultValue: "Couldn't open the fleet config."
             )
             statusIsError = true
             return nil

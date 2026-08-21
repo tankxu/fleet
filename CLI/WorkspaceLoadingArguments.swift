@@ -22,7 +22,7 @@ extension CMUXCLI {
     func workspaceLoadingUsage() -> String {
         String(
             localized: "cli.workspaceLoading.usage",
-            defaultValue: "Usage: cmux workspace loading <on|off> [--id <name>] [--workspace <id>] [--window <id>] [--json]"
+            defaultValue: "Usage: fleet workspace loading <on|off> [--id <name>] [--workspace <id>] [--window <id>] [--json]"
         )
     }
 
@@ -129,7 +129,7 @@ extension CMUXCLI {
         )
     }
 
-    /// `cmux workspace loading <on|off> [--id <name>]` toggles the workspace's
+    /// `fleet workspace loading <on|off> [--id <name>]` toggles the workspace's
     /// loading spinner via the reserved `manual` lifecycle namespace.
     func runWorkspaceLoading(
         commandArgs: [String],

@@ -93,7 +93,7 @@ set -euo pipefail
 if [[ -n "${CMUX_BUNDLED_CLI_PATH:-}" && -x "${CMUX_BUNDLED_CLI_PATH:-}" ]]; then
   exec "$CMUX_BUNDLED_CLI_PATH" "$@"
 fi
-FLEET_CLI=/Applications/Fleet.app/Contents/Resources/bin/cmux
+FLEET_CLI=/Applications/Fleet.app/Contents/Resources/bin/fleet
 if [[ ! -x "$FLEET_CLI" ]]; then
   echo "error: Fleet is not installed at /Applications/Fleet.app" >&2
   exit 1

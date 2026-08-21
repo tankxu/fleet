@@ -254,7 +254,7 @@ extension TerminalController {
     }
 
     /// `remote.tmux.test_set_frame` (DEBUG only) — resizes and/or moves a
-    /// cmux window to an exact frame from within the app. `width`/`height`
+    /// fleet window to an exact frame from within the app. `width`/`height`
     /// resize (omitted = keep the current size); `x`/`y` place the frame
     /// origin in screen coordinates, so an x/y-only call is an origin-only
     /// MOVE — the geometry-only stimulus the sizing counters guard needs.
@@ -537,7 +537,7 @@ extension TerminalController {
                 //
                 // The converse is NOT a defect and must not be asserted:
                 // isVisibleForSizing tracks the tab being SELECTED within its
-                // window to be ordered in. A selected tab in a cmux window that
+                // window to be ordered in. A selected tab in a fleet window that
                 // sits behind another window is legitimately flag=1, on_screen=0.
                 // Asserting equality here reported that ordinary state as a
                 // contradiction on every iteration.

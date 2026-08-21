@@ -2,7 +2,7 @@ import CMUXMobileCore
 import CmuxAuthRuntime
 import Foundation
 
-/// Announces this Mac's running cmux app instance to the team-scoped presence
+/// Announces this Mac's running fleet app instance to the team-scoped presence
 /// service (`POST /v1/presence/heartbeat` on `workers/presence`), so phones and
 /// other team devices can see it flip online/offline live.
 ///

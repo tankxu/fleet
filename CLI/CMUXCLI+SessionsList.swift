@@ -20,7 +20,7 @@ extension CMUXCLI {
             return
         } else if let subcommand, !subcommand.hasPrefix("-") {
             throw CLIError(message: String(
-                format: String(localized: "cli.sessions.error.unknownSubcommand", defaultValue: "Unknown sessions subcommand: %@. Usage: cmux sessions list [options]"),
+                format: String(localized: "cli.sessions.error.unknownSubcommand", defaultValue: "Unknown sessions subcommand: %@. Usage: fleet sessions list [options]"),
                 subcommand
             ))
         }
@@ -298,8 +298,8 @@ extension CMUXCLI {
 
     func sessionsUsage() -> String {
         String(localized: "cli.sessions.usage", defaultValue: """
-        Usage: cmux sessions list [options]
-               cmux sessions [options]
+        Usage: fleet sessions list [options]
+               fleet sessions [options]
 
         Print saved agent session records from ~/.cmuxterm/*-hook-sessions.json.
         This command does not require a running cmux socket.
@@ -323,8 +323,8 @@ extension CMUXCLI {
         CODEX_HOME/archived_sessions.
 
         Compatibility aliases:
-          cmux sessions debug [options]
-          cmux session-debug [options]
+          fleet sessions debug [options]
+          fleet session-debug [options]
         """)
     }
 

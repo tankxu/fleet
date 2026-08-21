@@ -57,7 +57,7 @@ extension CMUXCLI {
         // terminal. Without an inherited surface there is no caller to validate, so fail
         // closed before opening the socket. In particular, never borrow system-wide focus
         // from `system.identify`: a command started in Terminal.app must not target an
-        // unrelated cmux surface merely because that surface happens to be focused.
+        // unrelated fleet surface merely because that surface happens to be focused.
         let ownWorkspace = normalizedTmuxTarget(processEnvironment["CMUX_WORKSPACE_ID"])
         let ownSurface = normalizedTmuxTarget(processEnvironment["CMUX_SURFACE_ID"])
         guard let ownSurface else { return nil }
@@ -135,7 +135,7 @@ extension CMUXCLI {
                 )
             }
 
-            // A launcher running inside a cmux terminal inherits that surface's immutable
+            // A launcher running inside a fleet terminal inherits that surface's immutable
             // workspace/surface pair. Resolve and validate it without consulting global focus, so
             // switching or closing the operator's focused pane cannot retarget a running team.
             // Once either component is present, the inherited pair is authoritative: an incomplete

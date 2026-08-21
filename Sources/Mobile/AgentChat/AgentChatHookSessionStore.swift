@@ -2,7 +2,7 @@ import CmuxAgentChat
 import Foundation
 
 /// Reads the per-agent hook session stores (`~/.cmuxterm/<agent>-hook-sessions.json`)
-/// the `cmux hooks` CLI maintains, yielding terminal bindings and transcript
+/// the `fleet hooks` CLI maintains, yielding terminal bindings and transcript
 /// paths for agent sessions.
 ///
 /// Mirrors `FeedJumpResolver.lookup`'s tolerant parsing (nested `sessions`
@@ -13,9 +13,9 @@ struct AgentChatHookSessionStore: Sendable {
     struct Entry: Sendable {
         /// The agent's session identifier (the store key).
         let sessionID: String
-        /// Owning cmux workspace UUID string.
+        /// Owning fleet workspace UUID string.
         let workspaceID: String?
-        /// Hosting cmux terminal surface UUID string.
+        /// Hosting fleet terminal surface UUID string.
         let surfaceID: String?
         /// The session's working directory.
         let workingDirectory: String?

@@ -289,7 +289,7 @@ extension ProUpgradePresenter {
     }
 
     /// Builds an app web URL (pricing or Pro welcome) decorated with the current
-    /// Ghostty colors and cmux app/scheme query parameters.
+    /// Ghostty colors and fleet app/scheme query parameters.
     @MainActor
     static func decoratedAppWebURL(_ base: URL) -> URL {
         decoratedAppWebURL(base, theme: AppWebThemeSnapshot.current())

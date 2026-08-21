@@ -310,7 +310,7 @@ struct SessionEntry: Identifiable, Hashable, Sendable {
         switch specifics {
         case let .claude(model, permissionMode, configDirectoryForResume):
             // Route through the wrapper resolver token so a manually-resumed claude session
-            // re-injects cmux hooks even when the command runs in a shell where the
+            // re-injects fleet hooks even when the command runs in a shell where the
             // integration's PATH shim / `claude()` function are not active (e.g. the
             // `$SHELL -lic` restore launcher). The token is POSIX-only and this command
             // is typed into — and copy-pasted into — the user's own shell (fish/csh
@@ -332,7 +332,7 @@ struct SessionEntry: Identifiable, Hashable, Sendable {
             )
         case let .codex(model, approval, sandbox, effort):
             // Route through the codex wrapper-resolver token so a manually- or
-            // auto-resumed codex session re-injects cmux hooks even when the
+            // auto-resumed codex session re-injects fleet hooks even when the
             // command runs in a shell where the integration's PATH shim is not
             // active (e.g. the `$SHELL -lic` restore launcher). Without this the
             // bare `codex resume <id>` resolves to the real codex binary,

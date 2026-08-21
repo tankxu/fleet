@@ -617,12 +617,12 @@ extension FeedCoordinator {
     /// This is the convergence point the PreToolUse→PermissionRequest
     /// migration left behind: the `feed.push` bridge ingested the card and
     /// (when inactive) posted a banner, but never drove the same in-app
-    /// attention path the `cmux hooks <agent> notification` hook uses. Doing
+    /// attention path the `fleet hooks <agent> notification` hook uses. Doing
     /// it here — once, for every blocking decision — keeps a new event type
     /// from silently swallowing.
     ///
     /// Process-level AppKit attention is intentionally excluded: Stage Manager
-    /// can promote the entire cmux window set even though no user action targeted
+    /// can promote the entire fleet window set even though no user action targeted
     /// cmux. The lifecycle and status mutations below are the attention surface.
     ///
     /// The overlay is cleared by ``concludeBlockingDecisionAttention(_:)``
@@ -1036,7 +1036,7 @@ enum FeedJumpResolver {
     }
 
     /// Dispatches a workspace-select + surface-focus intent. Posts
-    /// through the existing cmux notification pathway so we don't need
+    /// through the existing fleet notification pathway so we don't need
     /// to bind directly to the TerminalController V2 handlers from the
     /// Feed layer.
     @MainActor

@@ -1,7 +1,7 @@
 import AppKit
 
 extension NSWindow {
-    /// Configures this window as a standard cmux top-level *peer* window.
+    /// Configures this window as a standard fleet top-level *peer* window.
     ///
     /// Peer windows — Settings, the Config editor, About — sit at
     /// `NSWindow.Level.normal` and obey standard macOS window ordering: clicking

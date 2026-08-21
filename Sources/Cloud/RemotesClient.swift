@@ -8,7 +8,7 @@ import Foundation
 /// ``AuthCoordinator`` and ``URLSession`` that attaches the Stack bearer +
 /// refresh + team headers to every request. This is the single registry
 /// mutation path behind the `remotes.list/add/remove` socket methods and the
-/// `cmux remotes` CLI verb.
+/// `fleet remotes` CLI verb.
 actor RemotesClient {
     @MainActor private(set) static var shared: RemotesClient!
 
@@ -43,7 +43,7 @@ actor RemotesClient {
     // MARK: - Public operations
 
     /// List the caller's team's MANUAL remotes (those added via
-    /// `cmux remotes add`), flattened to one row per device for display.
+    /// `fleet remotes add`), flattened to one row per device for display.
     /// Self-registered Macs are excluded so this command never lists or removes
     /// a device the user did not add through the CLI.
     func list() async throws -> [RemoteSummary] {
@@ -233,7 +233,7 @@ actor RemotesClient {
     // MARK: - Resolution
 
     /// Resolve a `name-or-deviceId` target to a MANUAL remote's device UUID.
-    /// Only manual remotes (added via `cmux remotes add`) are candidates, so this
+    /// Only manual remotes (added via `fleet remotes add`) are candidates, so this
     /// command can never delete a self-registered Mac's registry row and break
     /// the phone's reconnect.
     private func resolveDeviceId(target: String) async throws -> String {
@@ -426,18 +426,18 @@ actor RemotesClient {
         case "loopback_route_rejected":
             return "The device registry rejected a loopback route. Use the Mac's Tailscale address, not localhost."
         case "non_attachable_route_rejected":
-            return "The device registry rejected a non-Tailscale route. Store a numeric Tailscale IPv4 or IPv6 peer address; MagicDNS must be resolved by `cmux remotes add` first."
+            return "The device registry rejected a non-Tailscale route. Store a numeric Tailscale IPv4 or IPv6 peer address; MagicDNS must be resolved by `fleet remotes add` first."
         case "device_not_owned":
             return "That remote is owned by another team member and cannot be modified from this account."
         case "too_many_devices":
-            return "This team has reached the maximum number of registered remotes. Remove one with `cmux remotes remove <name>` first."
+            return "This team has reached the maximum number of registered remotes. Remove one with `fleet remotes remove <name>` first."
         case "team_not_found":
-            return "You are not a member of the requested team. Run `cmux auth status` to check the signed-in account."
+            return "You are not a member of the requested team. Run `fleet auth status` to check the signed-in account."
         default:
             break
         }
         if status == 401 {
-            return "Not signed in or session expired. Run `cmux auth login`, then retry."
+            return "Not signed in or session expired. Run `fleet auth login`, then retry."
         }
         return "Device registry request failed (HTTP \(status)): \(trimmed.isEmpty ? "<empty>" : trimmed)"
     }

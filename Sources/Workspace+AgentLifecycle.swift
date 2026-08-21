@@ -21,7 +21,7 @@ extension Workspace {
     /// `wasAgentRunning` or binding compatibility.
     ///
     /// A failed launch is immediately re-saved as not running, so waiting until
-    /// `cmux restore` executes leaves the pane permanently unable to reach the
+    /// `fleet restore` executes leaves the pane permanently unable to reach the
     /// CLI's record repair on later launches. Workspace and dock restore both
     /// call this shared projection before making any launch decision.
     nonisolated static func repairedLegacyHermesSessionPanelSnapshot(
@@ -365,7 +365,7 @@ extension Workspace {
 #endif
     }
 
-    /// Keep the checkpoint available to an explicit `cmux restore`, while
+    /// Keep the checkpoint available to an explicit `fleet restore`, while
     /// preventing an exited or superseded agent from replaying automatically.
     func retireAgentHookResumeBinding(
         panelId: UUID,

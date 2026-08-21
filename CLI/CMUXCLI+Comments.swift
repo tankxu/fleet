@@ -1,6 +1,6 @@
 import Foundation
 
-/// `cmux comments` — read-only access to diff-viewer review comments.
+/// `fleet comments` — read-only access to diff-viewer review comments.
 ///
 /// Strings resolve through `CMUXDiffViewerLocalization`, which reads the enclosing
 /// app bundle: the CLI executable carries no string catalog of its own, so
@@ -9,7 +9,7 @@ extension CMUXCLI {
     static let commentsUsage = CMUXDiffViewerLocalization.string(
         "cli.comments.usage",
         defaultValue: """
-        Usage: cmux comments <subcommand> [options]
+        Usage: fleet comments <subcommand> [options]
 
         Review comments saved from the diff viewer, stored per git repository.
 
@@ -22,7 +22,7 @@ extension CMUXCLI {
         """
     )
 
-    /// Runs `cmux comments <subcommand>`; `list` is the only subcommand today.
+    /// Runs `fleet comments <subcommand>`; `list` is the only subcommand today.
     /// Rejects anything unrecognized before it resolves a repository or calls the socket.
     func runCommentsNamespace(
         commandArgs: [String],
@@ -59,7 +59,7 @@ extension CMUXCLI {
                 throw CLIError(message: String.localizedStringWithFormat(
                     CMUXDiffViewerLocalization.string(
                         "cli.comments.error.unexpectedArgument",
-                        defaultValue: "Unexpected argument '%@' for cmux comments list. Supported: --repo <path>, --all, --json"
+                        defaultValue: "Unexpected argument '%@' for fleet comments list. Supported: --repo <path>, --all, --json"
                     ),
                     unexpected
                 ))
@@ -96,7 +96,7 @@ extension CMUXCLI {
             throw CLIError(message: String.localizedStringWithFormat(
                 CMUXDiffViewerLocalization.string(
                     "cli.comments.error.notARepository",
-                    defaultValue: "cmux comments requires a git repository: %@"
+                    defaultValue: "fleet comments requires a git repository: %@"
                 ),
                 directory
             ))

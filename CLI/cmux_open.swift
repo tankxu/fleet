@@ -429,7 +429,7 @@ extension CMUXCLI {
 
     /// Persisted, per-group session descriptor for the branch base picker. The
     /// `/__cmux_diff_viewer_branch` regenerate endpoint runs in the separate
-    /// server process, which has none of the original `cmux diff` invocation's
+    /// server process, which has none of the original `fleet diff` invocation's
     /// in-memory context. This record carries everything needed to regenerate a
     /// single branch page for an arbitrary base: the mapper token + groupID that
     /// key the output files into the secure dir, the repo allow-list the request
@@ -804,7 +804,7 @@ extension CMUXCLI {
         let parsedArgs = try parseOpenArguments(commandArgs)
 
         guard !parsedArgs.targets.isEmpty else {
-            throw CLIError(message: "open requires at least one path or URL. Usage: cmux open <path-or-url>...")
+            throw CLIError(message: "open requires at least one path or URL. Usage: fleet open <path-or-url>...")
         }
 
         let explicitFocus: Bool?
@@ -905,7 +905,7 @@ extension CMUXCLI {
     ) throws {
         let parsedArgs = try parseDiffArguments(commandArgs)
         guard parsedArgs.inputs.count <= 1 else {
-            throw CLIError(message: "diff accepts at most one patch file. Usage: cmux diff [patch-file|-] [options]")
+            throw CLIError(message: "diff accepts at most one patch file. Usage: fleet diff [patch-file|-] [options]")
         }
         if parsedArgs.source != nil, !parsedArgs.inputs.isEmpty {
             throw CLIError(message: "diff accepts either a patch file or a git source, not both")
@@ -1097,7 +1097,7 @@ extension CMUXCLI {
         let candidate = URL(fileURLWithPath: homePath, isDirectory: true)
             .appendingPathComponent("Library/Developer/Xcode/DerivedData/cmux-\(tag)", isDirectory: true)
             .appendingPathComponent("Build/Products/Debug/cmux DEV \(tag).app", isDirectory: true)
-            .appendingPathComponent("Contents/Resources/bin/cmux", isDirectory: false)
+            .appendingPathComponent("Contents/Resources/bin/fleet", isDirectory: false)
             .standardizedFileURL
 
         guard FileManager.default.isExecutableFile(atPath: candidate.path) else {
@@ -1276,7 +1276,7 @@ extension CMUXCLI {
                     continue
                 default:
                     if arg.hasPrefix("-") {
-                        throw CLIError(message: "open: unknown flag '\(arg)'. Usage: cmux open <path-or-url>... [--workspace <id|ref|index>] [--surface <id|ref|index>] [--pane <id|ref|index>] [--window <id|ref|index>] [--focus true|false] [--no-focus]")
+                        throw CLIError(message: "open: unknown flag '\(arg)'. Usage: fleet open <path-or-url>... [--workspace <id|ref|index>] [--surface <id|ref|index>] [--pane <id|ref|index>] [--window <id|ref|index>] [--focus true|false] [--no-focus]")
                     }
                 }
             }
@@ -1373,7 +1373,7 @@ extension CMUXCLI {
                     continue
                 default:
                     if arg.hasPrefix("-"), arg != "-" {
-                        throw CLIError(message: "diff: unknown flag '\(arg)'. Usage: cmux diff [patch-file|-] [--source <unstaged|staged|branch|last-turn>] [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--session <id>] [--cwd <path>] [--base <ref>] [--focus true|false] [--no-focus] [--title <text>] [--layout split|unified] [--font-size <points>]")
+                        throw CLIError(message: "diff: unknown flag '\(arg)'. Usage: fleet diff [patch-file|-] [--source <unstaged|staged|branch|last-turn>] [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--session <id>] [--cwd <path>] [--base <ref>] [--focus true|false] [--no-focus] [--title <text>] [--layout split|unified] [--font-size <points>]")
                     }
                 }
             }
@@ -1493,13 +1493,13 @@ extension CMUXCLI {
 
         guard let rawInput, rawInput != "-" else {
             guard isatty(STDIN_FILENO) == 0 else {
-                throw CLIError(message: "diff requires a patch file, piped stdin, or a git source. Usage: cmux diff <patch-file>|-|--unstaged|--staged|--branch|--last-turn")
+                throw CLIError(message: "diff requires a patch file, piped stdin, or a git source. Usage: fleet diff <patch-file>|-|--unstaged|--staged|--branch|--last-turn")
             }
             let data = FileHandle.standardInput.readDataToEndOfFile()
             return DiffInput(
                 patch: try decodeDiffData(data, sourceDescription: "stdin"),
                 sourceLabel: "stdin",
-                defaultTitle: "cmux diff",
+                defaultTitle: "fleet diff",
                 emptyMessage: nil,
                 externalURL: nil
             )
@@ -1558,7 +1558,7 @@ extension CMUXCLI {
         return DiffInput(
             patch: try decodeDiffData(data, sourceDescription: resolved),
             sourceLabel: resolved,
-            defaultTitle: filename.isEmpty ? "cmux diff" : filename,
+            defaultTitle: filename.isEmpty ? "fleet diff" : filename,
             emptyMessage: nil,
             externalURL: nil
         )
@@ -1583,7 +1583,7 @@ extension CMUXCLI {
         case .lastTurn:
             guard let workspaceId = normalizedDiffSourceValue(context.workspaceId),
                   let surfaceId = normalizedDiffSourceValue(context.surfaceId) else {
-                throw CLIError(message: "cmux diff --last-turn requires a workspace and surface context. Run it from a cmux terminal or pass --workspace and --surface.")
+                throw CLIError(message: "fleet diff --last-turn requires a workspace and surface context. Run it from a fleet terminal or pass --workspace and --surface.")
             }
             let sessionId = normalizedDiffSourceValue(context.sessionId)
             let env = ProcessInfo.processInfo.environment
@@ -1757,7 +1757,7 @@ extension CMUXCLI {
         if !last.isEmpty {
             return last
         }
-        return url.host ?? "cmux diff"
+        return url.host ?? "fleet diff"
     }
 
     private func decodeDiffData(_ data: Data, sourceDescription: String) throws -> String {
@@ -1786,7 +1786,7 @@ extension CMUXCLI {
         do {
             return try standardizedDiffSourcePath(gitSingleLine(["rev-parse", "--show-toplevel"], in: directory))
         } catch {
-            throw CLIError(message: "cmux diff git sources require a git repository")
+            throw CLIError(message: "fleet diff git sources require a git repository")
         }
     }
 
@@ -3229,7 +3229,7 @@ extension CMUXCLI {
     private func agentTurnDiffBaselineCommit(in repoRoot: String) throws -> String {
         let stashResult = CLIProcessRunner.runProcess(
             executablePath: "/usr/bin/env",
-            arguments: ["git", "-C", repoRoot, "stash", "create", "cmux last turn baseline"],
+            arguments: ["git", "-C", repoRoot, "stash", "create", "fleet last turn baseline"],
             timeout: 60
         )
         if stashResult.timedOut {
@@ -7592,7 +7592,7 @@ extension CMUXCLI {
 
         let appAssetPaths = try diffViewerBundledAssetRelativePaths(in: appAssets.sourceDirectory)
         guard appAssetPaths.contains("main.mjs") else {
-            throw CLIError(message: "Bundled cmux diff viewer app entry asset not found")
+            throw CLIError(message: "Bundled fleet diff viewer app entry asset not found")
         }
         let copiedAppAssetURLs = try appAssetPaths.map {
             try copyDiffViewerAsset(relativePath: $0, from: appAssets.sourceDirectory, to: targetAppDirectory)
@@ -7633,7 +7633,7 @@ extension CMUXCLI {
                 return (sourceDirectory: appDirectory, targetDirectoryName: targetName)
             }
         }
-        throw CLIError(message: "Bundled cmux diff viewer app assets not found")
+        throw CLIError(message: "Bundled fleet diff viewer app assets not found")
     }
 
     private func diffViewerAppAssetContentKey(directory: URL) throws -> String {
@@ -7868,7 +7868,7 @@ extension CMUXCLI {
 
     func openSubcommandUsage() -> String {
         """
-        Usage: cmux open <path-or-url>... [options]
+        Usage: fleet open <path-or-url>... [options]
 
         Open files, directories, or URLs in cmux.
         HTML files open in browser splits without focusing by default.
@@ -7884,19 +7884,19 @@ extension CMUXCLI {
           --no-focus                   Do not focus opened file previews
 
         Examples:
-          cmux open report.pdf
-          cmux open image-a.png image-b.jpg
-          cmux open ~/Downloads/movie.mov --pane pane:1
-          cmux open https://example.com
+          fleet open report.pdf
+          fleet open image-a.png image-b.jpg
+          fleet open ~/Downloads/movie.mov --pane pane:1
+          fleet open https://example.com
         """
     }
 
     func diffSubcommandUsage() -> String {
         """
-        Usage: cmux diff [patch-file|-] [options]
+        Usage: fleet diff [patch-file|-] [options]
 
-        Render a unified diff or patch in a cmux browser split.
-        With no patch file or source, cmux diff reads piped stdin.
+        Render a unified diff or patch in a fleet browser split.
+        With no patch file or source, fleet diff reads piped stdin.
 
         Options:
           --source <name>              Diff source: unstaged, staged, branch, last-turn
@@ -7917,14 +7917,14 @@ extension CMUXCLI {
           --font-size <points>         Set diff font size (default: 10)
 
         Examples:
-          cmux diff changes.patch
-          git diff | cmux diff
-          cmux diff --unstaged
-          cmux diff --staged
-          cmux diff --branch
-          cmux diff --branch --base upstream/main --repo ../repo
-          cmux diff --last-turn
-          cmux diff pr.patch --layout unified --font-size 15 --focus true
+          fleet diff changes.patch
+          git diff | fleet diff
+          fleet diff --unstaged
+          fleet diff --staged
+          fleet diff --branch
+          fleet diff --branch --base upstream/main --repo ../repo
+          fleet diff --last-turn
+          fleet diff pr.patch --layout unified --font-size 15 --focus true
         """
     }
 

@@ -282,7 +282,7 @@ final class CmuxSSHURLProcessLauncher {
 
     @discardableResult
     func start(request: CmuxSSHURLRequest, preferredWindow: NSWindow?) -> Bool {
-        let cliURL = Bundle.main.resourceURL?.appendingPathComponent("bin/cmux")
+        let cliURL = Bundle.main.resourceURL?.appendingPathComponent("bin/fleet")
         guard let cliURL,
               FileManager.default.isExecutableFile(atPath: cliURL.path) else {
             presentLaunchFailure(
@@ -321,7 +321,7 @@ final class CmuxSSHURLProcessLauncher {
                 guard terminationStatus != 0, !Self.shared.isShuttingDown else { return }
                 let format = String(
                     localized: "dialog.sshURL.launchFailed.exit",
-                    defaultValue: "cmux ssh exited with status %d."
+                    defaultValue: "fleet ssh exited with status %d."
                 )
                 Self.shared.presentLaunchFailure(
                     summary: String(format: format, Int(terminationStatus)),
@@ -343,7 +343,7 @@ final class CmuxSSHURLProcessLauncher {
             presentLaunchFailure(
                 summary: String(
                     localized: "dialog.sshURL.launchFailed.launch",
-                    defaultValue: "cmux ssh could not be launched."
+                    defaultValue: "fleet ssh could not be launched."
                 ),
                 output: error.localizedDescription,
                 preferredWindow: preferredWindow

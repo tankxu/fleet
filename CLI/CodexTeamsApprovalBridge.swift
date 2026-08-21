@@ -184,7 +184,7 @@ enum CodexTeamsApprovalBridge {
         var isDirectory: ObjCBool = false
         guard FileManager.default.fileExists(atPath: cwd, isDirectory: &isDirectory),
               isDirectory.boolValue else {
-            throw validationError("cmux codex-teams cwd does not exist: \(cwd)")
+            throw validationError("fleet codex-teams cwd does not exist: \(cwd)")
         }
     }
 

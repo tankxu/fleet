@@ -12,7 +12,7 @@ enum AIAccountsClientError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .notSignedIn:
-            return "Not signed in. Run `cmux auth login`, then retry."
+            return "Not signed in. Run `fleet auth login`, then retry."
         case .sessionRefreshFailed:
             return "Signed in, but cmux could not refresh your session (network or server issue). Retry in a moment."
         case let .httpStatus(status, body):
@@ -183,7 +183,7 @@ actor AIAccountsClient {
             return "AI accounts are not configured on this cmux backend."
         }
         if status == 401 {
-            return "Not signed in or session expired. Run `cmux auth login`, then retry."
+            return "Not signed in or session expired. Run `fleet auth login`, then retry."
         }
 
         let trimmed = body.trimmingCharacters(in: .whitespacesAndNewlines)

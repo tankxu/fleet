@@ -19,7 +19,7 @@ private let cmuxSidebarWorkerQueue = DispatchQueue(label: "com.cmux.sidebar-acti
 // `ContentView`.
 
 /// Builds the action sink that runs interpreted sidebar buttons against the
-/// live cmux command dispatcher.
+/// live fleet command dispatcher.
 ///
 /// `cmux(...)` commands run in-process through
 /// `TerminalController.handleSocketLine(_:)` (the same worker-aware surface the

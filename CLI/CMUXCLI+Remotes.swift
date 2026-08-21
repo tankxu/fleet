@@ -1,60 +1,60 @@
 import Darwin
 import Foundation
 
-// `cmux remotes` (alias `remote`): manage the team's device-registry routes so
+// `fleet remotes` (alias `remote`): manage the team's device-registry routes so
 // remote Macs show up in the iOS app's device list and the phone can attach.
 // The CLI is presentation only; each verb maps to one `remotes.*` socket method
 // handled by the app's `RemotesClient` (the single registry-mutation path).
 extension CMUXCLI {
     static let aiAccountsUsage = """
-        Usage: cmux ai-accounts <list|upload|remove> [options]
+        Usage: fleet ai-accounts <list|upload|remove> [options]
 
         Upload local AI credentials to your team's subrouter tenant and manage
         the sanitized account records stored there.
 
-          cmux ai-accounts list [--team <id>] [--json]
+          fleet ai-accounts list [--team <id>] [--json]
               List uploaded AI accounts for the selected or specified team.
 
-          cmux ai-accounts upload <claude|codex|anthropic-key|openai-key> [--label <s>] [--key <s>] [--team <id>] [--validate] [--json]
+          fleet ai-accounts upload <claude|codex|anthropic-key|openai-key> [--label <s>] [--key <s>] [--team <id>] [--validate] [--json]
               Upload credentials. Claude and Codex OAuth files are read by the
-              cmux app. API-key providers read ANTHROPIC_API_KEY / OPENAI_API_KEY
+              fleet app. API-key providers read ANTHROPIC_API_KEY / OPENAI_API_KEY
               from your shell environment; --key overrides but exposes the
               secret in shell history and process listings.
 
-          cmux ai-accounts remove <account-id> [--team <id>] [--json]
+          fleet ai-accounts remove <account-id> [--team <id>] [--json]
               Delete an uploaded AI account.
 
         Examples:
-          cmux ai-accounts list
-          cmux ai-accounts upload claude --label work
-          ANTHROPIC_API_KEY=... cmux ai-accounts upload anthropic-key
-          cmux ai-accounts remove acct_123
+          fleet ai-accounts list
+          fleet ai-accounts upload claude --label work
+          ANTHROPIC_API_KEY=... fleet ai-accounts upload anthropic-key
+          fleet ai-accounts remove acct_123
         """
 
     static let remotesUsage = """
-        Usage: cmux remotes <list|add|remove> [options]
+        Usage: fleet remotes <list|add|remove> [options]
 
         Manage the remote Macs in your team's cmux device registry. Added remotes
         appear in your iOS app's device list and the phone can attach to them.
 
-          cmux remotes list [--json]
+          fleet remotes list [--json]
               List your team's registered remotes (name, deviceId, routes, tag, last seen).
 
-          cmux remotes add <name> --route <host:port> [--route <host:port> ...] [--tag <tag>] [--json]
+          fleet remotes add <name> --route <host:port> [--route <host:port> ...] [--tag <tag>] [--json]
               Register or update a remote with one or more attach routes. Idempotent on
               <name>: re-adding the same name updates its routes. <host> must be a numeric
               Tailscale IPv4/IPv6 peer or a *.ts.net MagicDNS name. cmux matches MagicDNS
               against the local authenticated Tailscale peer map and stores the peer's numeric
               address. Plain LAN IPs, other hostnames, and loopback are rejected.
 
-          cmux remotes remove <name-or-deviceId> [--json]
+          fleet remotes remove <name-or-deviceId> [--json]
               Remove a remote you registered from the device registry.
 
         Examples:
-          cmux remotes add my-studio --route 100.64.1.2:51001
-          cmux remotes add my-studio --route my-studio.tailnet.ts.net:51001 --tag stable
-          cmux remotes list --json
-          cmux remotes remove my-studio
+          fleet remotes add my-studio --route 100.64.1.2:51001
+          fleet remotes add my-studio --route my-studio.tailnet.ts.net:51001 --tag stable
+          fleet remotes list --json
+          fleet remotes remove my-studio
         """
 
     func runRemotesCommand(commandArgs: [String], client: SocketClient, jsonOutput: Bool) throws {
@@ -73,7 +73,7 @@ extension CMUXCLI {
             }
             let remotes = (response["remotes"] as? [[String: Any]]) ?? []
             if remotes.isEmpty {
-                print("No remotes. Add one: cmux remotes add <name> --route <host:port>")
+                print("No remotes. Add one: fleet remotes add <name> --route <host:port>")
                 return
             }
             printRemotesTable(remotes)
@@ -96,7 +96,7 @@ extension CMUXCLI {
                 throw CLIError(message: """
                     remotes add requires at least one --route host:port.
 
-                      cmux remotes add \(name) --route 100.64.1.2:51001
+                      fleet remotes add \(name) --route 100.64.1.2:51001
                     """)
             }
             // Pre-validate routes locally for a fast, clear error before the
@@ -125,9 +125,9 @@ extension CMUXCLI {
                 throw CLIError(message: """
                     remotes remove requires a name or deviceId.
 
-                      cmux remotes remove <name-or-deviceId>
+                      fleet remotes remove <name-or-deviceId>
 
-                    List remotes: cmux remotes list
+                    List remotes: fleet remotes list
                     """)
             }
             let response = try client.sendV2(method: "remotes.remove", params: ["target": target])
@@ -166,7 +166,7 @@ extension CMUXCLI {
             }
             let accounts = (response["accounts"] as? [[String: Any]]) ?? []
             if accounts.isEmpty {
-                print("No AI accounts. Upload one: cmux ai-accounts upload <claude|codex|anthropic-key|openai-key>")
+                print("No AI accounts. Upload one: fleet ai-accounts upload <claude|codex|anthropic-key|openai-key>")
                 return
             }
             printAIAccountsTable(accounts)
@@ -230,9 +230,9 @@ extension CMUXCLI {
                 throw CLIError(message: """
                     ai-accounts remove requires an account id.
 
-                      cmux ai-accounts remove <account-id>
+                      fleet ai-accounts remove <account-id>
 
-                    List accounts: cmux ai-accounts list
+                    List accounts: fleet ai-accounts list
                     """)
             }
             var params: [String: Any] = ["id": accountID]

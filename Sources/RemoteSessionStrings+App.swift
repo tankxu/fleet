@@ -32,7 +32,7 @@ extension RemoteSessionStrings {
                 localized:
                     "remoteSession.controlMaster.ownershipUnavailable",
                 defaultValue:
-                    "SSH connection is busy in another cmux process."
+                    "SSH connection is busy in another fleet process."
             )
         )
     }

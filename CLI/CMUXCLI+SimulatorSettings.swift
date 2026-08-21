@@ -290,10 +290,10 @@ extension CMUXCLI {
             localized: "cli.simulator.permissions.usage",
             defaultValue: """
             Usage:
-              cmux simulator permissions list [bundle-id] [--surface <id|ref|index>]
-              cmux simulator permissions grant <permission> <bundle-id> [--value <value>] [--surface <id|ref|index>]
-              cmux simulator permissions revoke <permission> <bundle-id> [--surface <id|ref|index>]
-              cmux simulator permissions reset <permission|all> <bundle-id> [--surface <id|ref|index>]
+              fleet simulator permissions list [bundle-id] [--surface <id|ref|index>]
+              fleet simulator permissions grant <permission> <bundle-id> [--value <value>] [--surface <id|ref|index>]
+              fleet simulator permissions revoke <permission> <bundle-id> [--surface <id|ref|index>]
+              fleet simulator permissions reset <permission|all> <bundle-id> [--surface <id|ref|index>]
 
             Values: photos limited; notifications critical; location always, inuse, or never.
             """
@@ -305,9 +305,9 @@ extension CMUXCLI {
             localized: "cli.simulator.ui.usage",
             defaultValue: """
             Usage:
-              cmux simulator ui [status] [--surface <id|ref|index>]
-              cmux simulator ui [get] <option> [--surface <id|ref|index>]
-              cmux simulator ui [set] <option> <value> [--surface <id|ref|index>]
+              fleet simulator ui [status] [--surface <id|ref|index>]
+              fleet simulator ui [get] <option> [--surface <id|ref|index>]
+              fleet simulator ui [set] <option> <value> [--surface <id|ref|index>]
 
             Options: appearance, liquid-glass, color-filter, text-size, reduce-motion, increase-contrast, show-borders, reduce-transparency, voiceover.
             """

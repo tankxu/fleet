@@ -44,7 +44,7 @@ enum BrowserImportAutomationError: LocalizedError, CustomStringConvertible {
             return String.localizedStringWithFormat(
                 String(
                     localized: "browser.import.automation.error.destinationProfileNotFound",
-                    defaultValue: "No cmux browser profile matches '%@'"
+                    defaultValue: "No fleet browser profile matches '%@'"
                 ),
                 query
             )
@@ -52,7 +52,7 @@ enum BrowserImportAutomationError: LocalizedError, CustomStringConvertible {
             return String.localizedStringWithFormat(
                 String(
                     localized: "browser.import.automation.error.destinationProfileCreationFailed",
-                    defaultValue: "Failed to create cmux browser profile '%@'"
+                    defaultValue: "Failed to create fleet browser profile '%@'"
                 ),
                 name
             )
@@ -99,7 +99,7 @@ enum BrowserProfileAutomationError: LocalizedError, CustomStringConvertible {
         case .browserDisabled:
             return String(
                 localized: "browser.profile.automation.error.browserDisabled",
-                defaultValue: "Browser profiles cannot be used while the cmux browser is disabled"
+                defaultValue: "Browser profiles cannot be used while the fleet browser is disabled"
             )
         case .invalidProfileSelector:
             return String(
@@ -125,7 +125,7 @@ enum BrowserProfileAutomationError: LocalizedError, CustomStringConvertible {
             return String.localizedStringWithFormat(
                 String(
                     localized: "browser.profile.automation.error.profileNotFound",
-                    defaultValue: "No cmux browser profile matches '%@'. Run 'cmux browser profiles' to list available profiles."
+                    defaultValue: "No fleet browser profile matches '%@'. Run 'fleet browser profiles' to list available profiles."
                 ),
                 query
             )
@@ -136,7 +136,7 @@ enum BrowserProfileAutomationError: LocalizedError, CustomStringConvertible {
             return String.localizedStringWithFormat(
                 String(
                     localized: "browser.profile.automation.error.ambiguousProfile",
-                    defaultValue: "Multiple cmux browser profiles match '%@': %@. Use a profile UUID."
+                    defaultValue: "Multiple fleet browser profiles match '%@': %@. Use a profile UUID."
                 ),
                 query,
                 candidateList
@@ -145,7 +145,7 @@ enum BrowserProfileAutomationError: LocalizedError, CustomStringConvertible {
             return String.localizedStringWithFormat(
                 String(
                     localized: "browser.profile.automation.error.profileCreationFailed",
-                    defaultValue: "Failed to create cmux browser profile '%@'"
+                    defaultValue: "Failed to create fleet browser profile '%@'"
                 ),
                 name
             )
@@ -153,7 +153,7 @@ enum BrowserProfileAutomationError: LocalizedError, CustomStringConvertible {
             return String.localizedStringWithFormat(
                 String(
                     localized: "browser.profile.automation.error.profileRenameFailed",
-                    defaultValue: "Failed to rename cmux browser profile to '%@'"
+                    defaultValue: "Failed to rename fleet browser profile to '%@'"
                 ),
                 name
             )
@@ -166,7 +166,7 @@ enum BrowserProfileAutomationError: LocalizedError, CustomStringConvertible {
             return String.localizedStringWithFormat(
                 String(
                     localized: "browser.profile.automation.error.profileInUse",
-                    defaultValue: "Cannot delete cmux browser profile '%@' while %d browser panel(s) are using it"
+                    defaultValue: "Cannot delete fleet browser profile '%@' while %d browser panel(s) are using it"
                 ),
                 name,
                 count
@@ -175,7 +175,7 @@ enum BrowserProfileAutomationError: LocalizedError, CustomStringConvertible {
             return String.localizedStringWithFormat(
                 String(
                     localized: "browser.profile.automation.error.profileDeleteFailed",
-                    defaultValue: "Failed to delete cmux browser profile '%@'"
+                    defaultValue: "Failed to delete fleet browser profile '%@'"
                 ),
                 name
             )
@@ -183,7 +183,7 @@ enum BrowserProfileAutomationError: LocalizedError, CustomStringConvertible {
             return String.localizedStringWithFormat(
                 String(
                     localized: "browser.profile.automation.error.profileClearFailed",
-                    defaultValue: "Failed to clear cmux browser profile '%@'"
+                    defaultValue: "Failed to clear fleet browser profile '%@'"
                 ),
                 name
             )

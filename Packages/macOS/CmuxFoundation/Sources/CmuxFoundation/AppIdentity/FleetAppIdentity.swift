@@ -43,6 +43,11 @@ public enum FleetAppIdentity {
         configDirectoryRelativePath + "/" + configFileName
     }
 
+    /// Name of the bundled CLI and of the symlink the app installs into PATH.
+    /// Keyed to the identity so installing Fleet's CLI cannot overwrite the cmux
+    /// binary an existing cmux install put there.
+    public static var cliCommandName: String { stateDirectoryName }
+
     /// Pure mapping, exposed so the identity split is testable without launching an app.
     public static func directoryName(forBundleIdentifier identifier: String?) -> String {
         guard let identifier, identifier.hasPrefix(fleetBundlePrefix) else {

@@ -69,7 +69,7 @@ extension CMUXCLI {
     }
 
     static let moveTabToNewWorkspaceCommandHelp = """
-    Usage: cmux move-tab-to-new-workspace [--tab <id|ref|index>] [--surface <id|ref|index>] [--workspace <id|ref|index>] [--window <id|ref|index>] [--title <text>] [--focus <true|false>]
+    Usage: fleet move-tab-to-new-workspace [--tab <id|ref|index>] [--surface <id|ref|index>] [--workspace <id|ref|index>] [--window <id|ref|index>] [--title <text>] [--focus <true|false>]
 
     Move a tab into a newly created workspace in the same window.
 
@@ -82,8 +82,8 @@ extension CMUXCLI {
       --focus <true|false>         Focus the new workspace when supported (default: false)
 
     Example:
-      cmux move-tab-to-new-workspace --tab tab:2
-      cmux move-tab-to-new-workspace --surface surface:3 --title "build logs"
+      fleet move-tab-to-new-workspace --tab tab:2
+      fleet move-tab-to-new-workspace --surface surface:3 --title "build logs"
     """
 }
 

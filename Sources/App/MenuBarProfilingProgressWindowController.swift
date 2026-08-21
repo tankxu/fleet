@@ -143,7 +143,7 @@ final class MenuBarProfilingProgressWindowController: NSWindowController {
 
         permissionLabel.stringValue = String(
             localized: "statusMenu.profiling.permissionExplanation",
-            defaultValue: "macOS may ask for administrator permission because Instruments samples the running cmux process."
+            defaultValue: "macOS may ask for administrator permission because Instruments samples the running fleet process."
         )
         permissionLabel.font = .systemFont(ofSize: 12)
         permissionLabel.textColor = .secondaryLabelColor

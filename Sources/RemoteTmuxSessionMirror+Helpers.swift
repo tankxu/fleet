@@ -4,7 +4,7 @@ import CmuxRemoteSession
 extension RemoteTmuxSessionMirror {
     /// The tab title for a mirrored window: the tmux window name, or a localized
     /// placeholder when tmux hasn't reported one. tmux window names are
-    /// content-derived (like every other cmux tab title) so the name itself is
+    /// content-derived (like every other fleet tab title) so the name itself is
     /// not translated; only the empty-name placeholder is localized.
     nonisolated static func tabTitle(for window: RemoteTmuxWindow) -> String {
         let trimmed = window.name.trimmingCharacters(in: .whitespaces)

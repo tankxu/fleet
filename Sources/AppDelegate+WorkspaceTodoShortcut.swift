@@ -20,7 +20,7 @@ extension AppDelegate {
     /// Handles the `cycleWorkspaceStatus` shortcut: resolves the TabManager
     /// for the preferred/key window and advances the selected workspace's
     /// todo status one lane forward through the shared action path (same as
-    /// the `workspace.status.cycle` socket verb and `cmux workspace status
+    /// the `workspace.status.cycle` socket verb and `fleet workspace status
     /// cycle`).
     ///
     /// - Returns: Whether the event was consumed (a workspace was resolved).

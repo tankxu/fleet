@@ -159,7 +159,7 @@ enum CmuxExtensionWorktreePrototype {
         let html = """
         <!doctype html>
         <html>
-          <head><meta charset="utf-8"><title>cmux worktree</title></head>
+          <head><meta charset="utf-8"><title>fleet worktree</title></head>
           <body style="font: 15px -apple-system; padding: 32px;">
             <h1>\(escapedProject) worktree</h1>
             <p>This page is served from a git worktree created by CmuxExtensionKit.</p>

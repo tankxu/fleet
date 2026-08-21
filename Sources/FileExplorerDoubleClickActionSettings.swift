@@ -5,9 +5,9 @@ import Foundation
 ///
 /// Directories are unaffected — they always expand/collapse regardless of this
 /// setting. The default, ``preview``, preserves the historical behavior of
-/// opening the built-in cmux file preview, so existing users see no change.
+/// opening the built-in fleet file preview, so existing users see no change.
 enum FileExplorerDoubleClickAction: String, CaseIterable, Sendable {
-    /// Open the built-in cmux file preview (historical default).
+    /// Open the built-in fleet file preview (historical default).
     case preview
     /// Open with the macOS default application for the file type — identical to
     /// the file explorer context menu's "Open in <App>" action.

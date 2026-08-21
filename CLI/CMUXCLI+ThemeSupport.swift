@@ -125,7 +125,7 @@ extension CMUXCLI {
         if availableThemes.isEmpty {
             return trimmed
         }
-        throw CLIError(message: "Unknown theme '\(trimmed)'. Run 'cmux themes' to list available themes.")
+        throw CLIError(message: "Unknown theme '\(trimmed)'. Run 'fleet themes' to list available themes.")
     }
 
     func themeConfigSearchURLs(targetBundleIdentifier: String) -> [URL] {
@@ -313,7 +313,7 @@ extension CMUXCLI {
     }
 
     private func removingManagedThemeOverride(from contents: String) -> String {
-        let pattern = #"(?ms)\n?# cmux themes start\n.*?\n# cmux themes end\n?"#
+        let pattern = #"(?ms)\n?# fleet themes start\n.*?\n# fleet themes end\n?"#
         guard let regex = try? NSRegularExpression(pattern: pattern) else {
             return contents
         }

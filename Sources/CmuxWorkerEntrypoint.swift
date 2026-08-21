@@ -4,7 +4,7 @@ import CmuxSimulator
 import CmuxSimulatorWorker
 import Darwin
 
-/// Routes a re-executed cmux process into its requested isolated worker mode.
+/// Routes a re-executed fleet process into its requested isolated worker mode.
 struct CmuxWorkerEntrypoint {
     private let arguments: [String]
 

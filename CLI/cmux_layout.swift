@@ -3,7 +3,7 @@ import Foundation
 extension CMUXCLI {
     static func layoutHelpText() -> String {
         """
-        Usage: cmux layout <subcommand> [flags]
+        Usage: fleet layout <subcommand> [flags]
 
         Save, list, export, open, and delete named workspace layouts.
 
@@ -15,10 +15,10 @@ extension CMUXCLI {
           delete <name>
 
         Examples:
-          cmux layout save dev --overwrite
-          cmux layout list
-          cmux layout get dev
-          cmux layout open dev --cwd ~/projects/myapp
+          fleet layout save dev --overwrite
+          fleet layout list
+          fleet layout get dev
+          fleet layout open dev --cwd ~/projects/myapp
         """
     }
 

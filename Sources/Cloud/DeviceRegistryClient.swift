@@ -2,7 +2,7 @@ import CMUXMobileCore
 import CmuxAuthRuntime
 import Foundation
 
-/// Registers this Mac (and its running cmux app instance's attach routes) in the
+/// Registers this Mac (and its running fleet app instance's attach routes) in the
 /// team-scoped device registry (`POST /api/devices`), so a phone can look up the
 /// Mac's current routes on reload and auto-pair instead of re-scanning a QR.
 ///

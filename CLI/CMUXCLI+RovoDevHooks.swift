@@ -55,7 +55,7 @@ extension CMUXCLI {
             return
         }
         try newString.write(toFile: filePath, atomically: true, encoding: .utf8)
-        print("Removed Rovo Dev cmux hooks from \(filePath)")
+        print("Removed Rovo Dev fleet hooks from \(filePath)")
     }
 
     private func rovoDevHooksContent(

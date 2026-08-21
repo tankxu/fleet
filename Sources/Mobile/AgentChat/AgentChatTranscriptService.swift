@@ -431,7 +431,7 @@ final class AgentChatTranscriptService {
     }
 
     /// Re-stamps a session's stored workspace id to the workspace its surface
-    /// currently lives in. cmux workspace ids regenerate on every Mac relaunch
+    /// currently lives in. fleet workspace ids regenerate on every Mac relaunch
     /// while surface ids are stable, so a session created before the last
     /// relaunch carries a stale `workspaceID`. The caller resolves the session's
     /// live surface to its current workspace and calls this so the seed and the

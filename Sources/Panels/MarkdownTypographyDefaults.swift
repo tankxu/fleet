@@ -6,7 +6,7 @@ import Foundation
 /// viewers observe: those still on the previous default adopt the new one, while
 /// individually customized viewers keep their settings. The same path applies a
 /// `markdown.*` change from `cmux.json` (the config file store writes the managed
-/// values to `UserDefaults.standard`), so `cmux reload-config` refreshes open
+/// values to `UserDefaults.standard`), so `fleet reload-config` refreshes open
 /// viewers too.
 enum MarkdownTypographyDefaults {
     static func setDefault(

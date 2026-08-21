@@ -4,7 +4,7 @@ import CmuxTerminal
 import Foundation
 import CmuxRemoteSession
 
-/// Mirrors one remote tmux session into a dedicated cmux sidebar workspace.
+/// Mirrors one remote tmux session into a dedicated fleet sidebar workspace.
 ///
 /// Owns the binding between a ``RemoteTmuxControlConnection`` and a ``Workspace``:
 /// each tmux window becomes a tab, pane output is routed to its stable local
@@ -30,7 +30,7 @@ final class RemoteTmuxSessionMirror: RemoteTmuxControlPaneMutationOwner {
             .compactMap { windowMirrorByWindowId[$0]?.sizingSnapshot() }
     }
 
-    /// Every mirrored tmux pane paired with the cmux surface rendering it,
+    /// Every mirrored tmux pane paired with the fleet surface rendering it,
     /// ordered by window then pane. Every window owns a mirror from its initial
     /// one-pane layout, so every pane has one stable mirror-owned surface.
     /// Backs `remote.tmux.pane_surfaces`.
@@ -269,7 +269,7 @@ final class RemoteTmuxSessionMirror: RemoteTmuxControlPaneMutationOwner {
         )
     }
 
-    /// The cmux workspace mirroring this session (if still alive).
+    /// The fleet workspace mirroring this session (if still alive).
     var mirroredWorkspaceId: UUID? { workspace?.id }
 
     /// The tmux window id whose mirrored tab is backed by `panelId`, if any.
@@ -389,7 +389,7 @@ final class RemoteTmuxSessionMirror: RemoteTmuxControlPaneMutationOwner {
         reconcilePendingPaneSeedDeliveries(keeping: Set(windowIdByPane.keys))
         closeDefaultTabsIfNeeded()
         // Follow out-of-band tmux window reorders (a second client, or a manual
-        // move-window / a new-window inserted mid-list): the cmux tabs are created
+        // move-window / a new-window inserted mid-list): the fleet tabs are created
         // in arrival order and appended, so a non-tail change leaves the strip
         // stale. Reorder to match tmux's reported order, preserving focus. The
         // cmux→tmux drag direction is handled by handleMirrorWindowsReordered and
@@ -489,7 +489,7 @@ final class RemoteTmuxSessionMirror: RemoteTmuxControlPaneMutationOwner {
 
     /// The tmux pane id whose mirror-owned surface is `surfaceId`, or nil if this
     /// session mirror doesn't render it.
-    /// Used to target a tmux paste at the pane behind a cmux surface.
+    /// Used to target a tmux paste at the pane behind a fleet surface.
     func paneId(forSurfaceId surfaceId: UUID) -> Int? {
         windowMirror(forSurfaceId: surfaceId)?.tmuxPaneId
     }

@@ -85,11 +85,11 @@ struct AutoNamingTranscriptMessage: Codable, Equatable, Sendable {
 }
 
 /// Environment policy for the summarizer subprocess: scrub the variables
-/// that would recurse into cmux hooks or the parent agent session while
+/// that would recurse into fleet hooks or the parent agent session while
 /// preserving backend selection (Vertex/Bedrock/Anthropic) so the call works
 /// for users on any auth path.
 struct AutoNamingEnvironmentPolicy: Sendable {
-    /// Exact variables marking a live agent session or cmux terminal; never pass them to the summarizer.
+    /// Exact variables marking a live agent session or fleet terminal; never pass them to the summarizer.
     private static let scrubbedExactKeys = ClaudeSessionEnvironmentPolicy()
         .inheritedSessionIdentityKeys
         .union(["NODE_OPTIONS"])

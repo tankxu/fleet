@@ -65,7 +65,7 @@ extension CMUXCLI {
     /// and `extra.session_key`. The cmux wrapper gives each TUI invocation a
     /// private TMPDIR containing the same active-session file consumed by its
     /// lifecycle watcher, so missing-id callbacks can still use Hermes's own
-    /// conversation identity instead of mistaking the cmux surface UUID for it.
+    /// conversation identity instead of mistaking the fleet surface UUID for it.
     func hermesAgentTUIActiveSessionId(
         def: AgentHookDef,
         env: [String: String]
@@ -219,7 +219,7 @@ extension CMUXCLI {
         let configDirectoryFileError = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.error.configDirectoryIsFile",
-                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `cmux hooks setup` again."
+                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
             ),
             configDir
         )
@@ -271,7 +271,7 @@ extension CMUXCLI {
             try HermesAgentHookAllowlist.installing(events: events, in: oldAllowlist)
         }
         if updatedAllowlist {
-            print("Approved \(def.displayName) cmux shell hooks in \(allowlistPath)")
+            print("Approved \(def.displayName) fleet shell hooks in \(allowlistPath)")
         }
     }
 
@@ -287,7 +287,7 @@ extension CMUXCLI {
             let newString = HermesAgentHookConfig.uninstalling(from: oldString)
             if oldString != newString {
                 try newString.write(toFile: filePath, atomically: true, encoding: .utf8)
-                print("Removed Hermes Agent cmux hooks from \(filePath)")
+                print("Removed Hermes Agent fleet hooks from \(filePath)")
             } else {
                 print("Removed 0 cmux hook(s) from \(filePath)")
             }
@@ -300,7 +300,7 @@ extension CMUXCLI {
             try HermesAgentHookAllowlist.uninstalling(events: events, from: oldAllowlist)
         }
         if updatedAllowlist {
-            print("Removed Hermes Agent cmux shell hook approvals from \(allowlistPath)")
+            print("Removed Hermes Agent fleet shell hook approvals from \(allowlistPath)")
         }
     }
 }

@@ -1,13 +1,13 @@
 import Foundation
 
 /// The result of attempting to attach (mirror) a remote host's tmux server into
-/// a cmux window's sidebar.
+/// a fleet window's sidebar.
 ///
 /// The remote-tmux mirror reaches the host over plain pipes with no controlling
 /// tty, so it cannot service interactive SSH authentication itself. When a host
 /// needs a password / host-key confirmation / MFA / FIDO touch, the attach can
 /// neither succeed nor be retried in place — instead it reports
-/// ``authRequired(sshArgv:)`` so the caller (the `cmux ssh-tmux` CLI, which runs in a
+/// ``authRequired(sshArgv:)`` so the caller (the `fleet ssh-tmux` CLI, which runs in a
 /// real terminal) can run that `ssh` invocation **inline in the user's tty** to
 /// open the shared ControlMaster, then re-issue the attach (which now multiplexes
 /// over the authenticated master and succeeds).

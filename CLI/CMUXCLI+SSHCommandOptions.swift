@@ -22,7 +22,7 @@ extension CMUXCLI {
         let pinWorkspaceToTop: Bool
         let daemonWebSocketEndpoint: VMDaemonWebSocketEndpoint?
         /// True when the remote is a cloud VM with cmuxd-remote pre-baked in the image.
-        /// Set by `cmux vm new/shell/attach`; false for plain `cmux ssh`.
+        /// Set by `fleet vm new/shell/attach`; false for plain `fleet ssh`.
         let skipDaemonBootstrap: Bool
 
         init(

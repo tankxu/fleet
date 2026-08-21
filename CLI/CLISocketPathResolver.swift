@@ -116,7 +116,7 @@ struct CLISocketPathResolution: Sendable {
         guard let selectedPath, didReroute else { return nil }
         let template = String(
             localized: "cli.socket.notice.rerouted",
-            defaultValue: "cmux: default socket %@ is unavailable; using %@."
+            defaultValue: "fleet: default socket %@ is unavailable; using %@."
         )
         return String.localizedStringWithFormat(template, requestedPath, selectedPath)
     }

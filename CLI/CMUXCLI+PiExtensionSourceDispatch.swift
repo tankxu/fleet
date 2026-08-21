@@ -501,11 +501,11 @@ class PiCmuxCommandDispatcher {
           });
         });
         if (cancellation) {
-          cancellation.cancel = () => beginTermination("cancelled", new Error("cmux feed command cancelled"));
+          cancellation.cancel = () => beginTermination("cancelled", new Error("fleet feed command cancelled"));
           if (cancellation.cancelled) cancellation.cancel();
         }
         timeout = setTimeout(() => {
-          beginTermination("timeout", new Error(`cmux command timed out after ${timeoutMs}ms`));
+          beginTermination("timeout", new Error(`fleet command timed out after ${timeoutMs}ms`));
         }, timeoutMs);
         child.stdin.end(input);
       } catch (error) {

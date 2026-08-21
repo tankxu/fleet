@@ -46,7 +46,7 @@ final class CloudVMActionLauncher {
         environmentOverrides: [String: String] = [:],
         onCompletion: ((Completion) -> Void)? = nil
     ) -> Bool {
-        let cliURL = Bundle.main.resourceURL?.appendingPathComponent("bin/cmux")
+        let cliURL = Bundle.main.resourceURL?.appendingPathComponent("bin/fleet")
         guard let cliURL,
               FileManager.default.isExecutableFile(atPath: cliURL.path) else {
             if presentsFailureAlert {
@@ -58,7 +58,7 @@ final class CloudVMActionLauncher {
                     output: "",
                     action: String(
                         localized: "command.cloudVM.failed.action.missingCLI",
-                        defaultValue: "Install or reload a fresh cmux build, then try Start Cloud VM again. You can also run `cmux vm base open` in a terminal to see the full error."
+                        defaultValue: "Install or reload a fresh cmux build, then try Start Cloud VM again. You can also run `fleet vm base open` in a terminal to see the full error."
                     ),
                     preferredWindow: preferredWindow
                 )
@@ -124,7 +124,7 @@ final class CloudVMActionLauncher {
                     output: output,
                     action: String(
                         localized: "command.cloudVM.failed.action.exit",
-                        defaultValue: "Open a terminal and run `cmux auth status`, `cmux vm ls`, then `cmux vm base open`. If you hit the active VM limit, delete one with `cmux vm rm <id>` and retry."
+                        defaultValue: "Open a terminal and run `fleet auth status`, `fleet vm ls`, then `fleet vm base open`. If you hit the active VM limit, delete one with `fleet vm rm <id>` and retry."
                     ),
                     preferredWindow: launchWindow
                 )
@@ -149,12 +149,12 @@ final class CloudVMActionLauncher {
                 presentStartFailure(
                     summary: String(
                         localized: "command.cloudVM.failed.launch",
-                        defaultValue: "cmux vm base open could not be launched."
+                        defaultValue: "fleet vm base open could not be launched."
                     ),
                     output: error.localizedDescription,
                     action: String(
                         localized: "command.cloudVM.failed.action.launch",
-                        defaultValue: "Reload cmux so the bundled CLI is available, then try again. If it still fails, run `cmux vm base open` in a terminal and send us the output."
+                        defaultValue: "Reload cmux so the bundled CLI is available, then try again. If it still fails, run `fleet vm base open` in a terminal and send us the output."
                     ),
                     preferredWindow: preferredWindow
                 )

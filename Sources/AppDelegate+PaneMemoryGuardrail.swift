@@ -74,7 +74,7 @@ extension AppDelegate {
             ),
             body: String(
                 localized: "memoryPressure.critical.body",
-                defaultValue: "macOS is reporting sustained critical memory pressure. cmux has shed hidden resources; close idle workspaces or restart cmux if pressure continues."
+                defaultValue: "macOS is reporting sustained critical memory pressure. fleet has shed hidden resources; close idle workspaces or restart cmux if pressure continues."
             ),
             cooldownKey: "memory-pressure-critical",
             cooldownInterval: 300

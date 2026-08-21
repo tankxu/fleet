@@ -2544,7 +2544,7 @@ private struct NotificationsPopoverView: View {
         .safeHelp(
             String(
                 localized: "notifications.forwardToPhone.subtitle",
-                defaultValue: "Send local agent notifications to cmux on your iPhone. Enabled by default; turn this off to stop this Mac from forwarding them."
+                defaultValue: "Send local agent notifications to fleet on your iPhone. Enabled by default; turn this off to stop this Mac from forwarding them."
             )
         )
     }

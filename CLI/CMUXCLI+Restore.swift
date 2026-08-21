@@ -90,7 +90,7 @@ extension CMUXCLI {
                 detail: "expected=\(expectedKind) actual=\(record.kind)",
                 message: String(
                     localized: "cli.restore.error.kindMismatch",
-                    defaultValue: "restore: this command no longer matches the session. Run 'cmux restore --surface' to use the current record."
+                    defaultValue: "restore: this command no longer matches the session. Run 'fleet restore --surface' to use the current record."
                 )
             )
         }
@@ -101,7 +101,7 @@ extension CMUXCLI {
                 detail: "expected=\(expectedCheckpointID) actual=\(record.checkpointID ?? "none")",
                 message: String(
                     localized: "cli.restore.error.checkpointMismatch",
-                    defaultValue: "restore: this command no longer matches the session. Run 'cmux restore --surface' to use the current record."
+                    defaultValue: "restore: this command no longer matches the session. Run 'fleet restore --surface' to use the current record."
                 )
             )
         }
@@ -382,7 +382,7 @@ extension CMUXCLI {
         CLIError(
             message: String(
                 localized: "cli.restore.error.currentSurfaceUnknown",
-                defaultValue: "restore: the current cmux surface could not be identified. Retry from this terminal or pass --surface <id|ref>."
+                defaultValue: "restore: the current fleet surface could not be identified. Retry from this terminal or pass --surface <id|ref>."
             )
         )
     }
@@ -403,7 +403,7 @@ extension CMUXCLI {
         guard surfaceOptionCount <= 1 else {
             throw CLIError(message: String(
                 localized: "cli.restore.usage.surface",
-                defaultValue: "Usage: cmux restore --surface [id|ref]"
+                defaultValue: "Usage: fleet restore --surface [id|ref]"
             ))
         }
         let (surface, positionalArguments) = parseOption(arguments, name: "--surface")
@@ -412,7 +412,7 @@ extension CMUXCLI {
                   !surface.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
                 throw CLIError(message: String(
                     localized: "cli.restore.usage.surface",
-                    defaultValue: "Usage: cmux restore --surface [id|ref]"
+                    defaultValue: "Usage: fleet restore --surface [id|ref]"
                 ))
             }
             if positionalArguments.isEmpty {
@@ -431,9 +431,9 @@ extension CMUXCLI {
             throw CLIError(message: String(
                 localized: "cli.restore.usage.positional",
                 defaultValue: """
-                Usage: cmux restore [--surface <id|ref>] <kind> <checkpoint-id>
-                       cmux restore <kind> <checkpoint-id> --surface <id|ref>
-                       cmux restore --surface=<id|ref> <kind> <checkpoint-id>
+                Usage: fleet restore [--surface <id|ref>] <kind> <checkpoint-id>
+                       fleet restore <kind> <checkpoint-id> --surface <id|ref>
+                       fleet restore --surface=<id|ref> <kind> <checkpoint-id>
                 """
             ))
         }

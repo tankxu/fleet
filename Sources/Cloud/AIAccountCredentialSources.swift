@@ -67,14 +67,14 @@ enum AIAccountCredentialSourceError: Error, CustomStringConvertible {
             return "Claude credentials are missing required field `\(field)`. Run `claude login`, then retry."
         case let .missingCodexTokens(openAIAPIKeyPresent):
             if openAIAPIKeyPresent {
-                return "Codex auth contains an OpenAI API key but no OAuth tokens. Use `cmux ai-accounts upload openai-key` instead."
+                return "Codex auth contains an OpenAI API key but no OAuth tokens. Use `fleet ai-accounts upload openai-key` instead."
             }
             return "Codex OAuth tokens were not found. Run `codex login`, then retry."
         case let .missingCodexTokenField(field):
             return "Codex OAuth tokens are missing required field `\(field)`. Run `codex login`, then retry."
         case let .missingAPIKey(provider):
             let envName = provider.environmentKeyName ?? "API_KEY"
-            return "\(provider.displayName) upload requires `--key <value>` or \(envName) in the cmux app environment."
+            return "\(provider.displayName) upload requires `--key <value>` or \(envName) in the fleet app environment."
         case let .unreadableCredentials(provider, path):
             return "Could not read \(provider.displayName) credentials at \(path). Sign in locally, then retry."
         }

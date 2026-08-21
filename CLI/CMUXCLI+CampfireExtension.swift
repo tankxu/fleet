@@ -7,7 +7,7 @@ extension CMUXCLI {
 // cmux-campfire-session-extension-marker v1
 // Bridges Campfire session lifecycle events into cmux's restorable session store,
 // and Campfire's collaborative moments (join requests, capability asks) into cmux
-// notifications. Installed by `cmux hooks campfire install` or `cmux hooks setup`.
+// notifications. Installed by `fleet hooks campfire install` or `fleet hooks setup`.
 // DO NOT EDIT MANUALLY. cmux upgrades this file in place.
 
 import { spawn } from "node:child_process";

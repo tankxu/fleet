@@ -1,7 +1,7 @@
 import Foundation
 import WebKit
 
-/// Tracks only live, isolated WebKit stores that received cmux app-session
+/// Tracks only live, isolated WebKit stores that received fleet app-session
 /// cookies. Older releases persisted shared profile identifiers; initialization
 /// retires those markers without reopening profiles that may now belong to a
 /// different web account.

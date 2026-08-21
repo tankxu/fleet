@@ -80,7 +80,7 @@ struct MobilePairingView: View {
                 .cmuxFont(.title2, weight: .semibold)
             Text(String(
                 localized: "mobile.pairing.window.subheading",
-                defaultValue: "iPhones on your cmux account connect automatically. Use this code only for Tailscale."
+                defaultValue: "iPhones on your fleet account connect automatically. Use this code only for Tailscale."
             ))
                 .cmuxFont(.callout)
                 .foregroundStyle(.secondary)

@@ -10,10 +10,10 @@ struct AgentChatSessionRecord: Sendable {
     /// Which agent runtime owns the session.
     let agentKind: ChatAgentKind
 
-    /// Owning cmux workspace UUID string, when known.
+    /// Owning fleet workspace UUID string, when known.
     var workspaceID: String?
 
-    /// Hosting cmux terminal surface UUID string, when known. Required for
+    /// Hosting fleet terminal surface UUID string, when known. Required for
     /// the send/interrupt path.
     var surfaceID: String?
 

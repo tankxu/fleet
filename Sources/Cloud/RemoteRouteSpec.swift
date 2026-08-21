@@ -1,7 +1,7 @@
 import CMUXMobileCore
 import Foundation
 
-// Value types for `cmux remotes`: a parsed host:port attach spec and the
+// Value types for `fleet remotes`: a parsed host:port attach spec and the
 // flattened device-registry rows. Split from RemotesClient.swift so each file
 // stays a single responsibility (pure DTOs/parsing here; the network client
 // there) and under the Swift file-length budget.
@@ -110,7 +110,7 @@ struct RemoteRouteSpec: Equatable {
 }
 
 /// A registered remote as returned by the device registry, flattened to one
-/// row per device for `cmux remotes list`.
+/// row per device for `fleet remotes list`.
 struct RemoteSummary {
     let deviceId: String
     let displayName: String?
@@ -118,8 +118,8 @@ struct RemoteSummary {
     let tag: String?
     let routes: [RemoteRouteDisplay]
     let lastSeen: String?
-    /// True for remotes added via `cmux remotes add` (device `labels.manual`),
-    /// false for a Mac's own self-registration. `cmux remotes` only lists and
+    /// True for remotes added via `fleet remotes add` (device `labels.manual`),
+    /// false for a Mac's own self-registration. `fleet remotes` only lists and
     /// removes manual remotes so it never touches a self-registered device row.
     let manual: Bool
 }

@@ -5,7 +5,7 @@ import Foundation
 
 /// Opens workspace-group configuration and documentation surfaces.
 enum SidebarWorkspaceGroupConfigOpener {
-    /// Opens the cmux config file (`~/.config/cmux/cmux.json`) in the user's
+    /// Opens the fleet config file (`~/.config/cmux/cmux.json`) in the user's
     /// configured editor, materializing an empty config first if none exists.
     @MainActor
     static func openCmuxConfigInEditor() {
@@ -16,7 +16,7 @@ enum SidebarWorkspaceGroupConfigOpener {
         )
     }
 
-    /// Testable seam: resolves the cmux config path under `home`, materializes
+    /// Testable seam: resolves the fleet config path under `home`, materializes
     /// an empty config if absent, then hands the file to `open`.
     ///
     /// The public ``openCmuxConfigInEditor()`` entry point passes

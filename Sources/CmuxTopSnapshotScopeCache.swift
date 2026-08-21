@@ -23,10 +23,10 @@ private struct CmuxTopProcessScopeCacheValue {
 // again. The scope is derived from argv/environment, which an `exec` can change
 // without changing the pid or process start time (the cache key), so a process
 // first sampled in its fork-before-exec window, or one that execs into a
-// `cmux hooks … monitor` later, must be re-probed eventually or it would never
+// `fleet hooks … monitor` later, must be re-probed eventually or it would never
 // be attributed. A newly spawned process has a new cache key and is probed
 // immediately; this TTL only bounds attribution latency for same-pid execs while
-// collapsing the steady-state re-probe storm for non-cmux processes.
+// collapsing the steady-state re-probe storm for non-fleet processes.
 // Internal (not private) so tests can read the TTL via @testable import.
 nonisolated let cmuxTopNegativeScopeTTLNanoseconds: UInt64 = 60 * 1_000_000_000
 

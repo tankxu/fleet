@@ -58,7 +58,7 @@ extension SocketClient {
 
     private static func startupSocketTimeout(path: String) -> CLIError {
         CLIError(
-            message: "cmux app did not start in time (socket not found at \(path))",
+            message: "fleet app did not start in time (socket not found at \(path))",
             socketFailureKind: .startupTimeout
         )
     }

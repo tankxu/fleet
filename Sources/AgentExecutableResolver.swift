@@ -258,9 +258,9 @@ struct AgentExecutableResolver {
         let marker: String
         switch provider {
         case .claude:
-            marker = "cmux claude wrapper - injects hooks and session tracking"
+            marker = "fleet claude wrapper - injects hooks and session tracking"
         case .codex:
-            marker = "cmux codex wrapper - per-invocation Codex hook injection"
+            marker = "fleet codex wrapper - per-invocation Codex hook injection"
         case .opencode:
             return false
         }

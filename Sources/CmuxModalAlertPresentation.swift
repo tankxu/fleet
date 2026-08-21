@@ -26,11 +26,11 @@ private extension NSWindow {
 }
 
 extension NSApplication {
-    /// Returns the visible main cmux window best suited to host a modal sheet.
+    /// Returns the visible main fleet window best suited to host a modal sheet.
     ///
     /// Prefers `preferredWindow` when supplied and eligible, then the key
     /// window, then the main window, then any visible main window. Returns `nil`
-    /// when no main cmux window is currently on screen, in which case callers
+    /// when no main fleet window is currently on screen, in which case callers
     /// should fall back to an app-modal presentation.
     ///
     /// - Parameter preferredWindow: A window to consider ahead of the

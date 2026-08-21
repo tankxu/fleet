@@ -6,7 +6,7 @@ extension CMUXCLI {
     private static let ompExtensionSource = #"""
 // cmux-omp-session-extension-marker v2
 // Bridges OMP session lifecycle events into cmux's restorable session store.
-// Installed by `cmux hooks omp install` or `cmux hooks setup`.
+// Installed by `fleet hooks omp install` or `fleet hooks setup`.
 // DO NOT EDIT MANUALLY. cmux upgrades this file in place.
 
 import { spawn } from "node:child_process";

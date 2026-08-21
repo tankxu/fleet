@@ -407,7 +407,7 @@ private struct FeedListView: View {
             // assistant messages, session markers, and raw
             // notifications are intentionally excluded — they're too
             // noisy for a sidebar and already visible in the agent's
-            // terminal or the cmux notification system. Stop events
+            // terminal or the fleet notification system. Stop events
             // render a "reply to Claude" textbox so the user can
             // nudge Claude without switching focus to the terminal.
             base = items.filter { item in

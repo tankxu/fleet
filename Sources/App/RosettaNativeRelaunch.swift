@@ -11,7 +11,7 @@ nonisolated private let rosettaRelaunchLogger = Logger(subsystem: "com.cmuxterm.
 /// Macs. On Apple Silicon, a stale LaunchServices architecture preference (set
 /// once from the DMG volume copy and inherited by the `/Applications` copy) can
 /// pin the app to its `x86_64` slice, so the whole process tree — login shell,
-/// `zsh`, and every tool launched in a cmux terminal — runs translated. macOS 26
+/// `zsh`, and every tool launched in a fleet terminal — runs translated. macOS 26
 /// then shows a Rosetta deprecation dialog. `LSArchitecturePriority = (arm64)`
 /// in the app `Info.plist` fixes future launches; this type corrects an
 /// already-mis-pinned install by re-launching the arm64 slice in place at

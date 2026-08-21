@@ -333,7 +333,7 @@ final class RemoteTmuxController {
     // MARK: - Create / destroy propagation (P5)
 
     /// A mirrored workspace was renamed → `rename-session` on the remote so the
-    /// tmux session name tracks the cmux workspace title.
+    /// tmux session name tracks the fleet workspace title.
     func handleMirrorWorkspaceRenamed(workspaceId: UUID, title: String?) {
         guard let name = RemoteTmuxHost.controlModeCommandName(title),
               let entry = sessionMirrors.first(where: { $0.value.mirroredWorkspaceId == workspaceId })
@@ -728,7 +728,7 @@ final class RemoteTmuxController {
             // session dies. The no-kill detach cleanup still exits the master here.
             if isLastSession {
                 // …and only if no reattach reclaimed this endpoint during the kill
-                // round-trip (a concurrent `cmux ssh-tmux` rebuilds on the same
+                // round-trip (a concurrent `fleet ssh-tmux` rebuilds on the same
                 // ControlPath); this Task is @MainActor so check + exit is atomic.
                 let reclaimed = transportRegistry.contains(connectionHash: host.connectionHash)
                     || sessionMirrors.values.contains { $0.host.connectionHash == host.connectionHash }

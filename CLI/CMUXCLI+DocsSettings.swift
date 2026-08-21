@@ -31,13 +31,13 @@ extension CMUXCLI {
             webURL: settingsDocsURL,
             rawResources: [
                 DocsResource(label: "settings schema", url: settingsSchemaURL),
-                DocsResource(label: "cmux skill", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/skills/cmux/SKILL.md"),
+                DocsResource(label: "fleet skill", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/skills/cmux/SKILL.md"),
             ],
             commands: [
-                "cmux settings path",
-                "cmux settings cmux-json",
-                "cmux config doctor",
-                "cmux reload-config",
+                "fleet settings path",
+                "fleet settings cmux-json",
+                "fleet config doctor",
+                "fleet reload-config",
             ]
         ),
         DocsReference(
@@ -50,9 +50,9 @@ extension CMUXCLI {
                 DocsResource(label: "settings schema", url: settingsSchemaURL),
             ],
             commands: [
-                "cmux shortcuts",
-                "cmux settings shortcuts",
-                "cmux docs settings",
+                "fleet shortcuts",
+                "fleet settings shortcuts",
+                "fleet docs settings",
             ]
         ),
         DocsReference(
@@ -62,11 +62,11 @@ extension CMUXCLI {
             webURL: "https://cmux.com/docs/api",
             rawResources: [
                 DocsResource(label: "CLI contract", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/docs/cli-contract.md"),
-                DocsResource(label: "cmux skill", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/skills/cmux/SKILL.md"),
+                DocsResource(label: "fleet skill", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/skills/cmux/SKILL.md"),
             ],
             commands: [
-                "cmux identify --json",
-                "cmux tree --all",
+                "fleet identify --json",
+                "fleet tree --all",
             ]
         ),
         DocsReference(
@@ -79,8 +79,8 @@ extension CMUXCLI {
                 DocsResource(label: "browser commands", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/skills/cmux-browser/references/commands.md"),
             ],
             commands: [
-                "cmux browser --help",
-                "cmux browser snapshot",
+                "fleet browser --help",
+                "fleet browser snapshot",
             ]
         ),
         DocsReference(
@@ -94,11 +94,11 @@ extension CMUXCLI {
                 DocsResource(label: "notifications docs", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/docs/notifications.md"),
             ],
             commands: [
-                "cmux hooks setup",
-                "cmux hooks setup <agent>",
-                "cmux hooks hermes-agent install",
-                "cmux hooks hermes-agent uninstall",
-                "cmux hooks <agent> uninstall",
+                "fleet hooks setup",
+                "fleet hooks setup <agent>",
+                "fleet hooks hermes-agent install",
+                "fleet hooks hermes-agent uninstall",
+                "fleet hooks <agent> uninstall",
             ]
         ),
         DocsReference(
@@ -111,8 +111,8 @@ extension CMUXCLI {
                 DocsResource(label: "dock web copy", url: "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/messages/en.json"),
             ],
             commands: [
-                "cmux docs dock",
-                "cmux docs dock --json",
+                "fleet docs dock",
+                "fleet docs dock --json",
                 "python3 -m json.tool .cmux/dock.json",
             ]
         ),
@@ -127,7 +127,7 @@ extension CMUXCLI {
             commands: [
                 "mkdir -p \(FleetAppIdentity.configDirectoryDisplayPath)/sidebars",
                 "cat > \(FleetAppIdentity.configDirectoryDisplayPath)/sidebars/mine.swift   # write a SwiftUI-style view, then right-click the sidebar button to pick it",
-                "cmux docs api   # discover cmux() action methods/params",
+                "fleet docs api   # discover cmux() action methods/params",
             ]
         ),
     ]
@@ -152,7 +152,7 @@ extension CMUXCLI {
         }
 
         guard args.count == 1 else {
-            throw CLIError(message: "Usage: cmux docs [settings|shortcuts|api|browser|agents|dock]")
+            throw CLIError(message: "Usage: fleet docs [settings|shortcuts|api|browser|agents|dock]")
         }
 
         if topic == "list" || topic == "all" {
@@ -165,7 +165,7 @@ extension CMUXCLI {
         }
 
         guard let reference = docsReference(for: topic) else {
-            throw CLIError(message: "Unknown docs topic '\(topic)'. Run 'cmux docs' for topics.")
+            throw CLIError(message: "Unknown docs topic '\(topic)'. Run 'fleet docs' for topics.")
         }
 
         if wantsJSON {
@@ -177,14 +177,14 @@ extension CMUXCLI {
 
     func docsUsage() -> String {
         return """
-        Usage: cmux docs [settings|shortcuts|api|browser|agents|dock]
+        Usage: fleet docs [settings|shortcuts|api|browser|agents|dock]
 
         Print the canonical docs URL, raw GitHub resources, and useful commands for a cmux topic.
-        This command does not require a running cmux app or socket.
+        This command does not require a running fleet app or socket.
 
         Agents:
-          Use `cmux docs settings` before editing \(FleetAppIdentity.configFileDisplayPath).
-          Use `cmux docs dock` before creating or editing .cmux/dock.json.
+          Use `fleet docs settings` before editing \(FleetAppIdentity.configFileDisplayPath).
+          Use `fleet docs dock` before creating or editing .cmux/dock.json.
           Back up any existing cmux.json file to a timestamped .bak copy before editing so the user can revert.
           Fetch raw resources with the printed curl commands when you need the latest schema.
         """
@@ -223,21 +223,21 @@ extension CMUXCLI {
                 "note": "Not cmux-owned, but cmux reads it. Use for terminal transparency (background-opacity), blur, font, theme, etc.",
             ]
             payload["backup"] = "Back up any existing cmux.json file to a timestamped .bak copy before editing so the user can revert."
-            payload["reload_command"] = "cmux reload-config"
+            payload["reload_command"] = "fleet reload-config"
             payload["reload_scope"] = "Reloads Ghostty config + cmux.json and refreshes terminals in place. No app restart needed."
         }
         return payload
     }
 
     private func printDocsIndex() {
-        print("cmux docs")
+        print("fleet docs")
         print()
         print("Topics:")
         for reference in Self.docsReferences {
             print("  \(reference.topic.padding(toLength: 10, withPad: " ", startingAt: 0)) \(reference.summary)")
         }
         print()
-        print("Run `cmux docs <topic>` for URLs, raw resources, and next commands.")
+        print("Run `fleet docs <topic>` for URLs, raw resources, and next commands.")
     }
 
     private func printDocsReference(_ reference: DocsReference) {
@@ -279,7 +279,7 @@ extension CMUXCLI {
             print("  Back up any existing cmux.json file to a timestamped .bak copy so the user can revert.")
             print()
             print("Reload after editing cmux.json or Ghostty config:")
-            print("  cmux reload-config   (reloads BOTH and refreshes terminals; no app restart needed)")
+            print("  fleet reload-config   (reloads BOTH and refreshes terminals; no app restart needed)")
         }
     }
 
@@ -302,13 +302,13 @@ extension CMUXCLI {
         switch subcommand {
         case "path", "paths":
             guard args.count == 1 else {
-                throw CLIError(message: "Usage: cmux settings path")
+                throw CLIError(message: "Usage: fleet settings path")
             }
             printSettingsPaths(jsonOutput: wantsJSON)
             return
         case "docs", "documentation":
             guard args.count == 1 else {
-                throw CLIError(message: "Usage: cmux settings docs")
+                throw CLIError(message: "Usage: fleet settings docs")
             }
             if wantsJSON, let reference = docsReference(for: "settings") {
                 print(jsonString(docsPayload(reference)))
@@ -319,10 +319,10 @@ extension CMUXCLI {
         case "open":
             let targetRaw: String?
             if args.count > 2 {
-                throw CLIError(message: "Usage: cmux settings open [target]")
+                throw CLIError(message: "Usage: fleet settings open [target]")
             } else if let rawTarget = args.dropFirst().first {
                 guard let target = settingsTargetRawValue(for: rawTarget) else {
-                    throw CLIError(message: "Unknown settings target '\(rawTarget)'. Run 'cmux settings --help'.")
+                    throw CLIError(message: "Unknown settings target '\(rawTarget)'. Run 'fleet settings --help'.")
                 }
                 targetRaw = target
             } else {
@@ -337,10 +337,10 @@ extension CMUXCLI {
             return
         default:
             guard let targetRaw = settingsTargetRawValue(for: subcommand) else {
-                throw CLIError(message: "Unknown settings subcommand '\(subcommand)'. Run 'cmux settings --help'.")
+                throw CLIError(message: "Unknown settings subcommand '\(subcommand)'. Run 'fleet settings --help'.")
             }
             guard args.count == 1 else {
-                throw CLIError(message: "Usage: cmux settings [open [target]|path|docs|<target>]")
+                throw CLIError(message: "Usage: fleet settings [open [target]|path|docs|<target>]")
             }
             try openSettingsTarget(
                 targetRaw,
@@ -360,14 +360,14 @@ extension CMUXCLI {
 
     func settingsUsage() -> String {
         return """
-        Usage: cmux settings [open [target]|path|docs|<target>]
+        Usage: fleet settings [open [target]|path|docs|<target>]
 
         Open cmux Settings, print cmux.json paths, or show settings documentation.
 
         Subcommands:
           open [target]       Open Settings, optionally to a target section.
           path                Print cmux.json paths, docs URL, and schema URL.
-          docs                Print the same output as `cmux docs settings`.
+          docs                Print the same output as `fleet docs settings`.
 
         Targets:
           account, app, terminal, networking, sidebar-appearance,
@@ -387,7 +387,7 @@ extension CMUXCLI {
           Back up any existing cmux.json file to a timestamped .bak copy so the user can revert.
 
         Reload after editing cmux.json or Ghostty config:
-          cmux reload-config   (reloads BOTH and refreshes terminals; no app restart needed)
+          fleet reload-config   (reloads BOTH and refreshes terminals; no app restart needed)
         """
     }
 

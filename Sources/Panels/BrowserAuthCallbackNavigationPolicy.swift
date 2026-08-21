@@ -3,7 +3,7 @@ import CmuxAuthRuntime
 import Foundation
 import WebKit
 
-/// Decides what to do with browser navigations that target cmux auth-callback
+/// Decides what to do with browser navigations that target fleet auth-callback
 /// scheme URLs (`cmux://auth-callback`, `cmux-dev-<tag>://auth-callback`, ...)
 /// delivered by the hosted after-sign-in page. WKWebView cannot open native
 /// schemes itself, so the navigation delegate consumes the URL and hands it to

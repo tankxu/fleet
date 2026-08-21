@@ -239,7 +239,7 @@ final class CmuxEventBus: @unchecked Sendable {
                 return "requested sequence is older than the retained in-memory event log"
             }
             if after > latestSequence {
-                return "requested sequence is newer than this cmux process; cmux probably restarted"
+                return "requested sequence is newer than this fleet process; cmux probably restarted"
             }
             return nil
         }

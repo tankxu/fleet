@@ -5,7 +5,7 @@ import Foundation
 struct SessionEntryResumeLaunch: Sendable {
     /// How the terminal starts the selected Vault session.
     enum Strategy: Sendable, Equatable {
-        /// Resolve structured argv and environment through `cmux restore`.
+        /// Resolve structured argv and environment through `fleet restore`.
         case restoreVerb
         /// Type the quarantined copyable command for an unsupported registration.
         case legacyCommand

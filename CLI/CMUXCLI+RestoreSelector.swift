@@ -1,5 +1,5 @@
 extension CMUXCLI {
-    /// The surface identity constraints parsed from `cmux restore` arguments.
+    /// The surface identity constraints parsed from `fleet restore` arguments.
     struct RestoreSelector {
         let surface: String?
         let usesCurrentSurface: Bool

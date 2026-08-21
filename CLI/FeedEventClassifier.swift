@@ -4,7 +4,7 @@ import Foundation
 /// `isActionable` flag.
 ///
 /// This is the single source of truth behind both the running `cmux` CLI
-/// (`cmux hooks feed …`) and the `FeedEventClassificationTests` regression
+/// (`fleet hooks feed …`) and the `FeedEventClassificationTests` regression
 /// suite — the file is compiled into the `cmux-cli` target and the
 /// `cmuxTests` target so the pure decision can be unit-tested without
 /// launching the app or running the CLI as a subprocess.

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Parses `tmux -V` output and decides whether a remote tmux is new enough for
-/// `cmux ssh-tmux`.
+/// `fleet ssh-tmux`.
 ///
 /// **Minimum is tmux 3.2.** Determined empirically (see
 /// `docs/investigations/remote-agent-status-sidebar.md` and the version matrix):
@@ -20,7 +20,7 @@ struct RemoteTmuxVersion: Equatable, Comparable, Sendable {
     /// absent. Lets `3.2a` sort after `3.2` without affecting the `>= 3.2` gate.
     let letterRank: Int
 
-    /// The minimum version `cmux ssh-tmux` supports.
+    /// The minimum version `fleet ssh-tmux` supports.
     static let minimumSupported = RemoteTmuxVersion(major: 3, minor: 2, letterRank: 0)
 
     static func < (lhs: RemoteTmuxVersion, rhs: RemoteTmuxVersion) -> Bool {

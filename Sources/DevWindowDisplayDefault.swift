@@ -46,7 +46,7 @@ enum DevWindowDisplayDefault {
 
     /// Persist `name`, or clear the setting when `name` is `nil`/empty, through
     /// the shared settings store. Clearing removes the key (and prunes the empty
-    /// parent), matching `cmux window default-display --clear`.
+    /// parent), matching `fleet window default-display --clear`.
     static func set(_ name: String?, runtime: SettingsRuntime) async {
         let value = (name ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         if value.isEmpty {

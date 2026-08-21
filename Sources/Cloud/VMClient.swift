@@ -15,8 +15,8 @@ enum VMClientError: Error, CustomStringConvertible {
                 You are not signed in to cmux.
 
                 What to do:
-                  cmux auth login
-                  cmux auth status
+                  fleet auth login
+                  fleet auth status
                 """
         case .sessionRefreshFailed:
             return """
@@ -24,7 +24,7 @@ enum VMClientError: Error, CustomStringConvertible {
 
                 What to do:
                   Retry in a moment.
-                  If it keeps failing, run `cmux auth status` to check your session.
+                  If it keeps failing, run `fleet auth status` to check your session.
                 """
         case .backendUnreachable(let url, let detail):
             return """
@@ -126,19 +126,19 @@ private func defaultCloudVMMessage(status: Int) -> String {
 private func defaultCloudVMAction(status: Int, errorCode: String) -> String {
     switch errorCode {
     case "vm_active_limit_exceeded":
-        return "Run `cmux vm ls`, then stop or delete an active VM with `cmux vm rm <id>` before retrying."
+        return "Run `fleet vm ls`, then stop or delete an active VM with `fleet vm rm <id>` before retrying."
     case "vm_not_found":
-        return "Run `cmux vm ls` to see available Cloud VMs. If the VM was paused or destroyed, start a fresh one with `cmux vm new`."
+        return "Run `fleet vm ls` to see available Cloud VMs. If the VM was paused or destroyed, start a fresh one with `fleet vm new`."
     case "vm_billing_team_required":
-        return "Select a team in cmux, then retry. You can also run `cmux auth status` to check the signed-in account."
+        return "Select a team in cmux, then retry. You can also run `fleet auth status` to check the signed-in account."
     case "vm_create_credits_insufficient":
         return "Ask a team admin to upgrade the plan or grant more Cloud VM create credits, then retry."
     default:
         if status == 401 {
-            return "Run `cmux auth login`, then retry."
+            return "Run `fleet auth login`, then retry."
         }
         if status == 403 {
-            return "Run `cmux auth status` and confirm you are using the expected team."
+            return "Run `fleet auth status` and confirm you are using the expected team."
         }
         return "Retry the command. If it keeps failing, copy this error and contact support."
     }

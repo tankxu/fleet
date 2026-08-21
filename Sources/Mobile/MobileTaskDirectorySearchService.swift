@@ -1,7 +1,7 @@
 import Foundation
 
 /// Searches Spotlight metadata across all indexed mounted volumes, merges
-/// contextual cmux paths, and reports the remaining coverage limits explicitly.
+/// contextual fleet paths, and reports the remaining coverage limits explicitly.
 actor MobileTaskDirectorySearchService {
     struct Configuration: Sendable {
         var maximumMetadataResults = 2_048

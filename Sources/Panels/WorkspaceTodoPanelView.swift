@@ -204,7 +204,7 @@ private struct WorkspaceTodoPaneContent: View {
             }
         }
         // The add field is armed whenever the pane holds focus, so typing a
-        // new item needs zero extra clicks after `cmux todo open`.
+        // new item needs zero extra clicks after `fleet todo open`.
         .onAppear { if todoControlsEnabled, isFocused { addFieldFocused = true } }
         .onChange(of: isFocused) { _, focused in
             if todoControlsEnabled, focused, editingItemId == nil { addFieldFocused = true }

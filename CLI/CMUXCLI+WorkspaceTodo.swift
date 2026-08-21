@@ -1,6 +1,6 @@
 import Foundation
 
-/// `cmux workspace status [...]` and the `cmux todo` namespace: the CLI face
+/// `fleet workspace status [...]` and the `fleet todo` namespace: the CLI face
 /// of the `workspace.status.*` / `workspace.todo.*` socket verbs. Both default
 /// to the caller's workspace (CMUX_WORKSPACE_ID, the same ambient resolution
 /// `workspace env` uses) with `--workspace <id|ref|index>` override.
@@ -32,7 +32,7 @@ extension CMUXCLI {
     }
 
     /// Parses a checklist item selector: a UUID id, or a 1-based index as
-    /// printed by `cmux todo list` (sent as the wire's 0-based `index`).
+    /// printed by `fleet todo list` (sent as the wire's 0-based `index`).
     private func workspaceTodoItemSelectorParams(_ raw: String) throws -> [String: Any] {
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         if UUID(uuidString: trimmed) != nil {
@@ -41,12 +41,12 @@ extension CMUXCLI {
         if let number = Int(trimmed), number >= 1 {
             return ["index": number - 1]
         }
-        throw CLIError(message: "Invalid todo item: \(trimmed) (expected an item UUID or a 1-based index from `cmux todo list`)")
+        throw CLIError(message: "Invalid todo item: \(trimmed) (expected an item UUID or a 1-based index from `fleet todo list`)")
     }
 
     // MARK: - workspace status
 
-    /// `cmux workspace status` / `cmux workspace status set <lane|auto>`.
+    /// `fleet workspace status` / `fleet workspace status set <lane|auto>`.
     func runWorkspaceStatusCommand(
         commandArgs: [String],
         client: SocketClient,
@@ -67,7 +67,7 @@ extension CMUXCLI {
             printWorkspaceStatusPayload(payload, jsonOutput: jsonOutput, idFormat: idFormat)
         case "set":
             guard rest.count >= 2 else {
-                throw CLIError(message: "Usage: cmux workspace status set <todo|working|needs-attention|review|done|auto|none>")
+                throw CLIError(message: "Usage: fleet workspace status set <todo|working|needs-attention|review|done|auto|none>")
             }
             var setParams = params
             setParams["status"] = rest[1]
@@ -77,7 +77,7 @@ extension CMUXCLI {
             let payload = try client.sendV2(method: "workspace.status.cycle", params: params)
             printWorkspaceStatusPayload(payload, jsonOutput: jsonOutput, idFormat: idFormat)
         case .some(let sub):
-            throw CLIError(message: "Unknown workspace status subcommand: \(sub). Try: cmux workspace status [set <lane|auto> | cycle]")
+            throw CLIError(message: "Unknown workspace status subcommand: \(sub). Try: fleet workspace status [set <lane|auto> | cycle]")
         }
     }
 
@@ -105,7 +105,7 @@ extension CMUXCLI {
 
     // MARK: - todo namespace
 
-    /// Top-level `cmux todo <subcommand>` namespace.
+    /// Top-level `fleet todo <subcommand>` namespace.
     func runTodoNamespace(
         commandArgs: [String],
         client: SocketClient,
@@ -133,7 +133,7 @@ extension CMUXCLI {
             let (originArg, rem1) = parseOption(rem0, name: "--origin")
             let text = rem1.filter { !$0.hasPrefix("--") }.joined(separator: " ")
             guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-                throw CLIError(message: "Usage: cmux todo add \"text\" [--state <pending|in-progress|completed>] [--origin <user|agent>]")
+                throw CLIError(message: "Usage: fleet todo add \"text\" [--state <pending|in-progress|completed>] [--origin <user|agent>]")
             }
             addParams["text"] = text
             if let stateArg { addParams["state"] = stateArg }
@@ -142,7 +142,7 @@ extension CMUXCLI {
             printTodoMutationPayload(payload, jsonOutput: jsonOutput, idFormat: idFormat)
         case "check", "uncheck", "start":
             guard let selector = rest.first(where: { !$0.hasPrefix("--") }) else {
-                throw CLIError(message: "Usage: cmux todo \(sub) <index|id>")
+                throw CLIError(message: "Usage: fleet todo \(sub) <index|id>")
             }
             var stateParams = params
             for (key, value) in try workspaceTodoItemSelectorParams(selector) {
@@ -154,7 +154,7 @@ extension CMUXCLI {
         case "edit":
             let positional = rest.filter { !$0.hasPrefix("--") }
             guard positional.count >= 2 else {
-                throw CLIError(message: "Usage: cmux todo edit <index|id> \"new text\"")
+                throw CLIError(message: "Usage: fleet todo edit <index|id> \"new text\"")
             }
             var editParams = params
             for (key, value) in try workspaceTodoItemSelectorParams(positional[0]) {
@@ -165,7 +165,7 @@ extension CMUXCLI {
             printTodoMutationPayload(payload, jsonOutput: jsonOutput, idFormat: idFormat)
         case "rm", "remove":
             guard let selector = rest.first(where: { !$0.hasPrefix("--") }) else {
-                throw CLIError(message: "Usage: cmux todo rm <index|id>")
+                throw CLIError(message: "Usage: fleet todo rm <index|id>")
             }
             var removeParams = params
             for (key, value) in try workspaceTodoItemSelectorParams(selector) {
@@ -176,7 +176,7 @@ extension CMUXCLI {
         case "move", "mv":
             let positional = rest.filter { !$0.hasPrefix("--") }
             guard positional.count >= 2, let newIndex = Int(positional[1]), newIndex >= 1 else {
-                throw CLIError(message: "Usage: cmux todo move <index|id> <newIndex> (newIndex is 1-based)")
+                throw CLIError(message: "Usage: fleet todo move <index|id> <newIndex> (newIndex is 1-based)")
             }
             var moveParams = params
             for (key, value) in try workspaceTodoItemSelectorParams(positional[0]) {
@@ -201,7 +201,7 @@ extension CMUXCLI {
         }
     }
 
-    /// Parses `cmux todo set`'s items JSON: an inline positional argument, or
+    /// Parses `fleet todo set`'s items JSON: an inline positional argument, or
     /// stdin when no argument is given (`--json` is the CLI's global
     /// JSON-output flag, so the payload cannot ride on it). Accepts a
     /// top-level array of item objects, or an object with an `items` array.
@@ -212,7 +212,7 @@ extension CMUXCLI {
             raw = inline
         } else {
             guard isatty(STDIN_FILENO) == 0 else {
-                throw CLIError(message: "Usage: cmux todo set '[{\"text\":\"...\",\"state\":\"pending\"}]' (or pipe the JSON on stdin)")
+                throw CLIError(message: "Usage: fleet todo set '[{\"text\":\"...\",\"state\":\"pending\"}]' (or pipe the JSON on stdin)")
             }
             var data = Data()
             while let line = readLine(strippingNewline: false) {
@@ -222,7 +222,7 @@ extension CMUXCLI {
         }
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
-            throw CLIError(message: "Usage: cmux todo set '[{\"text\":\"...\",\"state\":\"pending\"}]' (or pipe the JSON on stdin)")
+            throw CLIError(message: "Usage: fleet todo set '[{\"text\":\"...\",\"state\":\"pending\"}]' (or pipe the JSON on stdin)")
         }
         let parsed: Any
         do {
@@ -285,7 +285,7 @@ extension CMUXCLI {
     // MARK: - Usage
 
     static let workspaceCommandUsage = String(localized: "cli.workspace.usage", defaultValue: """
-    Usage: cmux workspace <subcommand> [flags]
+    Usage: fleet workspace <subcommand> [flags]
 
     Canonical noun for workspace operations. Legacy verbs
     (new-workspace, list-workspaces, close-workspace,
@@ -308,21 +308,21 @@ extension CMUXCLI {
                               was unreachable
       disconnect [workspace]  Stop a remote (SSH) workspace's connection
       loading <on|off> [--id <name>] Toggle the workspace loading spinner.
-      group <subcommand>      Workspace group operations (see cmux workspace-group --help)
+      group <subcommand>      Workspace group operations (see fleet workspace-group --help)
     env/reconnect/disconnect accept a positional handle or --workspace
     <id|ref|index>, defaulting to the caller's workspace, then the
     selected one (of --window's window when given).
     Examples:
-      cmux workspace list --json
-      cmux workspace create --name Build --cwd ~/projects/myapp
-      cmux workspace env workspace:3 --mask
-      cmux workspace close workspace:3
-      cmux workspace reconnect
-      cmux workspace disconnect --workspace workspace:3
+      fleet workspace list --json
+      fleet workspace create --name Build --cwd ~/projects/myapp
+      fleet workspace env workspace:3 --mask
+      fleet workspace close workspace:3
+      fleet workspace reconnect
+      fleet workspace disconnect --workspace workspace:3
     """)
 
     static let workspaceStatusUsage = String(localized: "cli.workspace.status.usage", defaultValue: """
-    Usage: cmux workspace status [set <lane|auto> | cycle] [--workspace <id|ref|index>] [--window <id|ref|index>] [--json]
+    Usage: fleet workspace status [set <lane|auto> | cycle] [--workspace <id|ref|index>] [--window <id|ref|index>] [--json]
 
     Show or pin a workspace's todo lifecycle status. Without arguments prints
     the effective status, the inferred status, and the override, targeting the
@@ -341,14 +341,14 @@ extension CMUXCLI {
     Lanes: todo, working, needs-attention, review, done
 
     Examples:
-      cmux workspace status
-      cmux workspace status set review
-      cmux workspace status cycle
-      cmux workspace status set auto --workspace workspace:2
+      fleet workspace status
+      fleet workspace status set review
+      fleet workspace status cycle
+      fleet workspace status set auto --workspace workspace:2
     """)
 
     static let todoUsage = String(localized: "cli.todo.usage", defaultValue: """
-    Usage: cmux todo <subcommand> [--workspace <id|ref|index>] [--window <id|ref|index>] [--json]
+    Usage: fleet todo <subcommand> [--workspace <id|ref|index>] [--window <id|ref|index>] [--json]
 
     Per-workspace checklist shown in the sidebar and todo pane. Targets the
     caller's workspace by default. Items are capped at 50 per workspace.
@@ -375,17 +375,17 @@ extension CMUXCLI {
                               and unnamed existing items are removed.
       open                    Open (or focus) the workspace's todo pane
 
-    <index> is the 1-based number printed by `cmux todo list`; <id> is the
-    item UUID from `cmux todo list --json`.
+    <index> is the 1-based number printed by `fleet todo list`; <id> is the
+    item UUID from `fleet todo list --json`.
 
     Examples:
-      cmux todo add "write regression test"
-      cmux todo list
-      cmux todo check 1
-      cmux todo start 2 --workspace workspace:3
-      my-plan-tool --json | cmux todo set
-      cmux todo open
+      fleet todo add "write regression test"
+      fleet todo list
+      fleet todo check 1
+      fleet todo start 2 --workspace workspace:3
+      my-plan-tool --json | fleet todo set
+      fleet todo open
 
-    See also: cmux workspace status
+    See also: fleet workspace status
     """)
 }

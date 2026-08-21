@@ -3275,7 +3275,7 @@ struct CMUXCLI {
                 vm new: unsupported Cloud VM service override.
 
                 Try:
-                  cmux vm new
+                  fleet vm new
                 """)
         }
         return normalized
@@ -3495,7 +3495,7 @@ struct CMUXCLI {
         } else if action == "status" || action == "browser-status" {
             print(disabled ? "disabled" : "enabled")
         } else {
-            print(disabled ? "cmux browser disabled" : "cmux browser enabled")
+            print(disabled ? "fleet browser disabled" : "fleet browser enabled")
         }
     }
 
@@ -3752,7 +3752,7 @@ struct CMUXCLI {
         }
 
         // `window default-display` only reads/writes the shared dev setting file;
-        // it must work with no cmux running, so handle it before socket resolution.
+        // it must work with no fleet running, so handle it before socket resolution.
         if command == "window",
            commandArgs.first?.lowercased() == "default-display" {
             try runWindowDefaultDisplayCommand(
@@ -4016,7 +4016,7 @@ struct CMUXCLI {
                 )
                 return
             case "help", "--help", "-h":
-                print("Usage: cmux feed tui [--opentui|--legacy]\n       cmux feed clear [--yes]")
+                print("Usage: fleet feed tui [--opentui|--legacy]\n       fleet feed clear [--yes]")
                 return
             default:
                 throw CLIError(message: "Unknown feed subcommand: \(sub)")
@@ -4179,7 +4179,7 @@ struct CMUXCLI {
                 let signedIn = (response["signed_in"] as? Bool) ?? false
                 if !signedIn {
                     print("Not signed in.")
-                    print("Run: cmux auth login")
+                    print("Run: fleet auth login")
                     break
                 }
                 let user = response["user"] as? [String: Any]
@@ -4198,7 +4198,7 @@ struct CMUXCLI {
                 let statusBefore = try client.sendV2(method: "auth.status")
                 if (statusBefore["signed_in"] as? Bool) == true {
                     let email = (statusBefore["user"] as? [String: Any])?["email"] as? String
-                    print("Already signed in\(email.map { " as \($0)" } ?? ""). Use `cmux auth logout` to sign out first.")
+                    print("Already signed in\(email.map { " as \($0)" } ?? ""). Use `fleet auth logout` to sign out first.")
                     break
                 }
                 if let signInURLResponse = try? client.sendV2(method: "auth.sign_in_url"),
@@ -4216,9 +4216,9 @@ struct CMUXCLI {
                     let email = (result["user"] as? [String: Any])?["email"] as? String
                     print("Signed in\(email.map { " as \($0)" } ?? "").")
                 } else if (result["timed_out"] as? Bool) == true {
-                    print("Timed out waiting for sign-in. Run `cmux auth status` once you've finished in the popup.")
+                    print("Timed out waiting for sign-in. Run `fleet auth status` once you've finished in the popup.")
                 } else {
-                    print("Sign-in did not complete. Run `cmux auth status` to check.")
+                    print("Sign-in did not complete. Run `fleet auth status` to check.")
                 }
 
             case "logout":
@@ -4232,11 +4232,11 @@ struct CMUXCLI {
                 if (result["signed_in"] as? Bool) != true {
                     print("Signed out.")
                 } else {
-                    print("Sign-out requested but state hasn't cleared yet. Run `cmux auth status` to confirm.")
+                    print("Sign-out requested but state hasn't cleared yet. Run `fleet auth status` to confirm.")
                 }
 
             default:
-                throw CLIError(message: "Usage: cmux auth <status|login|logout>")
+                throw CLIError(message: "Usage: fleet auth <status|login|logout>")
             }
 
         case "vm", "cloud":
@@ -4251,7 +4251,7 @@ struct CMUXCLI {
                 }
                 let vms = (response["vms"] as? [[String: Any]]) ?? []
                 if vms.isEmpty {
-                    print("No cloud VMs. Try: cmux vm new")
+                    print("No cloud VMs. Try: fleet vm new")
                     break
                 }
                 for vm in vms {
@@ -4265,10 +4265,10 @@ struct CMUXCLI {
             case "status", "info":
                 guard let vmId = rest.first else {
                     throw CLIError(message: """
-                        Usage: cmux vm status <id>
+                        Usage: fleet vm status <id>
 
                         Find an id:
-                          cmux vm ls
+                          fleet vm ls
                         """)
                 }
                 let response = try client.sendV2(method: "vm.status", params: ["id": vmId], responseTimeout: 60)
@@ -4313,8 +4313,8 @@ struct CMUXCLI {
                 } else {
                     throw CLIError(message: """
                         Usage:
-                          cmux vm base open [--workspace <workspace-id>] [--window <id|ref|index>] [--detach|-d]
-                          cmux vm base reset [--reason <text>] [--workspace <workspace-id>] [--window <id|ref|index>] [--detach|-d]
+                          fleet vm base open [--workspace <workspace-id>] [--window <id|ref|index>] [--detach|-d]
+                          fleet vm base reset [--reason <text>] [--workspace <workspace-id>] [--window <id|ref|index>] [--detach|-d]
 
                         Base is your persistent cloud workspace. Opening it reuses the
                         same VM. Reset creates a new Base generation and retains the old VM.
@@ -4339,10 +4339,10 @@ struct CMUXCLI {
                           --detach, -d
 
                         Try:
-                          cmux vm new
+                          fleet vm new
                         """)
                 }
-                // Stray positional args (e.g. a typo like `cmux vm new myvm`) previously fell
+                // Stray positional args (e.g. a typo like `fleet vm new myvm`) previously fell
                 // through and still provisioned a VM. That silently costs the user money and
                 // hides the typo. Reject them explicitly.
                 if let extra = remaining.first(where: { !Self.isFlagToken($0) }) {
@@ -4350,11 +4350,11 @@ struct CMUXCLI {
                         message: """
                             vm new: unexpected argument '\(extra)'.
 
-                            `cmux vm new` does not take a VM name or positional arguments.
+                            `fleet vm new` does not take a VM name or positional arguments.
 
                             Try:
-                              cmux vm new
-                              cmux vm new --detach
+                              fleet vm new
+                              fleet vm new --detach
                             """
                     )
                 }
@@ -4432,10 +4432,10 @@ struct CMUXCLI {
                 let (nameOpt, snapshotArgs) = parseOption(rest, name: "--name")
                 guard let vmId = snapshotArgs.first else {
                     throw CLIError(message: """
-                        Usage: cmux vm snapshot <id> [--name <name>]
+                        Usage: fleet vm snapshot <id> [--name <name>]
 
                         Find an id:
-                          cmux vm ls
+                          fleet vm ls
                         """)
                 }
                 var params: [String: Any] = ["id": vmId]
@@ -4455,10 +4455,10 @@ struct CMUXCLI {
                 let vmArgs = rem1.filter { $0 != "--detach" && $0 != "-d" }
                 guard let vmId = vmArgs.first else {
                     throw CLIError(message: """
-                        Usage: cmux vm fork <id> [--name <name>] [--window <id|ref|index>] [--detach|-d]
+                        Usage: fleet vm fork <id> [--name <name>] [--window <id|ref|index>] [--detach|-d]
 
                         Find an id:
-                          cmux vm ls
+                          fleet vm ls
                         """)
                 }
                 let targetWindow = try validatedWindowHandle(windowOpt ?? windowId, client: client)
@@ -4503,7 +4503,7 @@ struct CMUXCLI {
                 let restoreArgs = rem1.filter { $0 != "--detach" && $0 != "-d" }
                 guard let snapshotId = restoreArgs.first else {
                     throw CLIError(message: """
-                        Usage: cmux vm restore <snapshot-id> [--provider <provider>] [--window <id|ref|index>] [--detach|-d]
+                        Usage: fleet vm restore <snapshot-id> [--provider <provider>] [--window <id|ref|index>] [--detach|-d]
                     """)
                 }
                 let normalizedProvider = try Self.normalizedVMProvider(providerOpt)
@@ -4546,7 +4546,7 @@ struct CMUXCLI {
                         Usage: cmux \(command) shell <id>
 
                         Find an id:
-                          cmux vm ls
+                          fleet vm ls
                         """)
                 }
                 let shortId = String(vmId.prefix(8))
@@ -4564,10 +4564,10 @@ struct CMUXCLI {
             case "rm", "destroy", "delete":
                 guard let vmId = rest.first else {
                     throw CLIError(message: """
-                        Usage: cmux vm rm <id>
+                        Usage: fleet vm rm <id>
 
                         Find an id:
-                          cmux vm ls
+                          fleet vm ls
                         """)
                 }
                 _ = try client.sendV2(method: "vm.destroy", params: ["id": vmId], responseTimeout: 60)
@@ -4584,7 +4584,7 @@ struct CMUXCLI {
                         Usage: cmux \(command) ssh <id>
 
                         Find an id:
-                          cmux vm ls
+                          fleet vm ls
                         """)
                 }
                 let shortId = String(vmId.prefix(8))
@@ -4605,7 +4605,7 @@ struct CMUXCLI {
                         Usage: cmux \(command) ssh-info <id>
 
                         Find an id:
-                          cmux vm ls
+                          fleet vm ls
                         """)
                 }
                 try printVMSSHInfo(id: vmId, command: command, client: client, jsonOutput: jsonOutput)
@@ -4616,11 +4616,11 @@ struct CMUXCLI {
             case "exec":
                 guard let vmId = rest.first else {
                     throw CLIError(message: """
-                        Usage: cmux vm exec <id> -- <command...>
+                        Usage: fleet vm exec <id> -- <command...>
 
                         Examples:
-                          cmux vm ls
-                          cmux vm exec <id> -- pwd
+                          fleet vm ls
+                          fleet vm exec <id> -- pwd
                         """)
                 }
                 var commandArgsForVM: [String] = Array(rest.dropFirst())
@@ -4630,14 +4630,14 @@ struct CMUXCLI {
                 }
                 guard !commandArgsForVM.isEmpty else {
                     throw CLIError(message: """
-                        Usage: cmux vm exec <id> -- <command...>
+                        Usage: fleet vm exec <id> -- <command...>
 
                         Example:
-                          cmux vm exec \(vmId) -- uname -a
+                          fleet vm exec \(vmId) -- uname -a
                         """)
                 }
                 // Shell-quote each argv element before joining. Plain-space join previously
-                // dropped quoting so `cmux vm exec <id> -- printf '%s\n' "a b"` reached the
+                // dropped quoting so `fleet vm exec <id> -- printf '%s\n' "a b"` reached the
                 // VM as `printf %s\n a b`, changing semantics for any non-trivial command
                 // (Codex P2).
                 let command = commandArgsForVM.map(shellQuote).joined(separator: " ")
@@ -4669,7 +4669,7 @@ struct CMUXCLI {
 
             case "tools", "tool-inspector":
                 guard let vmId = rest.first else {
-                    throw CLIError(message: "Usage: cmux vm tools <id>")
+                    throw CLIError(message: "Usage: fleet vm tools <id>")
                 }
                 let command = [
                     "printf 'shell: '; printf '%s\\n' \"$SHELL\"",
@@ -4686,7 +4686,7 @@ struct CMUXCLI {
 
             case "ports":
                 guard let vmId = rest.first else {
-                    throw CLIError(message: "Usage: cmux vm ports <id>")
+                    throw CLIError(message: "Usage: fleet vm ports <id>")
                 }
                 let command = "if command -v ss >/dev/null 2>&1; then ss -ltnp; elif command -v netstat >/dev/null 2>&1; then netstat -ltnp; else echo 'No port inspector found'; fi"
                 let response = try client.sendV2(method: "vm.exec", params: ["id": vmId, "command": command, "timeout_ms": 30_000], responseTimeout: 35)
@@ -4698,7 +4698,7 @@ struct CMUXCLI {
 
             case "handoff":
                 guard let vmId = rest.first else {
-                    throw CLIError(message: "Usage: cmux vm handoff <id>")
+                    throw CLIError(message: "Usage: fleet vm handoff <id>")
                 }
                 let response = try client.sendV2(method: "vm.status", params: ["id": vmId], responseTimeout: 60)
                 if jsonOutput {
@@ -4711,12 +4711,12 @@ struct CMUXCLI {
                 print("id:       \(vmId)")
                 print("provider: \(provider)")
                 print("status:   \(status)")
-                print("attach:   cmux vm ssh \(vmId)")
-                print("inspect:  cmux vm tools \(vmId)")
+                print("attach:   fleet vm ssh \(vmId)")
+                print("inspect:  fleet vm tools \(vmId)")
 
             case "promote-template":
                 guard let vmId = rest.first else {
-                    throw CLIError(message: "Usage: cmux vm promote-template <id>")
+                    throw CLIError(message: "Usage: fleet vm promote-template <id>")
                 }
                 let name = "template-\(String(vmId.prefix(12)))-\(Int(Date().timeIntervalSince1970))"
                 let response = try client.sendV2(method: "vm.snapshot", params: ["id": vmId, "name": name], responseTimeout: Self.vmCreateResponseTimeoutSeconds)
@@ -4732,13 +4732,13 @@ struct CMUXCLI {
                     Usage: cmux \(command) <ls|new|status|snapshot|fork|restore|shell|rm|exec|ssh> [args...]
 
                     Common commands:
-                      cmux vm ls
-                      cmux vm new
-                      cmux vm status <id>
-                      cmux vm snapshot <id>
-                      cmux vm fork <id>
-                      cmux vm ssh <id>
-                      cmux vm rm <id>
+                      fleet vm ls
+                      fleet vm new
+                      fleet vm status <id>
+                      fleet vm snapshot <id>
+                      fleet vm fork <id>
+                      fleet vm ssh <id>
+                      fleet vm rm <id>
                     """)
             }
 
@@ -4753,7 +4753,7 @@ struct CMUXCLI {
             let rest = Array(commandArgs.dropFirst())
             let mobileUsage = String(
                 localized: "cli.mobile.setFont.usage",
-                defaultValue: "Usage: cmux mobile set-font <points> [--surface <id>] [--workspace <id>]"
+                defaultValue: "Usage: fleet mobile set-font <points> [--surface <id>] [--workspace <id>]"
             )
             switch sub {
             case "set-font":
@@ -4794,7 +4794,7 @@ struct CMUXCLI {
         case "rpc":
             guard let method = commandArgs.first?.trimmingCharacters(in: .whitespacesAndNewlines),
                   !method.isEmpty else {
-                throw CLIError(message: "Usage: cmux rpc <method> [json-params]")
+                throw CLIError(message: "Usage: fleet rpc <method> [json-params]")
             }
             let params = try parseRPCParams(Array(commandArgs.dropFirst()))
             let response = try client.sendV2(method: method, params: params)
@@ -5004,7 +5004,7 @@ struct CMUXCLI {
         case "layout": try runLayoutNamespace(commandArgs: commandArgs, client: client, jsonOutput: jsonOutput, idFormat: idFormat, windowOverride: windowId)
 
         case "list-workspaces":
-            Self.warnLegacyVerbDeprecated("list-workspaces", replacement: "cmux workspace list")
+            Self.warnLegacyVerbDeprecated("list-workspaces", replacement: "fleet workspace list")
             try runWorkspaceListCommand(
                 commandArgs: commandArgs,
                 client: client,
@@ -5069,11 +5069,11 @@ struct CMUXCLI {
             try runVMPtyAttach(commandArgs: commandArgs, client: client)
         case "vm-ssh-attach":
             // Hidden compatibility alias for workspaces created before the split helper was
-            // nested under `cmux vm`.
+            // nested under `fleet vm`.
             try runVMSSHAttach(commandArgs: commandArgs, client: client)
 
         case "new-workspace":
-            Self.warnLegacyVerbDeprecated("new-workspace", replacement: "cmux workspace create")
+            Self.warnLegacyVerbDeprecated("new-workspace", replacement: "fleet workspace create")
             try runWorkspaceCreateCommand(
                 commandName: "new-workspace",
                 commandArgs: commandArgs,
@@ -5462,7 +5462,7 @@ struct CMUXCLI {
             printV2Payload(payload, jsonOutput: jsonOutput, idFormat: idFormat, fallbackText: v2OKSummary(payload, idFormat: idFormat))
 
         case "close-workspace":
-            Self.warnLegacyVerbDeprecated("close-workspace", replacement: "cmux workspace close")
+            Self.warnLegacyVerbDeprecated("close-workspace", replacement: "fleet workspace close")
             try runWorkspaceCloseCommand(
                 commandName: "close-workspace",
                 commandArgs: commandArgs,
@@ -5474,7 +5474,7 @@ struct CMUXCLI {
             )
 
         case "select-workspace":
-            Self.warnLegacyVerbDeprecated("select-workspace", replacement: "cmux workspace select")
+            Self.warnLegacyVerbDeprecated("select-workspace", replacement: "fleet workspace select")
             try runWorkspaceSelectCommand(
                 commandName: "select-workspace",
                 commandArgs: commandArgs,
@@ -5487,7 +5487,7 @@ struct CMUXCLI {
 
         case "rename-workspace", "rename-window":
             if command == "rename-workspace" {
-                Self.warnLegacyVerbDeprecated("rename-workspace", replacement: "cmux workspace rename")
+                Self.warnLegacyVerbDeprecated("rename-workspace", replacement: "fleet workspace rename")
             }
             try runWorkspaceRenameCommand(
                 commandName: command,
@@ -6050,7 +6050,7 @@ struct CMUXCLI {
         }
     }
 
-    /// Validates a `cmux markdown open --font-size <points>` value. The viewer
+    /// Validates a `fleet markdown open --font-size <points>` value. The viewer
     /// clamps the rendered size to 8...96 points, so reject anything outside
     /// that range here instead of silently clamping the user's input.
     private func parseMarkdownViewerFontSize(_ rawValue: String) throws -> Double {
@@ -6141,31 +6141,31 @@ struct CMUXCLI {
             if let first = args.first, first.hasPrefix("-") {
                 throw CLIError(
                     message:
-                        "markdown open: unknown flag '\(first)'. Usage: cmux markdown open <path> [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--direction right|down|left|up] [--focus <true|false>] [--font-size <points>]"
+                        "markdown open: unknown flag '\(first)'. Usage: fleet markdown open <path> [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--direction right|down|left|up] [--focus <true|false>] [--font-size <points>]"
                 )
             } else if let first = args.first, looksLikePath(first) || first.contains(".") {
                 subArgs = args
             } else if let first = args.first {
-                throw CLIError(message: "Unknown markdown subcommand: \(first). Usage: cmux markdown open <path>")
+                throw CLIError(message: "Unknown markdown subcommand: \(first). Usage: fleet markdown open <path>")
             } else {
                 subArgs = []
             }
         }
 
         guard let rawPath = subArgs.first, !rawPath.isEmpty else {
-            throw CLIError(message: "markdown open requires a file path. Usage: cmux markdown open <path>")
+            throw CLIError(message: "markdown open requires a file path. Usage: fleet markdown open <path>")
         }
         let trailingArgs = Array(subArgs.dropFirst())
         if let unknownFlag = trailingArgs.first(where: { $0.hasPrefix("-") }) {
             throw CLIError(
                 message:
-                    "markdown open: unknown flag '\(unknownFlag)'. Usage: cmux markdown open <path> [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--direction right|down|left|up] [--focus <true|false>] [--font-size <points>]"
+                    "markdown open: unknown flag '\(unknownFlag)'. Usage: fleet markdown open <path> [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--direction right|down|left|up] [--focus <true|false>] [--font-size <points>]"
             )
         }
         if let extraArg = trailingArgs.first {
             throw CLIError(
                 message:
-                    "markdown open: unexpected argument '\(extraArg)'. Usage: cmux markdown open <path> [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--direction right|down|left|up] [--focus <true|false>] [--font-size <points>]"
+                    "markdown open: unexpected argument '\(extraArg)'. Usage: fleet markdown open <path> [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--direction right|down|left|up] [--focus <true|false>] [--font-size <points>]"
             )
         }
 
@@ -6221,7 +6221,7 @@ struct CMUXCLI {
 
         // Treat first token as subcommand if it's "open", else require it.
         guard let first = args.first?.lowercased() else {
-            throw CLIError(message: "project requires a subcommand. Usage: cmux project open <path-to-.xcodeproj-or-.xcworkspace>")
+            throw CLIError(message: "project requires a subcommand. Usage: fleet project open <path-to-.xcodeproj-or-.xcworkspace>")
         }
         let subArgs: [String]
         if first == "open" {
@@ -6229,11 +6229,11 @@ struct CMUXCLI {
         } else if args.count == 1 {
             subArgs = args
         } else {
-            throw CLIError(message: "Unknown project subcommand: \(first). Usage: cmux project open <path>")
+            throw CLIError(message: "Unknown project subcommand: \(first). Usage: fleet project open <path>")
         }
 
         guard let rawPath = subArgs.first, !rawPath.isEmpty else {
-            throw CLIError(message: "project open requires a path. Usage: cmux project open <path-to-.xcodeproj-or-.xcworkspace>")
+            throw CLIError(message: "project open requires a path. Usage: fleet project open <path-to-.xcodeproj-or-.xcworkspace>")
         }
         let absolutePath = resolvePath(rawPath)
         var params: [String: Any] = ["path": absolutePath]
@@ -7368,7 +7368,7 @@ struct CMUXCLI {
         windowOverride: String?
     ) throws {
         guard let subcommand = commandArgs.first?.lowercased() else {
-            throw CLIError(message: "surface requires a subcommand. Try: cmux surface resume show --json")
+            throw CLIError(message: "surface requires a subcommand. Try: fleet surface resume show --json")
         }
         switch subcommand {
         case "resume":
@@ -8479,7 +8479,7 @@ struct CMUXCLI {
         return "\(value.prefix(2))••••"
     }
 
-    /// `cmux workspace env [<handle>] [--mask]` — print a workspace's configured
+    /// `fleet workspace env [<handle>] [--mask]` — print a workspace's configured
     /// environment variables (issue #5995). Resolves the positional/`--workspace`
     /// handle, falling back to the selected workspace. `--mask` redacts values so
     /// secrets aren't echoed in full.
@@ -8671,11 +8671,11 @@ struct CMUXCLI {
         printV2Payload(payload, jsonOutput: jsonOutput, idFormat: idFormat, fallbackText: v2OKSummary(payload, idFormat: idFormat, kinds: ["workspace"]))
     }
 
-    /// Top-level `cmux workspace <subcommand>` namespace. Dispatches to the
+    /// Top-level `fleet workspace <subcommand>` namespace. Dispatches to the
     /// same v2 socket methods that legacy verbs use (`new-workspace`,
     /// `list-workspaces`, etc.) so behavior matches. Legacy verbs keep working
     /// unchanged for backwards compatibility.
-    /// `cmux window default-display [<name>|--clear]` — read/write the shared,
+    /// `fleet window default-display [<name>|--clear]` — read/write the shared,
     /// cross-tag default display that DEBUG cmux builds open new windows on.
     ///
     /// Persisted through ``CmuxSettings/JSONConfigStore`` in the shared
@@ -8766,7 +8766,7 @@ struct CMUXCLI {
         }
     }
 
-    /// `cmux canvas <info|mode|set-frame|align|reveal|overview|set-viewport|new-pane|…>`
+    /// `fleet canvas <info|mode|set-frame|align|reveal|overview|set-viewport|new-pane|…>`
     /// — workspace canvas-layout control over the v2 `canvas.*` methods.
     private func runCanvasNamespace(
         commandArgs: [String],
@@ -8814,7 +8814,7 @@ struct CMUXCLI {
         case "mode":
             guard let mode = positionals.first?.lowercased(),
                   ["canvas", "splits", "toggle"].contains(mode) else {
-                throw CLIError(message: "Usage: cmux canvas mode <canvas|splits|toggle>")
+                throw CLIError(message: "Usage: fleet canvas mode <canvas|splits|toggle>")
             }
             params["mode"] = mode
             method = "canvas.set_mode"
@@ -8829,7 +8829,7 @@ struct CMUXCLI {
             method = "canvas.set_frame"
         case "align":
             guard let command = positionals.first?.lowercased() else {
-                throw CLIError(message: "Usage: cmux canvas align <tidy|align-left|align-right|align-top|align-bottom|equalize-widths|equalize-heights|distribute-horizontally|distribute-vertically>")
+                throw CLIError(message: "Usage: fleet canvas align <tidy|align-left|align-right|align-top|align-bottom|equalize-widths|equalize-heights|distribute-horizontally|distribute-vertically>")
             }
             params["command"] = command
             method = "canvas.align"
@@ -8841,7 +8841,7 @@ struct CMUXCLI {
         case "zoom":
             guard let direction = positionals.first?.lowercased(),
                   ["in", "out", "reset"].contains(direction) else {
-                throw CLIError(message: "Usage: cmux canvas zoom <in|out|reset>")
+                throw CLIError(message: "Usage: fleet canvas zoom <in|out|reset>")
             }
             params["direction"] = direction
             method = "canvas.zoom"
@@ -8849,7 +8849,7 @@ struct CMUXCLI {
             try surfaceParam(positional: positionals.first, required: true)
             guard let targetRaw = positionals.dropFirst().first ?? optionValue(rest, name: "--target"),
                   let targetId = try normalizeSurfaceHandle(targetRaw, client: client) else {
-                throw CLIError(message: "Usage: cmux canvas join <surface> <target-surface>")
+                throw CLIError(message: "Usage: fleet canvas join <surface> <target-surface>")
             }
             params["target_surface_id"] = targetId
             method = "canvas.join"
@@ -8876,7 +8876,7 @@ struct CMUXCLI {
         case "new-pane":
             if let type = optionValue(rest, name: "--type")?.lowercased() {
                 guard ["terminal", "browser", "simulator"].contains(type) else {
-                    throw CLIError(message: String(localized: "cli.canvas.error.newPaneTypeUsage", defaultValue: "Usage: cmux canvas new-pane [--type terminal|browser|simulator]"))
+                    throw CLIError(message: String(localized: "cli.canvas.error.newPaneTypeUsage", defaultValue: "Usage: fleet canvas new-pane [--type terminal|browser|simulator]"))
                 }
                 params["type"] = type
             }
@@ -8894,7 +8894,7 @@ struct CMUXCLI {
         )
     }
 
-    /// `cmux window displays` — list connected displays (name + index).
+    /// `fleet window displays` — list connected displays (name + index).
     private func runWindowDisplaysCommand(client: SocketClient, jsonOutput: Bool) throws {
         let response = try client.sendV2(method: "window.displays")
         if jsonOutput {
@@ -8914,7 +8914,7 @@ struct CMUXCLI {
         }
     }
 
-    /// `cmux window display "<name>"` — move this instance's window(s) onto the
+    /// `fleet window display "<name>"` — move this instance's window(s) onto the
     /// named display, preserving size. `--list` is an alias for `window displays`.
     private func runWindowDisplayCommand(
         commandArgs: [String],
@@ -8929,7 +8929,7 @@ struct CMUXCLI {
         }
         let positional = commandArgs.filter { !$0.hasPrefix("-") }
         guard let displayName = positional.first, !displayName.isEmpty else {
-            throw CLIError(message: "window display requires a display name. Usage: cmux window display \"LG HDR 4K\"  (list names with: cmux window displays)")
+            throw CLIError(message: "window display requires a display name. Usage: fleet window display \"LG HDR 4K\"  (list names with: fleet window displays)")
         }
         var params: [String: Any] = ["display": displayName]
         if let windowOverride {
@@ -9069,7 +9069,7 @@ struct CMUXCLI {
         }
     }
 
-    /// `cmux workspace reconnect|disconnect` — manual control over a remote
+    /// `fleet workspace reconnect|disconnect` — manual control over a remote
     /// (SSH) workspace's connection. Targets the positional/`--workspace`
     /// handle, then the caller's workspace, then the selected workspace.
     private func runWorkspaceRemoteConnectionCommand(
@@ -9133,13 +9133,13 @@ struct CMUXCLI {
     }
 
     /// Print a one-time deprecation hint to stderr for a legacy CLI verb that
-    /// has a `cmux workspace <subcommand>` replacement. Honors CMUX_QUIET so
+    /// has a `fleet workspace <subcommand>` replacement. Honors CMUX_QUIET so
     /// scripts can opt out.
     private static let cliDeprecationNoticeShownKey = "CMUX_CLI_DEPRECATION_SHOWN"
     static func warnLegacyVerbDeprecated(_ legacy: String, replacement: String) {
         if ProcessInfo.processInfo.environment["CMUX_QUIET"] != nil { return }
         if getenv(cliDeprecationNoticeShownKey) != nil { return }
-        cliWriteStderr("cmux: '\(legacy)' is now an alias for '\(replacement)'. The legacy form keeps working indefinitely; set CMUX_QUIET=1 to silence this notice.\n")
+        cliWriteStderr("fleet: '\(legacy)' is now an alias for '\(replacement)'. The legacy form keeps working indefinitely; set CMUX_QUIET=1 to silence this notice.\n")
         setenv(cliDeprecationNoticeShownKey, "1", 1)
     }
 
@@ -9556,7 +9556,7 @@ struct CMUXCLI {
         }
 
         guard let destination else {
-            throw CLIError(message: "ssh-tmux requires a destination (example: cmux ssh-tmux user@host)")
+            throw CLIError(message: "ssh-tmux requires a destination (example: fleet ssh-tmux user@host)")
         }
 
         var params: [String: Any] = ["host": destination]
@@ -9628,7 +9628,7 @@ struct CMUXCLI {
         // fail opaquely, so refuse early with an actionable message.
         guard isatty(STDIN_FILENO) == 1 else {
             throw CLIError(
-                message: "ssh-tmux: \(destination) needs interactive authentication, which requires a terminal. Run `cmux ssh-tmux \(destination)` directly from an interactive shell."
+                message: "ssh-tmux: \(destination) needs interactive authentication, which requires a terminal. Run `fleet ssh-tmux \(destination)` directly from an interactive shell."
             )
         }
         // The app builds this argv with a hardcoded /usr/bin/ssh; require exactly
@@ -9694,8 +9694,8 @@ struct CMUXCLI {
     }
 
     /// Generic "open a workspace, SSH into the remote, bootstrap cmuxd-remote, forward socket,
-    /// drop the user in a shell" pipeline. The inner loop of `cmux ssh`; also called from
-    /// `cmux vm new`/`shell`/`attach` so cloud VMs reuse the exact same bootstrap.
+    /// drop the user in a shell" pipeline. The inner loop of `fleet ssh`; also called from
+    /// `fleet vm new`/`shell`/`attach` so cloud VMs reuse the exact same bootstrap.
     private func runSSHWithOptions(
         _ inputSSHOptions: SSHCommandOptions,
         relayID: String,
@@ -10400,7 +10400,7 @@ struct CMUXCLI {
         }
 
         guard let destination else {
-            throw CLIError(message: "ssh requires a destination (example: cmux ssh user@host)")
+            throw CLIError(message: "ssh requires a destination (example: fleet ssh user@host)")
         }
         guard terminalProfile.kind == .shell || extraArguments.isEmpty else {
             throw CLIError(message: String(
@@ -11132,7 +11132,7 @@ struct CMUXCLI {
                         This Cloud VM image does not support interactive attach in this cmux build.
 
                         What to do:
-                          Update cmux, then create a fresh VM with `cmux vm new`.
+                          Update cmux, then create a fresh VM with `fleet vm new`.
                           If this keeps happening, contact support with the VM id.
 
                         Details:
@@ -11199,7 +11199,7 @@ struct CMUXCLI {
             throw CLIError(message: """
                 vm base open: unexpected argument '\(extra)'.
 
-                Base is a single persistent cloud workspace. Use `cmux vm new`
+                Base is a single persistent cloud workspace. Use `fleet vm new`
                 when you want a brand new VM.
                 """)
         }
@@ -11372,8 +11372,8 @@ struct CMUXCLI {
                 cmux could not read the attach information for this Cloud VM.
 
                 What to do:
-                  Retry `cmux vm ssh <id>`.
-                  If it keeps failing, recreate the VM with `cmux vm new` and share the details below.
+                  Retry `fleet vm ssh <id>`.
+                  If it keeps failing, recreate the VM with `fleet vm new` and share the details below.
 
                 Details:
                   Cloud VM attach details were incomplete.
@@ -11398,8 +11398,8 @@ struct CMUXCLI {
                 cmux could not use the attach information for this Cloud VM.
 
                 What to do:
-                  Retry `cmux vm ssh <id>`.
-                  If it keeps failing, recreate the VM with `cmux vm new`.
+                  Retry `fleet vm ssh <id>`.
+                  If it keeps failing, recreate the VM with `fleet vm new`.
 
                 Details:
                   Interactive SSH attach is unavailable for this VM.
@@ -11411,8 +11411,8 @@ struct CMUXCLI {
                 cmux could not open an interactive SSH session for this Cloud VM.
 
                 What to do:
-                  Retry `cmux vm ssh <id>`.
-                  If it keeps failing, recreate the VM with `cmux vm new`.
+                  Retry `fleet vm ssh <id>`.
+                  If it keeps failing, recreate the VM with `fleet vm new`.
 
                 Details:
                   Cloud VM attach details were incomplete.
@@ -11493,14 +11493,14 @@ struct CMUXCLI {
         let usesDefaultFreestyleSSHD = hasFlag(remaining, name: "--default-freestyle-sshd")
         let filteredRemaining = remaining.filter { $0 != "--default-freestyle-sshd" }
         if let unknown = filteredRemaining.first(where: { Self.isFlagToken($0) }) {
-            throw CLIError(message: "vm ssh-attach: unknown flag '\(unknown)'. Use `cmux vm ssh-attach --id <vm-id>`.")
+            throw CLIError(message: "vm ssh-attach: unknown flag '\(unknown)'. Use `fleet vm ssh-attach --id <vm-id>`.")
         }
         guard filteredRemaining.isEmpty else {
-            throw CLIError(message: "Usage: cmux vm ssh-attach --id <vm-id>")
+            throw CLIError(message: "Usage: fleet vm ssh-attach --id <vm-id>")
         }
         guard var vmID = vmIDOpt?.trimmingCharacters(in: .whitespacesAndNewlines),
               !vmID.isEmpty else {
-            throw CLIError(message: "Usage: cmux vm ssh-attach --id <vm-id>")
+            throw CLIError(message: "Usage: fleet vm ssh-attach --id <vm-id>")
         }
 
         let attachInfoStartedAt = Date()
@@ -11529,7 +11529,7 @@ struct CMUXCLI {
             )
         )
         guard let launchPath = sshArguments.first else {
-            throw CLIError(message: "vm ssh-attach could not construct an ssh command. Retry `cmux vm ssh <id>` from a normal cmux shell.")
+            throw CLIError(message: "vm ssh-attach could not construct an ssh command. Retry `fleet vm ssh <id>` from a normal fleet shell.")
         }
         client.close()
         if let passwordCredential = options.passwordCredential, !passwordCredential.isEmpty {
@@ -11632,7 +11632,7 @@ struct CMUXCLI {
                         The Cloud VM attached to this workspace no longer exists.
 
                         What to do:
-                          Close this workspace and open a fresh Cloud VM workspace with the cloud button or `cmux vm new`.
+                          Close this workspace and open a fresh Cloud VM workspace with the cloud button or `fleet vm new`.
 
                         Details:
                           cmux will not recreate the VM from inside an attached terminal because that would leave the workspace's saved Cloud VM id stale.
@@ -11777,7 +11777,7 @@ struct CMUXCLI {
             message.contains("temporarily unavailable") ||
             message.contains("vm_cloud_state_unavailable") ||
             message.contains("provider control plane") ||
-            message.contains("cannot reach the cmux cloud vm service") ||
+            message.contains("cannot reach the fleet cloud vm service") ||
             message.contains("local cmux web server is offline") ||
             message.contains("connection refused") ||
             message.contains("failed to connect") ||
@@ -12046,8 +12046,8 @@ struct CMUXCLI {
                 cmux could not read the attach information for this Cloud VM.
 
                 What to do:
-                  Retry `cmux vm ssh <id>`.
-                  If it keeps failing, recreate the VM with `cmux vm new`.
+                  Retry `fleet vm ssh <id>`.
+                  If it keeps failing, recreate the VM with `fleet vm new`.
 
                 Details:
                   Cloud VM attach details were incomplete.
@@ -12294,7 +12294,7 @@ struct CMUXCLI {
             throw CLIError(message: "vm-pty-connect: unknown flag '\(unknown)'")
         }
         guard let configPath else {
-            throw CLIError(message: "Usage: cmux vm-pty-connect --config <path>")
+            throw CLIError(message: "Usage: fleet vm-pty-connect --config <path>")
         }
         let configURL = URL(fileURLWithPath: (configPath as NSString).expandingTildeInPath)
         let data = try Data(contentsOf: configURL)
@@ -12318,14 +12318,14 @@ struct CMUXCLI {
         let usesDefaultFreestyleSSHD = hasFlag(remaining, name: "--default-freestyle-sshd")
         let filteredRemaining = remaining.filter { $0 != "--default-freestyle-sshd" }
         if let unknown = filteredRemaining.first(where: { Self.isFlagToken($0) }) {
-            throw CLIError(message: "vm-pty-attach: unknown flag '\(unknown)'. Use `cmux vm-pty-attach --id <vm-id> [--session <session-id>]`.")
+            throw CLIError(message: "vm-pty-attach: unknown flag '\(unknown)'. Use `fleet vm-pty-attach --id <vm-id> [--session <session-id>]`.")
         }
         guard filteredRemaining.isEmpty else {
-            throw CLIError(message: "Usage: cmux vm-pty-attach --id <vm-id> [--session <session-id>]")
+            throw CLIError(message: "Usage: fleet vm-pty-attach --id <vm-id> [--session <session-id>]")
         }
         guard let vmID = vmIDOpt?.trimmingCharacters(in: .whitespacesAndNewlines),
               !vmID.isEmpty else {
-            throw CLIError(message: "Usage: cmux vm-pty-attach --id <vm-id> [--session <session-id>]")
+            throw CLIError(message: "Usage: fleet vm-pty-attach --id <vm-id> [--session <session-id>]")
         }
         let sessionID = try Self.validatedVMSessionIdentifier(sessionIDOpt, flag: "--session")
         let attachmentID = try Self.validatedVMSessionIdentifier(attachmentIDOpt, flag: "--attachment")
@@ -12416,7 +12416,7 @@ struct CMUXCLI {
                         The Cloud VM attached to this workspace no longer exists.
 
                         What to do:
-                          Close this workspace and open a fresh Cloud VM workspace with the cloud button or `cmux vm new`.
+                          Close this workspace and open a fresh Cloud VM workspace with the cloud button or `fleet vm new`.
 
                         Details:
                           cmux will not recreate the VM from inside an attached terminal because that would leave the workspace's saved Cloud VM id stale.
@@ -12802,7 +12802,7 @@ struct CMUXCLI {
             throw CLIError(message: "ssh-session-list: unknown flag '\(unknown)'. Known flags: --workspace <workspace>, --all-workspaces")
         }
         guard remaining.isEmpty else {
-            throw CLIError(message: "Usage: cmux ssh-session-list [--workspace <workspace> | --all-workspaces]")
+            throw CLIError(message: "Usage: fleet ssh-session-list [--workspace <workspace> | --all-workspaces]")
         }
         if allWorkspaces, workspaceOpt != nil {
             throw CLIError(message: "ssh-session-list: --all-workspaces cannot be combined with --workspace")
@@ -12873,7 +12873,7 @@ struct CMUXCLI {
             throw CLIError(message: "ssh-session-cleanup: unknown flag '\(unknown)'. Known flags: --workspace <workspace>, --session-id <id>, --all, --all-workspaces")
         }
         guard remaining.isEmpty else {
-            throw CLIError(message: "Usage: cmux ssh-session-cleanup [--workspace <workspace> | --all-workspaces] (--session-id <id> | --all)")
+            throw CLIError(message: "Usage: fleet ssh-session-cleanup [--workspace <workspace> | --all-workspaces] (--session-id <id> | --all)")
         }
         if closeAll == (sessionIDOpt != nil) {
             throw CLIError(message: "ssh-session-cleanup requires exactly one of --session-id <id> or --all")
@@ -13067,7 +13067,7 @@ struct CMUXCLI {
             throw CLIError(message: "ssh-session-attach: unknown flag '\(unknown)'. Known flags: --workspace <workspace>, --session-id <id>, --pane <pane>, --surface <surface>, --split <direction>, --focus <true|false>")
         }
         guard remaining.isEmpty else {
-            throw CLIError(message: "Usage: cmux ssh-session-attach --session-id <id> [--workspace <workspace>] [--pane <pane> | --split <left|right|up|down> [--surface <surface>]]")
+            throw CLIError(message: "Usage: fleet ssh-session-attach --session-id <id> [--workspace <workspace>] [--pane <pane> | --split <left|right|up|down> [--surface <surface>]]")
         }
         guard let sessionID = sessionIDOpt?.trimmingCharacters(in: .whitespacesAndNewlines),
               !sessionID.isEmpty else {
@@ -13185,7 +13185,7 @@ struct CMUXCLI {
         guard remaining.isEmpty,
               let lifecycleID = lifecycleIDOpt?.trimmingCharacters(in: .whitespacesAndNewlines),
               !lifecycleID.isEmpty else {
-            throw CLIError(message: "Usage: cmux ssh-pty-attach --workspace <workspace> --session-id <id> [--attachment-id <id>] [--command-b64 <base64>] [--require-existing]")
+            throw CLIError(message: "Usage: fleet ssh-pty-attach --workspace <workspace> --session-id <id> [--attachment-id <id>] [--command-b64 <base64>] [--require-existing]")
         }
         let workspaceRaw = workspaceOpt ?? ProcessInfo.processInfo.environment["CMUX_WORKSPACE_ID"]
         guard let workspaceRaw,
@@ -13751,7 +13751,7 @@ struct CMUXCLI {
 
     private func remoteDaemonCacheURL(version: String, goOS: String, goArch: String) -> URL {
         // Cache under the non-TCC cmux state directory rather than Application
-        // Support: the separately-signed CLI downloads these on `cmux ssh`, and a
+        // Support: the separately-signed CLI downloads these on `fleet ssh`, and a
         // cross-identity reach into the app's Application Support data triggers the
         // macOS Sequoia "access data from other apps" prompt
         // (https://github.com/manaflow-ai/cmux/issues/5146). The app's
@@ -14035,7 +14035,7 @@ struct CMUXCLI {
                 lines.append("ready_state: \(readyState)")
             }
             if url.isEmpty || url == "about:blank" {
-                lines.append("hint: run 'cmux browser <surface> get url' to verify navigation")
+                lines.append("hint: run 'fleet browser <surface> get url' to verify navigation")
             }
 
             return lines.joined(separator: "\n")
@@ -14317,7 +14317,7 @@ struct CMUXCLI {
             if let first = unsupportedPositionals.first {
                 let normalized = first.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
                 if normalized == "cookie" || normalized == "cookies" {
-                    throw CLIError(message: "browser import no longer takes a data type; use 'cmux browser import'")
+                    throw CLIError(message: "browser import no longer takes a data type; use 'fleet browser import'")
                 }
                 throw CLIError(message: "browser import does not accept positional arguments")
             }
@@ -15920,7 +15920,7 @@ struct CMUXCLI {
             if let id = focused["id"] as? String { return id }
         }
 
-        throw CLIError(message: "Couldn't resolve a surface ID. Pass --surface or run 'cmux list-pane-surfaces' to list surfaces.")
+        throw CLIError(message: "Couldn't resolve a surface ID. Pass --surface or run 'fleet list-pane-surfaces' to list surfaces.")
     }
 
     private func resolveSurfaceTargetInWindow(
@@ -15999,7 +15999,7 @@ struct CMUXCLI {
             return Self.aiAccountsUsage
         case "ping":
             return """
-            Usage: cmux ping
+            Usage: fleet ping
 
             Check connectivity to the cmux socket server.
             """
@@ -16007,7 +16007,7 @@ struct CMUXCLI {
             return String(
                 localized: "cli.help.irohDiag",
                 defaultValue: """
-                Usage: cmux iroh-diag
+                Usage: fleet iroh-diag
 
                 Print the host's Iroh Connection Report as a plain-language timeline,
                 the same data as Settings > Networking > Connection Report.
@@ -16015,13 +16015,13 @@ struct CMUXCLI {
             )
         case "capabilities":
             return """
-            Usage: cmux capabilities
+            Usage: fleet capabilities
 
             Print server capabilities as JSON.
             """
         case "canvas":
             return """
-            Usage: cmux canvas <subcommand> [args] [--workspace <id|ref>]
+            Usage: fleet canvas <subcommand> [args] [--workspace <id|ref>]
 
             Control a workspace's freeform canvas layout.
 
@@ -16046,11 +16046,11 @@ struct CMUXCLI {
               select-tab <surface>          Select a surface as its pane's visible tab
 
             Example:
-              cmux canvas mode canvas
-              cmux canvas set-frame surface:1 --x 0 --y 0 --width 800 --height 520
-              cmux canvas set-viewport --x 400 --y 260 --zoom 1.0
-              cmux canvas new-pane --type terminal
-              cmux canvas align tidy
+              fleet canvas mode canvas
+              fleet canvas set-frame surface:1 --x 0 --y 0 --width 800 --height 520
+              fleet canvas set-viewport --x 400 --y 260 --zoom 1.0
+              fleet canvas new-pane --type terminal
+              fleet canvas align tidy
             """
         case "simulator":
             return simulatorSubcommandUsage()
@@ -16066,9 +16066,9 @@ struct CMUXCLI {
                 defaultValue: "Print the subscription snapshot and exit"
             )
             return """
-            Usage: cmux events [options]
+            Usage: fleet events [options]
 
-            Stream cmux events as newline-delimited JSON.
+            Stream fleet events as newline-delimited JSON.
 
             Options:
               --after <seq>          Replay retained events after this sequence
@@ -16083,13 +16083,13 @@ struct CMUXCLI {
               --no-heartbeat         Do not print heartbeat frames
 
             Examples:
-              cmux events --category notification
-              cmux events --cursor-file ~/.cache/cmux/events.seq --reconnect
-              cmux events --after 42 --name feed.item.received
+              fleet events --category notification
+              fleet events --cursor-file ~/.cache/cmux/events.seq --reconnect
+              fleet events --after 42 --name feed.item.received
             """
         case "auth":
             return """
-            Usage: cmux auth <status|login|logout>
+            Usage: fleet auth <status|login|logout>
 
             status   Print whether the user is signed in (add `cmux --json` for JSON).
             login    Open the sign-in popup on the cmux web app and wait for it to finish.
@@ -16097,21 +16097,21 @@ struct CMUXCLI {
             """
         case "login":
             return """
-            Usage: cmux login
+            Usage: fleet login
 
-            Alias for `cmux auth login`.
+            Alias for `fleet auth login`.
             """
         case "logout":
             return """
-            Usage: cmux logout
+            Usage: fleet logout
 
-            Alias for `cmux auth logout`.
+            Alias for `fleet auth logout`.
             """
         case "vm", "cloud":
             return """
             Usage: cmux \(command) <base|new|ls|status|snapshot|fork|restore|rm|exec|shell|attach|ssh|ssh-info> [args...]
 
-            Manage cloud VMs. `cloud` is an alias for `vm`. Requires `cmux auth login`.
+            Manage cloud VMs. `cloud` is an alias for `vm`. Requires `fleet auth login`.
 
             Subcommands:
               ls                        List your cloud VMs.
@@ -16141,7 +16141,7 @@ struct CMUXCLI {
                                         Alias: `attach <id>`.
               ssh <id> [--window <id|ref|index>]
                                         Drop into a cmux-managed SSH workspace for an existing
-                                        VM, using the same session path as `cmux ssh`.
+                                        VM, using the same session path as `fleet ssh`.
               ssh-info <id>             Print SSH connection details when the Cloud VM
                                         exposes SSH.
               rm <id>                   Destroy a VM.
@@ -16157,27 +16157,27 @@ struct CMUXCLI {
                                          local testing from the web worktree.
 
             Example:
-              cmux vm base open
-              cmux vm base reset
-              cmux vm new
-              cmux vm ls
-              cmux vm fork <id>
-              cmux cloud exec <id> -- echo hello
-              cmux vm rm <id>
+              fleet vm base open
+              fleet vm base reset
+              fleet vm new
+              fleet vm ls
+              fleet vm fork <id>
+              fleet cloud exec <id> -- echo hello
+              fleet vm rm <id>
             """
         case "rpc":
             return """
-            Usage: cmux rpc <method> [json-params]
+            Usage: fleet rpc <method> [json-params]
 
             Call a raw v2 method with an optional JSON object for params.
-            Example: cmux rpc surface.report_tty '{"workspace_id":"...","surface_id":"...","tty_name":"ttys001"}'
+            Example: fleet rpc surface.report_tty '{"workspace_id":"...","surface_id":"...","tty_name":"ttys001"}'
             """
         case "help":
             return """
-            Usage: cmux help
+            Usage: fleet help
 
             Show top-level CLI usage and command list.
-            Also works without a running cmux app or socket.
+            Also works without a running fleet app or socket.
             """
         case "docs":
             return docsUsage()
@@ -16187,46 +16187,46 @@ struct CMUXCLI {
             return configUsage()
         case "welcome":
             return """
-            Usage: cmux welcome
+            Usage: fleet welcome
 
             Show a welcome screen with the cmux logo and useful shortcuts.
             Auto-runs once on first launch.
             """
         case "shortcuts":
             return """
-            Usage: cmux shortcuts
+            Usage: fleet shortcuts
 
             Open the Settings window to Keyboard Shortcuts.
             """
         case "disable-browser":
             return """
-            Usage: cmux disable-browser [--json]
+            Usage: fleet disable-browser [--json]
 
-            Disable cmux browser creation and link interception. This overrides
+            Disable fleet browser creation and link interception. This overrides
             browser settings from cmux.json until re-enabled.
             """
         case "enable-browser":
             return """
-            Usage: cmux enable-browser [--json]
+            Usage: fleet enable-browser [--json]
 
-            Re-enable cmux browser creation and link interception.
+            Re-enable fleet browser creation and link interception.
             """
         case "browser-status":
             return """
-            Usage: cmux browser-status [--json]
+            Usage: fleet browser-status [--json]
 
-            Print whether cmux browser creation and link interception are enabled.
+            Print whether fleet browser creation and link interception are enabled.
             """
         case "agent-hibernation":
             return """
-            Usage: cmux agent-hibernation <on|off> [--json]
+            Usage: fleet agent-hibernation <on|off> [--json]
 
             Enable or disable routine Agent Hibernation.
-            Configure idle and live-terminal limits from Settings or cmux settings JSON.
+            Configure idle and live-terminal limits from Settings or fleet settings JSON.
             """
         case "restore-session":
             return """
-            Usage: cmux restore-session
+            Usage: fleet restore-session
 
             Reopen the previous saved cmux session.
 
@@ -16235,21 +16235,21 @@ struct CMUXCLI {
             """
         case "restore":
             return String(localized: "cli.restore.help", defaultValue: """
-            Usage: cmux restore [--surface <id|ref>] <kind> <checkpoint-id>
-                   cmux restore <kind> <checkpoint-id> --surface <id|ref>
-                   cmux restore --surface=<id|ref> <kind> <checkpoint-id>
-                   cmux restore --surface [id|ref]
+            Usage: fleet restore [--surface <id|ref>] <kind> <checkpoint-id>
+                   fleet restore <kind> <checkpoint-id> --surface <id|ref>
+                   fleet restore --surface=<id|ref> <kind> <checkpoint-id>
+                   fleet restore --surface [id|ref]
 
             Replace this CLI process with the persisted surface process. New
             records preserve launch arguments and cwd as structured values;
             command-only records from older builds use a compatibility shell.
-            With no id or ref, --surface uses the calling cmux surface.
+            With no id or ref, --surface uses the calling fleet surface.
             """)
         case "sessions", "session-debug": return sessionsUsage()
         case "feedback":
             return """
-            Usage: cmux feedback
-                   cmux feedback --email <email> --body <text> [--image <path> ...]
+            Usage: fleet feedback
+                   fleet feedback --email <email> --body <text> [--image <path> ...]
 
             Without args, open the Send Feedback modal in the running app.
 
@@ -16266,8 +16266,8 @@ struct CMUXCLI {
             """
         case "feed":
             return """
-            Usage: cmux feed tui [--opentui|--legacy]
-                   cmux feed clear [--yes|-y]
+            Usage: fleet feed tui [--opentui|--legacy]
+                   fleet feed clear [--yes|-y]
 
             Open the keyboard-first Feed TUI or manage persisted Feed workstream history.
 
@@ -16277,12 +16277,12 @@ struct CMUXCLI {
             """
         case "hooks":
             return """
-            Usage: cmux hooks setup [agent] [--agent <name>] [--yes|-y]
-                   cmux hooks uninstall [agent] [--agent <name>] [--yes|-y]
-                   cmux hooks <agent> install [--yes|-y] (opencode supports --project)
-                   cmux hooks <agent> uninstall [--yes|-y] (opencode supports --project)
-                   cmux hooks <agent> <event> [flags]
-                   cmux hooks feed --source <agent> [--event <event>]
+            Usage: fleet hooks setup [agent] [--agent <name>] [--yes|-y]
+                   fleet hooks uninstall [agent] [--agent <name>] [--yes|-y]
+                   fleet hooks <agent> install [--yes|-y] (opencode supports --project)
+                   fleet hooks <agent> uninstall [--yes|-y] (opencode supports --project)
+                   fleet hooks <agent> <event> [flags]
+                   fleet hooks feed --source <agent> [--event <event>]
 
             Manage and run cmux agent hooks without adding one top-level command per
             agent. Claude Code hooks are injected automatically by the cmux Claude wrapper.
@@ -16309,28 +16309,28 @@ struct CMUXCLI {
               See docs/agent-hooks.md for the full integration matrix.
 
             Examples:
-              cmux hooks setup
-              cmux hooks setup --agent codex
-              cmux hooks setup rovo
-              cmux hooks setup omp
-              cmux hooks uninstall rovo
-              cmux hooks codex install
-              cmux hooks opencode install --project
-              cmux hooks uninstall
+              fleet hooks setup
+              fleet hooks setup --agent codex
+              fleet hooks setup rovo
+              fleet hooks setup omp
+              fleet hooks uninstall rovo
+              fleet hooks codex install
+              fleet hooks opencode install --project
+              fleet hooks uninstall
             """
         case "themes":
             return """
-            Usage: cmux themes
-                   cmux themes list
-                   cmux themes set <theme>
-                   cmux themes set --light <theme> [--dark <theme>]
-                   cmux themes set --dark <theme> [--light <theme>]
-                   cmux themes clear
+            Usage: fleet themes
+                   fleet themes list
+                   fleet themes set <theme>
+                   fleet themes set --light <theme> [--dark <theme>]
+                   fleet themes set --dark <theme> [--light <theme>]
+                   fleet themes clear
 
-            When run in a TTY, `cmux themes` opens an interactive theme picker with
-            live app preview. Use `cmux themes list` for a plain listing.
+            When run in a TTY, `fleet themes` opens an interactive theme picker with
+            live app preview. Use `fleet themes list` for a plain listing.
 
-            The picker previews the selected theme across the running cmux app and
+            The picker previews the selected theme across the running fleet app and
             lets you apply it to the light theme, dark theme, or both defaults.
 
             Commands:
@@ -16338,18 +16338,18 @@ struct CMUXCLI {
               set <theme>               Set the same theme for both light and dark appearance
               set --light <theme>       Set the light appearance theme
               set --dark <theme>        Set the dark appearance theme
-              clear                     Remove the cmux theme override and fall back to other config
+              clear                     Remove the fleet theme override and fall back to other config
 
             Examples:
-              cmux themes
-              cmux themes list
-              cmux themes set "Catppuccin Mocha"
-              cmux themes set --light "Catppuccin Latte" --dark "Catppuccin Mocha"
-              cmux themes clear
+              fleet themes
+              fleet themes list
+              fleet themes set "Catppuccin Mocha"
+              fleet themes set --light "Catppuccin Latte" --dark "Catppuccin Mocha"
+              fleet themes clear
             """
         case "claude-teams":
             return String(localized: "cli.claude-teams.usage", defaultValue: """
-            Usage: cmux claude-teams [claude-args...]
+            Usage: fleet claude-teams [claude-args...]
 
             Launch Claude Code with agent teams enabled.
 
@@ -16364,13 +16364,13 @@ struct CMUXCLI {
             workspace and split operations in the current cmux session.
 
             Examples:
-              cmux claude-teams
-              cmux claude-teams --continue
-              cmux claude-teams --model sonnet
+              fleet claude-teams
+              fleet claude-teams --continue
+              fleet claude-teams --model sonnet
             """)
         case "codex-teams":
             return String(localized: "cli.codex-teams.usage", defaultValue: """
-            Usage: cmux codex-teams [codex-args...]
+            Usage: fleet codex-teams [codex-args...]
 
             Launch Codex with cmux-managed subagent panes.
 
@@ -16382,13 +16382,13 @@ struct CMUXCLI {
               - forwards all remaining arguments to codex
 
             Examples:
-              cmux codex-teams
-              cmux codex-teams --model gpt-5.4
-              cmux codex-teams resume --last
+              fleet codex-teams
+              fleet codex-teams --model gpt-5.4
+              fleet codex-teams resume --last
             """)
         case "omo":
             return String(localized: "cli.omo.usage", defaultValue: """
-            Usage: cmux omo [opencode-args...]
+            Usage: fleet omo [opencode-args...]
 
             Launch OpenCode with oh-my-openagent in a cmux-aware environment.
 
@@ -16401,17 +16401,17 @@ struct CMUXCLI {
               - prepends a private tmux shim to PATH
               - forwards all remaining arguments to opencode
 
-            The tmux shim translates tmux window/pane commands into cmux workspace
+            The tmux shim translates tmux window/pane commands into fleet workspace
             and split operations in the current cmux session.
 
             Examples:
-              cmux omo
-              cmux omo --continue
-              cmux omo --model claude-sonnet-4-6
+              fleet omo
+              fleet omo --continue
+              fleet omo --model claude-sonnet-4-6
             """)
         case "omx":
             return String(localized: "cli.omx.usage", defaultValue: """
-            Usage: cmux omx [omx-args...]
+            Usage: fleet omx [omx-args...]
 
             Launch Oh My Codex (OMX) with native cmux pane integration.
 
@@ -16427,13 +16427,13 @@ struct CMUXCLI {
             Install: npm install -g oh-my-codex
 
             Examples:
-              cmux omx
-              cmux omx --madmax --high
-              cmux omx team
+              fleet omx
+              fleet omx --madmax --high
+              fleet omx team
             """)
         case "omc":
             return String(localized: "cli.omc.usage", defaultValue: """
-            Usage: cmux omc [omc-args...]
+            Usage: fleet omc [omc-args...]
 
             Launch Oh My Claude Code (OMC) with native cmux pane integration.
 
@@ -16451,13 +16451,13 @@ struct CMUXCLI {
             Install: npm install -g oh-my-claude-sisyphus
 
             Examples:
-              cmux omc
-              cmux omc team 3:claude "implement feature"
-              cmux omc --watch
+              fleet omc
+              fleet omc team 3:claude "implement feature"
+              fleet omc --watch
             """)
         case "identify":
             return """
-            Usage: cmux identify [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--no-caller]
+            Usage: fleet identify [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--no-caller]
 
             Print server identity and caller context details.
 
@@ -16469,28 +16469,28 @@ struct CMUXCLI {
             """
         case "list-windows":
             return """
-            Usage: cmux list-windows
+            Usage: fleet list-windows
 
             List open windows.
             """
         case "current-window":
             return """
-            Usage: cmux current-window
+            Usage: fleet current-window
 
             Print the currently selected window ID.
             """
         case "new-window":
             return """
-            Usage: cmux new-window
+            Usage: fleet new-window
 
             Create a new window.
 
             Example:
-              cmux new-window
+              fleet new-window
             """
         case "focus-window":
             return """
-            Usage: cmux focus-window --window <id|ref|index>
+            Usage: fleet focus-window --window <id|ref|index>
 
             Focus (bring to front) the specified window.
 
@@ -16498,12 +16498,12 @@ struct CMUXCLI {
               --window <id|ref|index>   Window to focus (required)
 
             Example:
-              cmux focus-window --window 0
-              cmux focus-window --window window:1
+              fleet focus-window --window 0
+              fleet focus-window --window window:1
             """
         case "close-window":
             return """
-            Usage: cmux close-window --window <id|ref|index>
+            Usage: fleet close-window --window <id|ref|index>
 
             Close the specified window.
 
@@ -16511,12 +16511,12 @@ struct CMUXCLI {
               --window <id|ref|index>   Window to close (required)
 
             Example:
-              cmux close-window --window 0
-              cmux close-window --window window:1
+              fleet close-window --window 0
+              fleet close-window --window window:1
             """
         case "move-workspace-to-window":
             return """
-            Usage: cmux move-workspace-to-window --workspace <id|ref|index> --window <id|ref|index>
+            Usage: fleet move-workspace-to-window --workspace <id|ref|index> --window <id|ref|index>
 
             Move a workspace to a different window.
 
@@ -16525,11 +16525,11 @@ struct CMUXCLI {
               --window <id|ref|index>      Target window (required)
 
             Example:
-              cmux move-workspace-to-window --workspace workspace:2 --window window:1
+              fleet move-workspace-to-window --workspace workspace:2 --window window:1
             """
         case "move-surface":
             return """
-            Usage: cmux move-surface [--surface <id|ref|index> | <id|ref|index>] [flags]
+            Usage: fleet move-surface [--surface <id|ref|index> | <id|ref|index>] [flags]
 
             Move a surface to a different pane, workspace, or window.
 
@@ -16548,12 +16548,12 @@ struct CMUXCLI {
               --focus <true|false>       Focus the surface after moving
 
             Example:
-              cmux move-surface --surface surface:1 --workspace workspace:2
-              cmux move-surface surface:1 --pane pane:2 --index 0
+              fleet move-surface --surface surface:1 --workspace workspace:2
+              fleet move-surface surface:1 --pane pane:2 --index 0
             """
         case "reorder-surface":
             return """
-            Usage: cmux reorder-surface [--surface <id|ref|index> | <id|ref|index>] [flags]
+            Usage: fleet reorder-surface [--surface <id|ref|index> | <id|ref|index>] [flags]
 
             Reorder a surface within its pane.
 
@@ -16571,12 +16571,12 @@ struct CMUXCLI {
               --focus <true|false>       Focus the surface after reordering
 
             Example:
-              cmux reorder-surface --surface surface:1 --index 0
-              cmux reorder-surface --surface surface:3 --after surface:1
+              fleet reorder-surface --surface surface:1 --index 0
+              fleet reorder-surface --surface surface:3 --after surface:1
             """
         case "reorder-workspace":
             return """
-            Usage: cmux reorder-workspace [--workspace <id|ref|index> | <id|ref|index>] [flags]
+            Usage: fleet reorder-workspace [--workspace <id|ref|index> | <id|ref|index>] [flags]
 
             Reorder a workspace within its window.
 
@@ -16593,13 +16593,13 @@ struct CMUXCLI {
               --dry-run                    Print the resolved final index without applying
 
             Example:
-              cmux reorder-workspace --workspace workspace:2 --index 0
-              cmux reorder-workspace --workspace workspace:3 --after workspace:1
-              cmux reorder-workspace --workspace workspace:2 --index 0 --dry-run
+              fleet reorder-workspace --workspace workspace:2 --index 0
+              fleet reorder-workspace --workspace workspace:3 --after workspace:1
+              fleet reorder-workspace --workspace workspace:2 --index 0 --dry-run
             """
         case "reorder-workspaces":
             return String(localized: "cli.help.reorderWorkspaces", defaultValue: """
-            Usage: cmux reorder-workspaces --order <id|ref|index>,<id|ref|index>,... [flags]
+            Usage: fleet reorder-workspaces --order <id|ref|index>,<id|ref|index>,... [flags]
 
             Reorder workspaces within a window as one atomic batch. The comma-separated
             order is the final leading order inside the pinned and unpinned groups;
@@ -16612,12 +16612,12 @@ struct CMUXCLI {
               --dry-run                     Print the resolved final indexes without applying
 
             Example:
-              cmux reorder-workspaces --order workspace:1,workspace:11,workspace:31
-              cmux reorder-workspaces --order workspace:11,workspace:1 --dry-run
+              fleet reorder-workspaces --order workspace:1,workspace:11,workspace:31
+              fleet reorder-workspaces --order workspace:11,workspace:1 --dry-run
             """)
         case "simulate-sidebar-drag":
             return """
-            Usage: cmux simulate-sidebar-drag --window <id|ref|index> --from <ws> --to <ws> [flags]
+            Usage: fleet simulate-sidebar-drag --window <id|ref|index> --from <ws> --to <ws> [flags]
 
             Drive deterministic sidebar drag-state mutations against a DEBUG build of
             the app, intended for headless profiling under xctrace (see the profile-pr
@@ -16634,12 +16634,12 @@ struct CMUXCLI {
               --steps <n>                  Number of indicator updates (default: row count between from and to)
 
             Example:
-              cmux simulate-sidebar-drag --window window:1 --from workspace:1 --to workspace:25 --duration-ms 2000
-              cmux simulate-sidebar-drag --window window:1 --from workspace:1 --to workspace:25 --steps 120 --duration-ms 2000
+              fleet simulate-sidebar-drag --window window:1 --from workspace:1 --to workspace:25 --duration-ms 2000
+              fleet simulate-sidebar-drag --window window:1 --from workspace:1 --to workspace:25 --steps 120 --duration-ms 2000
             """
         case "workspace-action":
             return """
-            Usage: cmux workspace-action --action <name> [flags]
+            Usage: fleet workspace-action --action <name> [flags]
 
             Perform workspace context-menu actions from CLI/socket.
 
@@ -16665,19 +16665,19 @@ struct CMUXCLI {
               Blue, Navy, Indigo, Purple, Magenta, Rose, Brown, Charcoal
 
             Example:
-              cmux workspace-action --workspace workspace:2 --action pin
-              cmux workspace-action --action rename --title "infra"
-              cmux workspace-action close-others
-              cmux workspace-action --action set-color --color blue
-              cmux workspace-action --action set-color --color "#C0392B"
-              cmux workspace-action set-color Amber
-              cmux workspace-action --action set-description --description "Ship checklist"
-              cmux workspace-action --action set-description $'Ship checklist\n- verify build\n- post notes'
-              cmux workspace-action clear-color
+              fleet workspace-action --workspace workspace:2 --action pin
+              fleet workspace-action --action rename --title "infra"
+              fleet workspace-action close-others
+              fleet workspace-action --action set-color --color blue
+              fleet workspace-action --action set-color --color "#C0392B"
+              fleet workspace-action set-color Amber
+              fleet workspace-action --action set-description --description "Ship checklist"
+              fleet workspace-action --action set-description $'Ship checklist\n- verify build\n- post notes'
+              fleet workspace-action clear-color
             """
         case "tab-action":
             return """
-            Usage: cmux tab-action --action <name> [flags]
+            Usage: fleet tab-action --action <name> [flags]
 
             Perform horizontal tab context-menu actions from CLI/socket.
 
@@ -16700,16 +16700,16 @@ struct CMUXCLI {
               --focus <true|false>         Focus the destination when supported (default: false for move-to-new-workspace)
 
             Example:
-              cmux tab-action --tab tab:3 --action pin
-              cmux tab-action --action close-right
-              cmux tab-action --tab tab:2 --action move-to-new-workspace
-              cmux tab-action --tab tab:2 --action rename --title "build logs"
+              fleet tab-action --tab tab:3 --action pin
+              fleet tab-action --action close-right
+              fleet tab-action --tab tab:2 --action move-to-new-workspace
+              fleet tab-action --tab tab:2 --action rename --title "build logs"
             """
         case "move-tab-to-new-workspace", "detach-tab":
             return Self.moveTabToNewWorkspaceCommandHelp
         case "rename-tab":
             return """
-            Usage: cmux rename-tab [--workspace <id|ref|index>] [--tab <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--] <title>
+            Usage: fleet rename-tab [--workspace <id|ref|index>] [--tab <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--] <title>
 
             Compatibility alias for tab-action rename.
 
@@ -16727,13 +16727,13 @@ struct CMUXCLI {
               --title <text>         Explicit title (or use trailing positional title)
 
             Examples:
-              cmux rename-tab "build logs"
-              cmux rename-tab --tab tab:3 "staging server"
-              cmux rename-tab --workspace workspace:2 --surface surface:5 --title "agent run"
+              fleet rename-tab "build logs"
+              fleet rename-tab --tab tab:3 "staging server"
+              fleet rename-tab --workspace workspace:2 --surface surface:5 --title "agent run"
             """
         case "new-workspace":
             return """
-            Usage: cmux new-workspace [--name <title>] [--description <text>] [--cwd <path>] [--command <text>] [--env KEY=VALUE]... [--env-file <path>]... [--layout <json>] [--window <id|ref|index>] [--focus <true|false>] [--group <id|ref>] [--group-placement afterCurrent|top|end] [--group-reference <workspace>]
+            Usage: fleet new-workspace [--name <title>] [--description <text>] [--cwd <path>] [--command <text>] [--env KEY=VALUE]... [--env-file <path>]... [--layout <json>] [--window <id|ref|index>] [--focus <true|false>] [--group <id|ref>] [--group-placement afterCurrent|top|end] [--group-reference <workspace>]
 
             Create a new workspace in the caller's window.
 
@@ -16754,16 +16754,16 @@ struct CMUXCLI {
               --group-reference <workspace> Reference workspace for afterCurrent placement
 
             Example:
-              cmux new-workspace
-              cmux new-workspace --name "Build Server"
-              cmux new-workspace --name "Launch" --description "Ship checklist"
-              cmux new-workspace --cwd ~/projects/myapp
-              cmux new-workspace --cwd . --command "npm test"
-              cmux new-workspace --name "Dev" --layout '{"direction":"horizontal","split":0.5,"children":[{"pane":{"surfaces":[{"type":"terminal","command":"vim"}]}},{"pane":{"surfaces":[{"type":"terminal","command":"npm run start"}]}}]}'
+              fleet new-workspace
+              fleet new-workspace --name "Build Server"
+              fleet new-workspace --name "Launch" --description "Ship checklist"
+              fleet new-workspace --cwd ~/projects/myapp
+              fleet new-workspace --cwd . --command "npm test"
+              fleet new-workspace --name "Dev" --layout '{"direction":"horizontal","split":0.5,"children":[{"pane":{"surfaces":[{"type":"terminal","command":"vim"}]}},{"pane":{"surfaces":[{"type":"terminal","command":"npm run start"}]}}]}'
             """
         case "list-workspaces":
             return """
-            Usage: cmux list-workspaces [--window <id|ref|index>]
+            Usage: fleet list-workspaces [--window <id|ref|index>]
 
             List workspaces in a window.
 
@@ -16771,7 +16771,7 @@ struct CMUXCLI {
               --window <id|ref|index>   Target window (default: caller/current window)
 
             Example:
-              cmux list-workspaces
+              fleet list-workspaces
             """
         case "workspace":
             return Self.workspaceCommandUsage
@@ -16795,7 +16795,7 @@ struct CMUXCLI {
                 defaultValue: "Manage collapsible workspace groups in the sidebar. Each group is owned by an \"anchor\" workspace; the group header IS the anchor's sidebar representation. Closing the anchor closes only that workspace and promotes the group's next member to be the new anchor, so the group and its other members stay intact. When the anchor is the group's only workspace, the group is removed."
             )
             return """
-            Usage: cmux workspace-group <subcommand> [flags]
+            Usage: fleet workspace-group <subcommand> [flags]
 
             \(overview)
 
@@ -16841,7 +16841,7 @@ struct CMUXCLI {
             return Self.moshTmuxCommandUsage
         case "ssh-tmux":
             let help = String(localized: "cli.help.ssh-tmux", defaultValue: """
-            Usage: cmux ssh-tmux <destination> [--port <n>] [--identity <path>] [--no-focus]
+            Usage: fleet ssh-tmux <destination> [--port <n>] [--identity <path>] [--no-focus]
 
             Mirror a remote host's tmux sessions into the current window's sidebar over
             SSH tmux control mode (tmux -CC). Each session becomes a workspace, each
@@ -16860,8 +16860,8 @@ struct CMUXCLI {
               --no-focus          Do not select the mirror workspace or focus its window
 
             Example:
-              cmux ssh-tmux dev@my-host
-              cmux ssh-tmux dev@my-host --port 2222 --identity ~/.ssh/id_ed25519
+              fleet ssh-tmux dev@my-host
+              fleet ssh-tmux dev@my-host --port 2222 --identity ~/.ssh/id_ed25519
             """)
             let newWindowHelp = String(
                 localized: "cli.help.ssh-tmux.newWindow",
@@ -16873,24 +16873,24 @@ struct CMUXCLI {
             return "\(help)\n\n\(newWindowHelp)"
         case "ssh-session-list":
             return """
-            Usage: cmux ssh-session-list [--workspace <id|ref|index> | --all-workspaces]
+            Usage: fleet ssh-session-list [--workspace <id|ref|index> | --all-workspaces]
 
-            List persisted cmux ssh PTY sessions for a remote workspace.
+            List persisted fleet ssh PTY sessions for a remote workspace.
 
             Flags:
               --workspace <id|ref|index>  Target workspace (default: $CMUX_WORKSPACE_ID)
               --all-workspaces            List sessions in every active remote workspace
 
             Example:
-              cmux ssh-session-list
-              cmux ssh-session-list --workspace workspace:2
-              cmux ssh-session-list --all-workspaces
+              fleet ssh-session-list
+              fleet ssh-session-list --workspace workspace:2
+              fleet ssh-session-list --all-workspaces
             """
         case "ssh-session-attach":
             return """
-            Usage: cmux ssh-session-attach --session-id <id> [flags]
+            Usage: fleet ssh-session-attach --session-id <id> [flags]
 
-            Open a terminal surface attached to a persisted cmux ssh PTY session.
+            Open a terminal surface attached to a persisted fleet ssh PTY session.
 
             Flags:
               --workspace <id|ref|index>  Target workspace (default: $CMUX_WORKSPACE_ID/current)
@@ -16901,14 +16901,14 @@ struct CMUXCLI {
               --focus <true|false>        Focus the attached surface (default: true)
 
             Example:
-              cmux ssh-session-attach --session-id ssh-abc
-              cmux ssh-session-attach --workspace workspace:2 --session-id ssh-abc --split right
+              fleet ssh-session-attach --session-id ssh-abc
+              fleet ssh-session-attach --workspace workspace:2 --session-id ssh-abc --split right
             """
         case "ssh-session-cleanup":
             return """
-            Usage: cmux ssh-session-cleanup [--workspace <id|ref|index> | --all-workspaces] (--session-id <id> | --all)
+            Usage: fleet ssh-session-cleanup [--workspace <id|ref|index> | --all-workspaces] (--session-id <id> | --all)
 
-            Close persisted cmux ssh PTY sessions for a remote workspace.
+            Close persisted fleet ssh PTY sessions for a remote workspace.
 
             Flags:
               --workspace <id|ref|index>  Target workspace (default: $CMUX_WORKSPACE_ID)
@@ -16917,24 +16917,24 @@ struct CMUXCLI {
               --all                       Close every persisted PTY session in the target scope
 
             Example:
-              cmux ssh-session-cleanup --session-id ssh-abc
-              cmux ssh-session-cleanup --workspace workspace:2 --all
-              cmux ssh-session-cleanup --all-workspaces --all
+              fleet ssh-session-cleanup --session-id ssh-abc
+              fleet ssh-session-cleanup --workspace workspace:2 --all
+              fleet ssh-session-cleanup --all-workspaces --all
             """
         case "remote-daemon-status":
             return """
-            Usage: cmux remote-daemon-status [--os <darwin|linux>] [--arch <arm64|amd64>]
+            Usage: fleet remote-daemon-status [--os <darwin|linux>] [--arch <arm64|amd64>]
 
             Show the embedded cmuxd-remote release manifest, local cache status, checksum verification state,
             and the GitHub attestation verification command for a target platform.
 
             Example:
-              cmux remote-daemon-status
-              cmux remote-daemon-status --os linux --arch arm64
+              fleet remote-daemon-status
+              fleet remote-daemon-status --os linux --arch arm64
             """
         case "new-split":
             return """
-            Usage: cmux new-split <left|right|up|down> [flags]
+            Usage: fleet new-split <left|right|up|down> [flags]
 
             Split the current pane in the given direction.
 
@@ -16947,12 +16947,12 @@ struct CMUXCLI {
               --focus <true|false>   Focus the new split (default: false)
 
             Example:
-              cmux new-split right
-              cmux new-split down --workspace workspace:1
+              fleet new-split right
+              fleet new-split down --workspace workspace:1
             """
         case "list-panes":
             return """
-            Usage: cmux list-panes [--workspace <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet list-panes [--workspace <id|ref|index>] [--window <id|ref|index>]
 
             List panes in a workspace.
 
@@ -16961,12 +16961,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux list-panes
-              cmux list-panes --workspace workspace:2
+              fleet list-panes
+              fleet list-panes --workspace workspace:2
             """
         case "list-pane-surfaces":
             return """
-            Usage: cmux list-pane-surfaces [--workspace <id|ref|index>] [--pane <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet list-pane-surfaces [--workspace <id|ref|index>] [--pane <id|ref|index>] [--window <id|ref|index>]
 
             List surfaces in a pane.
 
@@ -16976,12 +16976,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace/pane refs and indexes
 
             Example:
-              cmux list-pane-surfaces
-              cmux list-pane-surfaces --workspace workspace:2 --pane pane:1
+              fleet list-pane-surfaces
+              fleet list-pane-surfaces --workspace workspace:2 --pane pane:1
             """
         case "tree":
             return """
-            Usage: cmux tree [flags]
+            Usage: fleet tree [flags]
 
             Print the hierarchy of windows, workspaces, panes, and surfaces.
 
@@ -16994,24 +16994,24 @@ struct CMUXCLI {
             Output:
               Text mode prints a box-drawing tree with markers:
               - ◀ active (true focused window/workspace/pane/surface path)
-              - ◀ here (caller surface where `cmux tree` was invoked)
+              - ◀ here (caller surface where `fleet tree` was invoked)
               - workspace [selected]
               - pane [focused]
               - surface [selected]
               Browser surfaces also include their current URL.
 
             Example:
-              cmux tree
-              cmux tree --all
-              cmux tree --window window:2
-              cmux tree --workspace workspace:2
+              fleet tree
+              fleet tree --all
+              fleet tree --window window:2
+              fleet tree --workspace workspace:2
               cmux --json tree --all
             """
         case "top":
             return """
-            Usage: cmux top [flags]
+            Usage: fleet top [flags]
 
-            Print CPU and RAM usage by cmux window, workspace, pane, surface, status tag, and browser webview.
+            Print CPU and RAM usage by fleet window, workspace, pane, surface, status tag, and browser webview.
 
             Flags:
               --all                         Include all windows (default: current window only)
@@ -17030,19 +17030,19 @@ struct CMUXCLI {
               TSV columns are: cpu_percent, memory_bytes, process_count, kind, ref, parent_ref, title.
 
             Example:
-              cmux top
-              cmux top --all
-              cmux top --window window:2
-              cmux top --sort cpu
-              cmux top --format tsv | sort -t $'\\t' -nrk1,1
-              cmux top --workspace workspace:2 --processes
+              fleet top
+              fleet top --all
+              fleet top --window window:2
+              fleet top --sort cpu
+              fleet top --format tsv | sort -t $'\\t' -nrk1,1
+              fleet top --workspace workspace:2 --processes
               cmux --json top --all
             """
         case "memory":
             return String(localized: "cli.help.memory", defaultValue: """
-            Usage: cmux memory [flags]
+            Usage: fleet memory [flags]
 
-            Diagnose cmux app memory separately from recursive terminal child-process RSS.
+            Diagnose fleet app memory separately from recursive terminal child-process RSS.
 
             Flags:
               --all                         Include all windows (default: current window only)
@@ -17051,18 +17051,18 @@ struct CMUXCLI {
               --json                        Structured JSON output
 
             Output:
-              App footprint is the direct cmux process physical footprint from macOS process accounting.
-              Child RSS is recursive resident memory for descendants of the cmux app process,
+              App footprint is the direct fleet process physical footprint from macOS process accounting.
+              Child RSS is recursive resident memory for descendants of the fleet app process,
               grouped by command name and attributed back to workspace, pane, and surface when known.
 
             Example:
-              cmux memory
-              cmux memory --groups 20
+              fleet memory
+              fleet memory --groups 20
               cmux --json memory --all
             """)
         case "focus-pane":
             return """
-            Usage: cmux focus-pane [--pane <id|ref|index> | <id|ref|index>] [flags]
+            Usage: fleet focus-pane [--pane <id|ref|index> | <id|ref|index>] [flags]
 
             Focus the specified pane.
 
@@ -17072,13 +17072,13 @@ struct CMUXCLI {
               --window <id|ref|index>     Window context for workspace/pane refs and indexes
 
             Example:
-              cmux focus-pane --pane pane:2
-              cmux focus-pane pane:1
-              cmux focus-pane --pane pane:1 --workspace workspace:2
+              fleet focus-pane --pane pane:2
+              fleet focus-pane pane:1
+              fleet focus-pane --pane pane:1 --workspace workspace:2
             """
         case "new-pane":
             return """
-            Usage: cmux new-pane [flags]
+            Usage: fleet new-pane [flags]
 
             Create a new pane in the workspace.
 
@@ -17094,14 +17094,14 @@ struct CMUXCLI {
               --focus <true|false>                Focus the new pane (default: false)
 
             Example:
-              cmux new-pane
-              cmux new-pane --type browser --direction down --url https://example.com
-              cmux new-pane --type simulator --direction right
-              cmux new-pane --type browser --placement dock --url https://example.com
+              fleet new-pane
+              fleet new-pane --type browser --direction down --url https://example.com
+              fleet new-pane --type simulator --direction right
+              fleet new-pane --type browser --placement dock --url https://example.com
             """
         case "new-surface":
             return """
-            Usage: cmux new-surface [flags]
+            Usage: fleet new-surface [flags]
 
             Create a new surface (tab) in a pane.
 
@@ -17121,15 +17121,15 @@ struct CMUXCLI {
               --focus <true|false>        Focus the new surface (default: false)
 
             Example:
-              cmux new-surface
-              cmux new-surface --type browser --pane pane:1 --url https://example.com
-              cmux new-surface --type simulator --pane pane:1 --focus true
-              cmux new-surface --type agent-session --provider claude --renderer solid --focus true
-              cmux new-surface --type browser --placement dock --url https://example.com
+              fleet new-surface
+              fleet new-surface --type browser --pane pane:1 --url https://example.com
+              fleet new-surface --type simulator --pane pane:1 --focus true
+              fleet new-surface --type agent-session --provider claude --renderer solid --focus true
+              fleet new-surface --type browser --placement dock --url https://example.com
             """
         case "close-surface":
             return """
-            Usage: cmux close-surface [flags]
+            Usage: fleet close-surface [flags]
 
             Close a surface. Defaults to the focused surface if none specified.
 
@@ -17140,12 +17140,12 @@ struct CMUXCLI {
               --window <id|ref|index>     Window context for workspace/surface refs and indexes
 
             Example:
-              cmux close-surface
-              cmux close-surface --surface surface:3
+              fleet close-surface
+              fleet close-surface --surface surface:3
             """
         case "drag-surface-to-split":
             return """
-            Usage: cmux drag-surface-to-split --surface <id|ref|index> <left|right|up|down> [flags]
+            Usage: fleet drag-surface-to-split --surface <id|ref|index> <left|right|up|down> [flags]
 
             Drag a surface into a new split in the given direction.
 
@@ -17157,12 +17157,12 @@ struct CMUXCLI {
               --focus <true|false>         Focus the split-off surface (default: false)
 
             Example:
-              cmux drag-surface-to-split --surface surface:1 right
-              cmux drag-surface-to-split --panel surface:2 down
+              fleet drag-surface-to-split --surface surface:1 right
+              fleet drag-surface-to-split --panel surface:2 down
             """
         case "split-off":
             return """
-            Usage: cmux split-off --surface <id|ref|index> <left|right|up|down> [flags]
+            Usage: fleet split-off --surface <id|ref|index> <left|right|up|down> [flags]
 
             Move an existing surface into a new split without changing focus by default.
 
@@ -17174,28 +17174,28 @@ struct CMUXCLI {
               --focus <true|false>         Focus the split-off surface (default: false)
 
             Example:
-              cmux split-off --surface surface:1 right
-              cmux split-off --workspace workspace:2 --surface surface:4 down
+              fleet split-off --surface surface:1 right
+              fleet split-off --workspace workspace:2 --surface surface:4 down
             """
         case "refresh-surfaces":
             return """
-            Usage: cmux refresh-surfaces
+            Usage: fleet refresh-surfaces
 
             Refresh surface snapshots for the focused workspace.
             """
         case "reload-config":
             return """
-            Usage: cmux reload-config
+            Usage: fleet reload-config
 
             Run the same configuration reload as the Reload Configuration shortcut.
             This reloads Ghostty config, re-reads \(FleetAppIdentity.configFileDisplayPath), and refreshes terminals.
 
             Example:
-              cmux reload-config
+              fleet reload-config
             """
         case "surface-health":
             return """
-            Usage: cmux surface-health [--workspace <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet surface-health [--workspace <id|ref|index>] [--window <id|ref|index>]
 
             List health details for surfaces in a workspace.
 
@@ -17204,16 +17204,16 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux surface-health
-              cmux surface-health --workspace workspace:2
+              fleet surface-health
+              fleet surface-health --workspace workspace:2
             """
         case "surface", "surface-resume":
             return """
-            Usage: cmux surface resume set [flags] -- <argv...>
-                   cmux surface resume set [flags] --shell <command>
-                   cmux surface resume show [--json] [flags]
-                   cmux surface resume get [--json] [flags]
-                   cmux surface resume clear [flags]
+            Usage: fleet surface resume set [flags] -- <argv...>
+                   fleet surface resume set [flags] --shell <command>
+                   fleet surface resume show [--json] [flags]
+                   fleet surface resume get [--json] [flags]
+                   fleet surface resume clear [flags]
 
             Attach restart command metadata to a terminal surface.
             Public CLI bindings are stored for inspection and manual restore.
@@ -17230,20 +17230,20 @@ struct CMUXCLI {
               --source <source>        Binding source label
 
             Examples:
-              cmux surface resume set --kind tmux --shell "tmux attach -t work"
-              cmux surface resume set --kind opencode --checkpoint ses_123 -- opencode --session ses_123
-              cmux surface resume show --json
+              fleet surface resume set --kind tmux --shell "tmux attach -t work"
+              fleet surface resume set --kind opencode --checkpoint ses_123 -- opencode --session ses_123
+              fleet surface resume show --json
             """
         case "debug-terminals":
             return """
-            Usage: cmux debug-terminals
+            Usage: fleet debug-terminals
 
             Print live Ghostty terminal runtime metadata across all windows and workspaces.
             Intended for debugging stray or detached terminal views.
             """
         case "trigger-flash":
             return """
-            Usage: cmux trigger-flash [--workspace <id|ref|index>] [--surface <id|ref|index>] [--panel <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet trigger-flash [--workspace <id|ref|index>] [--surface <id|ref|index>] [--panel <id|ref|index>] [--window <id|ref|index>]
 
             Trigger the unread flash indicator for a surface.
 
@@ -17254,12 +17254,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace/surface refs and indexes
 
             Example:
-              cmux trigger-flash
-              cmux trigger-flash --workspace workspace:2 --surface surface:3
+              fleet trigger-flash
+              fleet trigger-flash --workspace workspace:2 --surface surface:3
             """
         case "list-panels":
             return """
-            Usage: cmux list-panels [--workspace <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet list-panels [--workspace <id|ref|index>] [--window <id|ref|index>]
 
             List surfaces (panels) in a workspace.
 
@@ -17268,12 +17268,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux list-panels
-              cmux list-panels --workspace workspace:2
+              fleet list-panels
+              fleet list-panels --workspace workspace:2
             """
         case "focus-panel":
             return """
-            Usage: cmux focus-panel --panel <id|ref|index> [--workspace <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet focus-panel --panel <id|ref|index> [--workspace <id|ref|index>] [--window <id|ref|index>]
 
             Focus a specific panel (surface).
 
@@ -17283,12 +17283,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace/panel refs and indexes
 
             Example:
-              cmux focus-panel --panel surface:2
-              cmux focus-panel --panel surface:5 --workspace workspace:2
+              fleet focus-panel --panel surface:2
+              fleet focus-panel --panel surface:5 --workspace workspace:2
             """
         case "close-workspace":
             return """
-            Usage: cmux close-workspace --workspace <id|ref|index> [--window <id|ref|index>]
+            Usage: fleet close-workspace --workspace <id|ref|index> [--window <id|ref|index>]
 
             Close the specified workspace.
 
@@ -17297,11 +17297,11 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux close-workspace --workspace workspace:2
+              fleet close-workspace --workspace workspace:2
             """
         case "select-workspace":
             return """
-            Usage: cmux select-workspace --workspace <id|ref|index> [--window <id|ref|index>]
+            Usage: fleet select-workspace --workspace <id|ref|index> [--window <id|ref|index>]
 
             Select (switch to) the specified workspace.
 
@@ -17310,12 +17310,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux select-workspace --workspace workspace:2
-              cmux select-workspace --workspace 0
+              fleet select-workspace --workspace workspace:2
+              fleet select-workspace --workspace 0
             """
         case "rename-workspace", "rename-window":
             return """
-            Usage: cmux rename-workspace [--workspace <id|ref|index>] [--window <id|ref|index>] [--] <title>
+            Usage: fleet rename-workspace [--workspace <id|ref|index>] [--window <id|ref|index>] [--] <title>
 
             Rename a workspace. Defaults to the current workspace.
             tmux-compatible alias: rename-window
@@ -17325,18 +17325,18 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux rename-workspace "backend logs"
-              cmux rename-window --workspace workspace:2 "agent run"
+              fleet rename-workspace "backend logs"
+              fleet rename-window --workspace workspace:2 "agent run"
             """
         case "current-workspace":
             return """
-            Usage: cmux current-workspace [--window <id|ref|index>]
+            Usage: fleet current-workspace [--window <id|ref|index>]
 
             Print the selected workspace ID for a window.
             """
         case "capture-pane":
             return """
-            Usage: cmux capture-pane [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--scrollback] [--lines <n>]
+            Usage: fleet capture-pane [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--scrollback] [--lines <n>]
 
             tmux-compatible alias for reading terminal text from a pane.
 
@@ -17348,11 +17348,11 @@ struct CMUXCLI {
               --lines <n>            Return only the last N lines (implies --scrollback)
 
             Example:
-              cmux capture-pane --workspace workspace:2 --surface surface:1 --scrollback --lines 200
+              fleet capture-pane --workspace workspace:2 --surface surface:1 --scrollback --lines 200
             """
         case "resize-pane":
             return """
-            Usage: cmux resize-pane [--pane <id|ref|index>] [--workspace <id|ref|index>] [--window <id|ref|index>] [-L|-R|-U|-D] [--amount <n>]
+            Usage: fleet resize-pane [--pane <id|ref|index>] [--workspace <id|ref|index>] [--window <id|ref|index>] [-L|-R|-U|-D] [--amount <n>]
 
             tmux-compatible pane resize command.
 
@@ -17365,7 +17365,7 @@ struct CMUXCLI {
             """
         case "pipe-pane":
             return """
-            Usage: cmux pipe-pane [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--command <shell-command> | <shell-command>]
+            Usage: fleet pipe-pane [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--command <shell-command> | <shell-command>]
 
             Capture pane text and pipe it to a shell command via stdin.
 
@@ -17377,7 +17377,7 @@ struct CMUXCLI {
             """
         case "wait-for":
             return """
-            Usage: cmux wait-for [-S|--signal] <name> [--timeout <seconds>]
+            Usage: fleet wait-for [-S|--signal] <name> [--timeout <seconds>]
 
             Wait for or signal a named synchronization token.
 
@@ -17387,7 +17387,7 @@ struct CMUXCLI {
             """
         case "swap-pane":
             return """
-            Usage: cmux swap-pane --pane <id|ref|index> --target-pane <id|ref|index> [--workspace <id|ref|index>] [--window <id|ref|index>] [--focus <true|false>]
+            Usage: fleet swap-pane --pane <id|ref|index> --target-pane <id|ref|index> [--workspace <id|ref|index>] [--window <id|ref|index>] [--focus <true|false>]
 
             Swap two panes.
 
@@ -17400,7 +17400,7 @@ struct CMUXCLI {
             """
         case "break-pane":
             return """
-            Usage: cmux break-pane [--workspace <id|ref|index>] [--pane <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--focus <true|false>] [--no-focus]
+            Usage: fleet break-pane [--workspace <id|ref|index>] [--pane <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--focus <true|false>] [--no-focus]
 
             Move a pane/surface out into its own pane context.
 
@@ -17414,7 +17414,7 @@ struct CMUXCLI {
             """
         case "join-pane":
             return """
-            Usage: cmux join-pane --target-pane <id|ref|index> [--workspace <id|ref|index>] [--pane <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--focus <true|false>] [--no-focus]
+            Usage: fleet join-pane --target-pane <id|ref|index> [--workspace <id|ref|index>] [--pane <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--focus <true|false>] [--no-focus]
 
             Join a pane/surface into another pane.
 
@@ -17435,7 +17435,7 @@ struct CMUXCLI {
             """
         case "last-pane":
             return """
-            Usage: cmux last-pane [--workspace <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet last-pane [--workspace <id|ref|index>] [--window <id|ref|index>]
 
             Focus the previously focused pane in a workspace.
 
@@ -17445,7 +17445,7 @@ struct CMUXCLI {
             """
         case "find-window":
             return """
-            Usage: cmux find-window [--window <id|ref|index>] [--content] [--select] [query]
+            Usage: fleet find-window [--window <id|ref|index>] [--content] [--select] [query]
 
             Find workspaces by title (and optionally terminal content).
 
@@ -17456,7 +17456,7 @@ struct CMUXCLI {
             """
         case "clear-history":
             return """
-            Usage: cmux clear-history [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet clear-history [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>]
 
             Clear terminal scrollback history.
 
@@ -17467,7 +17467,7 @@ struct CMUXCLI {
             """
         case "set-hook":
             return """
-            Usage: cmux set-hook [--list] [--unset <event>] | <event> <command>
+            Usage: fleet set-hook [--list] [--unset <event>] | <event> <command>
 
             Manage tmux-compat hook definitions.
 
@@ -17477,7 +17477,7 @@ struct CMUXCLI {
             """
         case "popup":
             return """
-            Usage: cmux popup
+            Usage: fleet popup
 
             tmux compatibility placeholder. This command is currently not supported.
             """
@@ -17489,7 +17489,7 @@ struct CMUXCLI {
             """
         case "set-buffer":
             return """
-            Usage: cmux set-buffer [--name <name>] [--] <text>
+            Usage: fleet set-buffer [--name <name>] [--] <text>
 
             Save text into a named tmux-compat buffer.
 
@@ -17498,7 +17498,7 @@ struct CMUXCLI {
             """
         case "paste-buffer":
             return """
-            Usage: cmux paste-buffer [--name <name>] [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet paste-buffer [--name <name>] [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>]
 
             Paste a named tmux-compat buffer into a surface.
 
@@ -17510,13 +17510,13 @@ struct CMUXCLI {
             """
         case "list-buffers":
             return """
-            Usage: cmux list-buffers
+            Usage: fleet list-buffers
 
             List tmux-compat buffers.
             """
         case "respawn-pane":
             return """
-            Usage: cmux respawn-pane [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--command <cmd> | <cmd>]
+            Usage: fleet respawn-pane [--workspace <id|ref|index>] [--surface <id|ref|index>] [--window <id|ref|index>] [--command <cmd> | <cmd>]
 
             Send a command (or default shell restart command) to a surface.
 
@@ -17528,7 +17528,7 @@ struct CMUXCLI {
             """
         case "display-message":
             return """
-            Usage: cmux display-message [-p|--print] <text>
+            Usage: fleet display-message [-p|--print] <text>
 
             Print text (or show it via notification bridge in parity mode).
 
@@ -17537,7 +17537,7 @@ struct CMUXCLI {
             """
         case "read-screen":
             return """
-            Usage: cmux read-screen [flags]
+            Usage: fleet read-screen [flags]
 
             Read terminal text from a surface as plain text.
 
@@ -17549,12 +17549,12 @@ struct CMUXCLI {
               --lines <n>            Limit to the last n lines (implies --scrollback)
 
             Example:
-              cmux read-screen
-              cmux read-screen --surface surface:2 --scrollback --lines 200
+              fleet read-screen
+              fleet read-screen --surface surface:2 --scrollback --lines 200
             """
         case "send":
             return """
-            Usage: cmux send [flags] [--] <text>
+            Usage: fleet send [flags] [--] <text>
 
             Send text to a terminal surface. Escape sequences: \\n and \\r send Enter, \\t sends Tab.
 
@@ -17564,12 +17564,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace/surface refs and indexes
 
             Example:
-              cmux send "echo hello"
-              cmux send --surface surface:2 "ls -la\\n"
+              fleet send "echo hello"
+              fleet send --surface surface:2 "ls -la\\n"
             """
         case "send-key":
             return """
-            Usage: cmux send-key [flags] [--] <key>
+            Usage: fleet send-key [flags] [--] <key>
 
             Send a key event to a terminal surface.
 
@@ -17579,12 +17579,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace/surface refs and indexes
 
             Example:
-              cmux send-key enter
-              cmux send-key --surface surface:2 ctrl+c
+              fleet send-key enter
+              fleet send-key --surface surface:2 ctrl+c
             """
         case "send-panel":
             return """
-            Usage: cmux send-panel --panel <id|ref|index> [flags] [--] <text>
+            Usage: fleet send-panel --panel <id|ref|index> [flags] [--] <text>
 
             Send text to a specific panel (surface). Escape sequences: \\n and \\r send Enter, \\t sends Tab.
 
@@ -17594,11 +17594,11 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace/panel refs and indexes
 
             Example:
-              cmux send-panel --panel surface:2 "echo hello\\n"
+              fleet send-panel --panel surface:2 "echo hello\\n"
             """
         case "send-key-panel":
             return """
-            Usage: cmux send-key-panel --panel <id|ref|index> [flags] [--] <key>
+            Usage: fleet send-key-panel --panel <id|ref|index> [flags] [--] <key>
 
             Send a key event to a specific panel (surface).
 
@@ -17608,8 +17608,8 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace/panel refs and indexes
 
             Example:
-              cmux send-key-panel --panel surface:2 enter
-              cmux send-key-panel --panel surface:2 ctrl+c
+              fleet send-key-panel --panel surface:2 enter
+              fleet send-key-panel --panel surface:2 ctrl+c
             """
         case "notify":
             let replyHelp = String(
@@ -17617,7 +17617,7 @@ struct CMUXCLI {
                 defaultValue: "--reply                Allow a free-text inline reply"
             )
             return """
-            Usage: cmux notify [flags]
+            Usage: fleet notify [flags]
 
             Send a notification to a workspace/surface.
 
@@ -17631,19 +17631,19 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace/surface refs and indexes
 
             Example:
-              cmux notify --title "Build done" --body "All tests passed"
-              cmux notify --title "Error" --subtitle "test.swift" --body "Line 42: syntax error"
-              cmux notify --surface <uuid> --title "Build done"
+              fleet notify --title "Build done" --body "All tests passed"
+              fleet notify --title "Error" --subtitle "test.swift" --body "Line 42: syntax error"
+              fleet notify --surface <uuid> --title "Build done"
             """
         case "list-notifications":
             return """
-            Usage: cmux list-notifications
+            Usage: fleet list-notifications
 
             List queued notifications.
             """
         case "dismiss-notification":
             return String(localized: "cli.help.dismissNotification", defaultValue: """
-            Usage: cmux dismiss-notification (--id <uuid> | --all-read)
+            Usage: fleet dismiss-notification (--id <uuid> | --all-read)
 
             Remove one notification, or remove every already-read notification.
 
@@ -17655,7 +17655,7 @@ struct CMUXCLI {
             """)
         case "mark-notification-read":
             return String(localized: "cli.help.markNotificationRead", defaultValue: """
-            Usage: cmux mark-notification-read (--id <uuid> | --workspace <id|ref|index> [--surface <id|ref|index>] [--window <id|ref|index>] | --all)
+            Usage: fleet mark-notification-read (--id <uuid> | --workspace <id|ref|index> [--surface <id|ref|index>] [--window <id|ref|index>] | --all)
 
             Mark notifications read without opening them. Exactly one selector is required.
 
@@ -17670,7 +17670,7 @@ struct CMUXCLI {
             """)
         case "open-notification":
             return String(localized: "cli.help.openNotification", defaultValue: """
-            Usage: cmux open-notification --id <uuid>
+            Usage: fleet open-notification --id <uuid>
 
             Focus the notification's workspace and surface, then mark the row read.
 
@@ -17681,7 +17681,7 @@ struct CMUXCLI {
             """)
         case "jump-to-unread":
             return String(localized: "cli.help.jumpToUnread", defaultValue: """
-            Usage: cmux jump-to-unread
+            Usage: fleet jump-to-unread
 
             Focus the latest unread notification, matching the Notifications page action.
 
@@ -17691,13 +17691,13 @@ struct CMUXCLI {
             """)
         case "clear-notifications":
             return """
-            Usage: cmux clear-notifications [--workspace <id|ref|index>] [--window <id|ref|index>]
+            Usage: fleet clear-notifications [--workspace <id|ref|index>] [--window <id|ref|index>]
 
             Clear all queued notifications, or only the selected/targeted workspace when --window or --workspace is set.
             """
         case "set-status":
             return String(localized: "cli.help.setStatus", defaultValue: """
-            Usage: cmux set-status <key> <value> [flags]
+            Usage: fleet set-status <key> <value> [flags]
 
             Set a sidebar status entry for a workspace. Status entries appear as
             pills in the sidebar tab row. Use a unique key so different tools
@@ -17711,12 +17711,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux set-status build "compiling" --icon hammer --color "#ff9500" --priority 80
-              cmux set-status deploy "v1.2.3" --workspace workspace:2
+              fleet set-status build "compiling" --icon hammer --color "#ff9500" --priority 80
+              fleet set-status deploy "v1.2.3" --workspace workspace:2
             """)
         case "clear-status":
             return """
-            Usage: cmux clear-status <key> [flags]
+            Usage: fleet clear-status <key> [flags]
 
             Remove a sidebar status entry by key.
 
@@ -17725,11 +17725,11 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux clear-status build
+              fleet clear-status build
             """
         case "list-status":
             return """
-            Usage: cmux list-status [flags]
+            Usage: fleet list-status [flags]
 
             List all sidebar status entries for a workspace.
 
@@ -17738,12 +17738,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux list-status
-              cmux list-status --workspace workspace:2
+              fleet list-status
+              fleet list-status --workspace workspace:2
             """
         case "set-progress":
             return """
-            Usage: cmux set-progress <0.0-1.0> [flags]
+            Usage: fleet set-progress <0.0-1.0> [flags]
 
             Set a progress bar in the sidebar for a workspace.
 
@@ -17753,12 +17753,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux set-progress 0.5 --label "Building..."
-              cmux set-progress 1.0 --label "Done"
+              fleet set-progress 0.5 --label "Building..."
+              fleet set-progress 1.0 --label "Done"
             """
         case "clear-progress":
             return """
-            Usage: cmux clear-progress [flags]
+            Usage: fleet clear-progress [flags]
 
             Clear the sidebar progress bar for a workspace.
 
@@ -17767,11 +17767,11 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux clear-progress
+              fleet clear-progress
             """
         case "log":
             return """
-            Usage: cmux log [flags] [--] <message>
+            Usage: fleet log [flags] [--] <message>
 
             Append a log entry to the sidebar for a workspace.
 
@@ -17782,13 +17782,13 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux log "Build started"
-              cmux log --level error --source build "Compilation failed"
-              cmux log --level success -- "All 42 tests passed"
+              fleet log "Build started"
+              fleet log --level error --source build "Compilation failed"
+              fleet log --level success -- "All 42 tests passed"
             """
         case "clear-log":
             return """
-            Usage: cmux clear-log [flags]
+            Usage: fleet clear-log [flags]
 
             Clear all sidebar log entries for a workspace.
 
@@ -17797,11 +17797,11 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux clear-log
+              fleet clear-log
             """
         case "list-log":
             return """
-            Usage: cmux list-log [flags]
+            Usage: fleet list-log [flags]
 
             List sidebar log entries for a workspace.
 
@@ -17811,12 +17811,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux list-log
-              cmux list-log --limit 5
+              fleet list-log
+              fleet list-log --limit 5
             """
         case "sidebar-state":
             return """
-            Usage: cmux sidebar-state [flags]
+            Usage: fleet sidebar-state [flags]
 
             Dump all sidebar metadata for a workspace (cwd, git branch, ports,
             status entries, progress, log entries).
@@ -17826,12 +17826,12 @@ struct CMUXCLI {
               --window <id|ref|index>      Window context for workspace refs and indexes
 
             Example:
-              cmux sidebar-state
-              cmux sidebar-state --workspace workspace:2
+              fleet sidebar-state
+              fleet sidebar-state --workspace workspace:2
             """
         case "right-sidebar":
             return String(localized: "cli.rightSidebar.usage", defaultValue: """
-            Usage: cmux right-sidebar <command> [flags]
+            Usage: fleet right-sidebar <command> [flags]
 
             Control the right sidebar from the CLI.
 
@@ -17852,13 +17852,13 @@ struct CMUXCLI {
               --no-focus                     With set, switch mode without moving focus
 
             Examples:
-              cmux right-sidebar toggle
-              cmux right-sidebar set find
-              cmux right-sidebar mode
+              fleet right-sidebar toggle
+              fleet right-sidebar set find
+              fleet right-sidebar mode
             """)
         case "sidebar":
             return String(localized: "cli.sidebar.usage", defaultValue: """
-            Usage: cmux sidebar <validate|reload|select|open> [name|--all] [--json]
+            Usage: fleet sidebar <validate|reload|select|open> [name|--all] [--json]
             Validate, reload, select, or open custom sidebars from \(FleetAppIdentity.configDirectoryDisplayPath)/sidebars.
             Commands:
               validate [name]   Validate all custom sidebars, or one named sidebar
@@ -17868,23 +17868,23 @@ struct CMUXCLI {
             """)
         case "set-app-focus":
             return """
-            Usage: cmux set-app-focus <active|inactive|clear>
+            Usage: fleet set-app-focus <active|inactive|clear>
 
             Override app focus state for notification routing tests.
 
             Example:
-              cmux set-app-focus inactive
-              cmux set-app-focus clear
+              fleet set-app-focus inactive
+              fleet set-app-focus clear
             """
         case "simulate-app-active":
             return """
-            Usage: cmux simulate-app-active
+            Usage: fleet simulate-app-active
 
             Trigger the app-active handler used by notification focus tests.
             """
         case "claude-hook":
             return """
-            Usage: cmux claude-hook <session-start|active|stop|idle|notification|notify|prompt-submit> [flags]
+            Usage: fleet claude-hook <session-start|active|stop|idle|notification|notify|prompt-submit> [flags]
 
             Hook for Claude Code integration. Reads JSON from stdin.
 
@@ -17902,22 +17902,22 @@ struct CMUXCLI {
               --surface <id|ref>     Target surface (default: $CMUX_SURFACE_ID)
 
             Example:
-              echo '{"session_id":"abc"}' | cmux claude-hook session-start
-              echo '{}' | cmux claude-hook stop
+              echo '{"session_id":"abc"}' | fleet claude-hook session-start
+              echo '{}' | fleet claude-hook stop
             """
         case "codex":
             return """
-            Usage: cmux codex <install-hooks|uninstall-hooks>
+            Usage: fleet codex <install-hooks|uninstall-hooks>
 
             Manage Codex CLI hooks integration.
 
             Subcommands:
-              install-hooks     Install cmux hooks into ~/.codex/hooks.json
-              uninstall-hooks   Remove cmux hooks from ~/.codex/hooks.json
+              install-hooks     Install fleet hooks into ~/.codex/hooks.json
+              uninstall-hooks   Remove fleet hooks from ~/.codex/hooks.json
             """
         case "browser":
             return """
-            Usage: cmux browser [--surface <id|ref|index> | <surface>] <subcommand> [args]
+            Usage: fleet browser [--surface <id|ref|index> | <surface>] <subcommand> [args]
 
             Browser automation commands. Most subcommands require a surface handle.
             A surface can be passed as `--surface <handle>` or as the first positional token.
@@ -17978,33 +17978,33 @@ struct CMUXCLI {
               identify [--surface <id|ref|index>]
 
             Example:
-              cmux browser open https://example.com
-              cmux browser surface:1 navigate https://google.com
-              cmux browser --surface surface:1 snapshot --interactive
+              fleet browser open https://example.com
+              fleet browser surface:1 navigate https://google.com
+              fleet browser --surface surface:1 snapshot --interactive
             """
-        // Legacy browser aliases — point users to `cmux browser --help`
+        // Legacy browser aliases — point users to `fleet browser --help`
         case "open-browser":
-            return "Legacy alias for 'cmux browser open'. Run 'cmux browser --help' for details."
+            return "Legacy alias for 'fleet browser open'. Run 'fleet browser --help' for details."
         case "navigate":
-            return "Legacy alias for 'cmux browser navigate'. Run 'cmux browser --help' for details."
+            return "Legacy alias for 'fleet browser navigate'. Run 'fleet browser --help' for details."
         case "browser-back":
-            return "Legacy alias for 'cmux browser back'. Run 'cmux browser --help' for details."
+            return "Legacy alias for 'fleet browser back'. Run 'fleet browser --help' for details."
         case "browser-forward":
-            return "Legacy alias for 'cmux browser forward'. Run 'cmux browser --help' for details."
+            return "Legacy alias for 'fleet browser forward'. Run 'fleet browser --help' for details."
         case "browser-reload":
-            return "Legacy alias for 'cmux browser reload'. Run 'cmux browser --help' for details."
+            return "Legacy alias for 'fleet browser reload'. Run 'fleet browser --help' for details."
         case "get-url":
-            return "Legacy alias for 'cmux browser get-url'. Run 'cmux browser --help' for details."
+            return "Legacy alias for 'fleet browser get-url'. Run 'fleet browser --help' for details."
         case "focus-webview":
-            return "Legacy alias for 'cmux browser focus-webview'. Run 'cmux browser --help' for details."
+            return "Legacy alias for 'fleet browser focus-webview'. Run 'fleet browser --help' for details."
         case "is-webview-focused":
-            return "Legacy alias for 'cmux browser is-webview-focused'. Run 'cmux browser --help' for details."
+            return "Legacy alias for 'fleet browser is-webview-focused'. Run 'fleet browser --help' for details."
         case "open": return openSubcommandUsage()
         case "diff": return diffSubcommandUsage()
         case "markdown":
             return """
-            Usage: cmux markdown open <path> [options]
-                   cmux markdown <path>       (shorthand for 'open')
+            Usage: fleet markdown open <path> [options]
+                   fleet markdown <path>       (shorthand for 'open')
 
             Open a markdown file in a formatted viewer panel with live file watching.
             The file is rendered with rich formatting (headings, code blocks, tables,
@@ -18018,10 +18018,10 @@ struct CMUXCLI {
               --focus <true|false>         Focus the markdown panel (default: false)
 
             Examples:
-              cmux markdown open plan.md
-              cmux markdown ~/project/CHANGELOG.md
-              cmux markdown open ./docs/design.md --workspace 0
-              cmux markdown open plan.md --direction down
+              fleet markdown open plan.md
+              fleet markdown ~/project/CHANGELOG.md
+              fleet markdown open ./docs/design.md --workspace 0
+              fleet markdown open plan.md --direction down
             """
         default:
             return nil
@@ -18032,7 +18032,7 @@ struct CMUXCLI {
     private func dispatchSubcommandHelp(command: String, commandArgs: [String]) -> Bool {
         guard commandArgs.contains("--help") || commandArgs.contains("-h") else { return false }
         guard let text = subcommandUsage(command) else { return false }
-        print("cmux \(command)")
+        print("fleet \(command)")
         print("")
         print(text)
         return true
@@ -18983,7 +18983,7 @@ struct CMUXCLI {
         do {
             return try client.sendV2(method: "system.top", params: params, responseTimeout: responseTimeout)
         } catch let error as CLIError where error.message.hasPrefix("method_not_found:") {
-            throw CLIError(message: String(localized: "cli.top.error.processDiagnosticsUnsupported", defaultValue: "cmux top requires a running cmux build that supports process diagnostics"))
+            throw CLIError(message: String(localized: "cli.top.error.processDiagnosticsUnsupported", defaultValue: "fleet top requires a running cmux build that supports process diagnostics"))
         }
     }
 
@@ -21295,7 +21295,7 @@ struct CMUXCLI {
         throw CLIError(message: "Failed to launch claude: \(String(cString: strerror(code)))")
     }
 
-    // MARK: - cmux codex-teams
+    // MARK: - fleet codex-teams
 
     private static let codexTeamsMaxAutoDepth = 2
     private static let codexTeamsReconcileInterval: TimeInterval = 1
@@ -21634,7 +21634,7 @@ struct CMUXCLI {
                     try backfillLoadedThreads(connection: connection)
                     try listenForNotifications(connection: connection)
                 } catch {
-                    cliWriteStderr("cmux codex-teams watcher connection failed: \(error)\n")
+                    cliWriteStderr("fleet codex-teams watcher connection failed: \(error)\n")
                 }
                 _ = reconcileWaiter.wait(timeout: .now() + CMUXCLI.codexTeamsReconcileInterval)
             }
@@ -21657,7 +21657,7 @@ struct CMUXCLI {
                 do {
                     try subscribeToThreadIfNeeded(threadId, connection: connection)
                 } catch {
-                    cliWriteStderr("cmux codex-teams watcher skipped thread \(threadId): \(error)\n")
+                    cliWriteStderr("fleet codex-teams watcher skipped thread \(threadId): \(error)\n")
                 }
             }
         }
@@ -21692,7 +21692,7 @@ struct CMUXCLI {
                 do {
                     try subscribeToThreadIfNeeded(thread.id, connection: connection)
                 } catch {
-                    cliWriteStderr("cmux codex-teams watcher skipped thread \(thread.id): \(error)\n")
+                    cliWriteStderr("fleet codex-teams watcher skipped thread \(thread.id): \(error)\n")
                 }
             }
         }
@@ -21791,14 +21791,14 @@ struct CMUXCLI {
         ) throws -> Bool {
             guard CMUXCLI.codexTeamsApprovalMethods.contains(method) else { return false }
             guard let params = message["params"] as? [String: Any] else {
-                cliWriteStderr("cmux codex-teams watcher ignoring malformed approval \(method) request \(CMUXCLI.requestIdString(requestId))\n")
+                cliWriteStderr("fleet codex-teams watcher ignoring malformed approval \(method) request \(CMUXCLI.requestIdString(requestId))\n")
                 return true
             }
             let relatedItem = CMUXCLI.stringValue(in: params, keys: ["itemId", "item_id"])
                 .flatMap { cachedApprovalItem(itemId: $0) }
             let suppressionKey = approvalSuppressionKey(method: method, requestId: requestId, params: params)
             if approvalIsSuppressed(suppressionKey) {
-                cliWriteStderr("cmux codex-teams watcher leaving previously unresolved approval \(suppressionKey) to native Codex\n")
+                cliWriteStderr("fleet codex-teams watcher leaving previously unresolved approval \(suppressionKey) to native Codex\n")
                 return true
             }
             let feedEvent = CMUXCLI.codexTeamsFeedEvent(
@@ -21808,18 +21808,18 @@ struct CMUXCLI {
                 workspaceId: workspaceId,
                 relatedItem: relatedItem
             )
-            cliWriteStderr("cmux codex-teams watcher forwarding approval \(method) request \(CMUXCLI.requestIdString(requestId)) to Feed\n")
+            cliWriteStderr("fleet codex-teams watcher forwarding approval \(method) request \(CMUXCLI.requestIdString(requestId)) to Feed\n")
             let response: [String: Any]
             do {
                 response = try pushCodexApprovalToFeed(event: feedEvent)
             } catch {
                 suppressApproval(suppressionKey)
-                cliWriteStderr("cmux codex-teams watcher leaving approval \(suppressionKey) to native Codex after Feed push failed: \(error)\n")
+                cliWriteStderr("fleet codex-teams watcher leaving approval \(suppressionKey) to native Codex after Feed push failed: \(error)\n")
                 return true
             }
             guard let decision = CMUXCLI.codexTeamsPermissionMode(fromFeedPushResponse: response) else {
                 suppressApproval(suppressionKey)
-                cliWriteStderr("cmux codex-teams watcher leaving approval \(suppressionKey) to native Codex because Feed did not resolve it\n")
+                cliWriteStderr("fleet codex-teams watcher leaving approval \(suppressionKey) to native Codex because Feed did not resolve it\n")
                 return true
             }
             guard let result = CMUXCLI.codexTeamsAppServerApprovalResponse(
@@ -21827,7 +21827,7 @@ struct CMUXCLI {
                 params: params,
                 mode: decision
             ) else {
-                cliWriteStderr("cmux codex-teams watcher cannot map Feed decision for \(suppressionKey); leaving it to native Codex\n")
+                cliWriteStderr("fleet codex-teams watcher cannot map Feed decision for \(suppressionKey); leaving it to native Codex\n")
                 return true
             }
             try connection.respond(requestId: requestId, result: result)
@@ -21945,7 +21945,7 @@ struct CMUXCLI {
                     reason: "depth",
                     message: String(
                         localized: "cli.codexTeams.watcher.subagent.depthExceeded",
-                        defaultValue: "cmux codex-teams watcher skipped a Codex subagent: depth \(depth) exceeds the automatic pane limit \(maxAutoDepth)."
+                        defaultValue: "fleet codex-teams watcher skipped a Codex subagent: depth \(depth) exceeds the automatic pane limit \(maxAutoDepth)."
                     ) + "\n"
                 )
                 return
@@ -21961,7 +21961,7 @@ struct CMUXCLI {
                     reason: "status",
                     message: String(
                         localized: "cli.codexTeams.watcher.subagent.statusNotAttachable",
-                        defaultValue: "cmux codex-teams watcher skipped a Codex subagent: thread status \(thread.statusType ?? "missing") is not attachable."
+                        defaultValue: "fleet codex-teams watcher skipped a Codex subagent: thread status \(thread.statusType ?? "missing") is not attachable."
                     ) + "\n"
                 )
                 return
@@ -22021,7 +22021,7 @@ struct CMUXCLI {
                         reason: "readiness",
                         message: String(
                             localized: "cli.codexTeams.watcher.subagent.readinessFailed",
-                            defaultValue: "cmux codex-teams watcher could not attach a Codex subagent because its resumed thread was not ready."
+                            defaultValue: "fleet codex-teams watcher could not attach a Codex subagent because its resumed thread was not ready."
                         ) + "\n"
                     )
                     self.stateLock.unlock()
@@ -22030,7 +22030,7 @@ struct CMUXCLI {
                 do {
                     try self.openAttachableThread(threadId: threadId)
                 } catch {
-                    cliWriteStderr("cmux codex-teams watcher failed to open ready subagent \(threadId): \(error)\n")
+                    cliWriteStderr("fleet codex-teams watcher failed to open ready subagent \(threadId): \(error)\n")
                 }
             }
         }
@@ -22077,12 +22077,12 @@ struct CMUXCLI {
             if let code = (error as? CLIError)?.v2Code {
                 message = String(
                     localized: "cli.codexTeams.watcher.subagent.paneCreationFailedWithCode",
-                    defaultValue: "cmux codex-teams watcher could not create a pane for a resumed Codex subagent (error code: \(code))."
+                    defaultValue: "fleet codex-teams watcher could not create a pane for a resumed Codex subagent (error code: \(code))."
                 )
             } else {
                 message = String(
                     localized: "cli.codexTeams.watcher.subagent.paneCreationFailed",
-                    defaultValue: "cmux codex-teams watcher could not create a pane for a resumed Codex subagent."
+                    defaultValue: "fleet codex-teams watcher could not create a pane for a resumed Codex subagent."
                 )
             }
             reportSubagentDiagnosticOnce(
@@ -22413,10 +22413,10 @@ struct CMUXCLI {
             processEnvironment: launcherEnvironment,
             explicitPassword: explicitPassword
         ) else {
-            throw CLIError(message: "cmux codex-teams must be started from a cmux terminal surface")
+            throw CLIError(message: "fleet codex-teams must be started from a fleet terminal surface")
         }
         guard let rootSurfaceId = launchContext.surfaceId, !rootSurfaceId.isEmpty else {
-            throw CLIError(message: "cmux codex-teams must be started from a cmux terminal surface")
+            throw CLIError(message: "fleet codex-teams must be started from a fleet terminal surface")
         }
         // A surface UUID survives workspace moves, so the validated context may
         // supersede every inherited primary and legacy routing alias. Stamp the
@@ -22901,7 +22901,7 @@ struct CMUXCLI {
             do {
                 try watcher.run()
             } catch {
-                cliWriteStderr("cmux codex-teams watcher stopped: \(error)\n")
+                cliWriteStderr("fleet codex-teams watcher stopped: \(error)\n")
             }
         }
     }
@@ -22914,7 +22914,7 @@ struct CMUXCLI {
         return errno == EPERM
     }
 
-    // MARK: - cmux omo (OpenCode + oh-my-openagent)
+    // MARK: - fleet omo (OpenCode + oh-my-openagent)
 
     private func resolveOpenCodeExecutable(searchPath: String?) -> String? {
         resolveExecutableInSearchPath("opencode", searchPath: searchPath)
@@ -22938,11 +22938,11 @@ struct CMUXCLI {
             tmuxShimScript: tmuxScript
         )
 
-        // terminal-notifier shim: intercepts macOS notifications and routes to cmux notify
+        // terminal-notifier shim: intercepts macOS notifications and routes to fleet notify
         let notifierURL = root.appendingPathComponent("terminal-notifier", isDirectory: false)
         let notifierScript = """
         #!/usr/bin/env bash
-        # Intercept terminal-notifier calls and route through cmux notify.
+        # Intercept terminal-notifier calls and route through fleet notify.
         # oh-my-openagent calls: terminal-notifier -title <t> -message <m> [-activate <id>]
         TITLE="" BODY=""
         while [[ $# -gt 0 ]]; do
@@ -23447,7 +23447,7 @@ struct CMUXCLI {
         )
         if !omoIsNonLaunchInvocation(commandArgs: commandArgs),
            normalizedTmuxTarget(launchContext?.surfaceId) == nil {
-            throw CLIError(message: managedTerminalRequiredMessage(displayName: "cmux omo"))
+            throw CLIError(message: managedTerminalRequiredMessage(displayName: "fleet omo"))
         }
 
         // Ensure oh-my-openagent plugin is registered and installed only after a
@@ -23499,7 +23499,7 @@ struct CMUXCLI {
         throw CLIError(message: "Failed to launch opencode: \(String(cString: strerror(code)))\n\nIs opencode installed? Install with:\n  npm install -g opencode-ai")
     }
 
-    // MARK: - cmux omx (Oh My Codex)
+    // MARK: - fleet omx (Oh My Codex)
 
     private func resolveOMXExecutable(searchPath: String?) -> String? {
         resolveExecutableInSearchPath("omx", searchPath: searchPath)
@@ -23587,7 +23587,7 @@ struct CMUXCLI {
         }
 
         guard let omxExecutablePath = resolveOMXExecutable(searchPath: launcherEnvironment["PATH"]) else {
-            throw CLIError(message: "omx is not installed. Install it first:\n  npm install -g oh-my-codex\n\nThen run: cmux omx")
+            throw CLIError(message: "omx is not installed. Install it first:\n  npm install -g oh-my-codex\n\nThen run: fleet omx")
         }
         launcherEnvironment["PATH"] = providerExecutableSearchPath(
             searchPath: launcherEnvironment["PATH"],
@@ -23601,7 +23601,7 @@ struct CMUXCLI {
         )
         if !omxIsNonLaunchInvocation(commandArgs: commandArgs),
            normalizedTmuxTarget(launchContext?.surfaceId) == nil {
-            throw CLIError(message: managedTerminalRequiredMessage(displayName: "cmux omx"))
+            throw CLIError(message: managedTerminalRequiredMessage(displayName: "fleet omx"))
         }
         let shimDirectory = try createOMXShimDirectory()
         configureOMXEnvironment(
@@ -23634,7 +23634,7 @@ struct CMUXCLI {
         throw CLIError(message: "Failed to launch omx: \(String(cString: strerror(code)))\n\nIs oh-my-codex installed? Install with:\n  npm install -g oh-my-codex")
     }
 
-    // MARK: - cmux omc (Oh My Claude Code)
+    // MARK: - fleet omc (Oh My Claude Code)
     private func resolveOMCExecutable(searchPath: String?) -> String? {
         resolveExecutableInSearchPath("omc", searchPath: searchPath)
     }
@@ -23711,7 +23711,7 @@ struct CMUXCLI {
         }
 
         guard let omcExecutablePath = resolveOMCExecutable(searchPath: launcherEnvironment["PATH"]) else {
-            throw CLIError(message: "omc is not installed. Install it first:\n  npm install -g oh-my-claude-sisyphus\n\nThen run: cmux omc")
+            throw CLIError(message: "omc is not installed. Install it first:\n  npm install -g oh-my-claude-sisyphus\n\nThen run: fleet omc")
         }
         launcherEnvironment["PATH"] = providerExecutableSearchPath(
             searchPath: launcherEnvironment["PATH"],
@@ -23726,7 +23726,7 @@ struct CMUXCLI {
         )
         if !AgentLaunchInvocationClassifier().omcLaunchIsNonLaunch(args: commandArgs),
            normalizedTmuxTarget(launchContext?.surfaceId) == nil {
-            throw CLIError(message: managedTerminalRequiredMessage(displayName: "cmux omc"))
+            throw CLIError(message: managedTerminalRequiredMessage(displayName: "fleet omc"))
         }
         configureOMCEnvironment(
             processEnvironment: launcherEnvironment,
@@ -23775,7 +23775,7 @@ struct CMUXCLI {
                 boolFlags: ["-A", "-d", "-P"]
             )
             if parsed.hasFlag("-A") {
-                throw CLIError(message: "new-session -A is not supported in cmux claude-teams mode")
+                throw CLIError(message: "new-session -A is not supported in fleet claude-teams mode")
             }
             var params: [String: Any] = ["focus": false]
             if let cwd = parsed.value("-c") {
@@ -23812,7 +23812,7 @@ struct CMUXCLI {
                 boolFlags: ["-d", "-P"]
             )
             if parsed.value("-t") != nil {
-                throw CLIError(message: "new-window -t is not supported in cmux claude-teams mode")
+                throw CLIError(message: "new-window -t is not supported in fleet claude-teams mode")
             }
             var params: [String: Any] = ["focus": false]
             if let cwd = parsed.value("-c") {
@@ -25964,7 +25964,7 @@ struct CMUXCLI {
             telemetry.breadcrumb("claude-hook.help")
             print(
                 """
-                cmux claude-hook <session-start|stop|session-end|notification|push-notification|prompt-submit|pre-tool-use> [--workspace <id|index>] [--surface <id|index>]
+                fleet claude-hook <session-start|stop|session-end|notification|push-notification|prompt-submit|pre-tool-use> [--workspace <id|index>] [--surface <id|index>]
                 """
             )
 
@@ -26051,7 +26051,7 @@ struct CMUXCLI {
         jsonOutput: Bool
     ) throws {
         guard let subcommand = commandArgs.first?.lowercased() else {
-            throw CLIError(message: "Usage: cmux agent-hibernation <on|off> [--json]")
+            throw CLIError(message: "Usage: fleet agent-hibernation <on|off> [--json]")
         }
         let response: String
         switch subcommand {
@@ -26060,7 +26060,7 @@ struct CMUXCLI {
         case "off", "disable":
             response = try sendV1Command("agent_hibernation off", client: client)
         default:
-            throw CLIError(message: "Usage: cmux agent-hibernation <on|off> [--json]")
+            throw CLIError(message: "Usage: fleet agent-hibernation <on|off> [--json]")
         }
 
         if jsonOutput {
@@ -28471,10 +28471,10 @@ struct CMUXCLI {
     // MARK: - Codex hooks
 
     /// The hooks.json content that cmux installs into ~/.codex/.
-    /// Each hook calls `cmux hooks codex <event>` which gracefully no-ops
-    /// when not running inside cmux. The command checks for cmux on PATH
+    /// Each hook calls `fleet hooks codex <event>` which gracefully no-ops
+    /// when not running inside cmux. The command checks for fleet on PATH
     /// first so it silently succeeds even when cmux is not installed
-    /// (e.g. user opened codex in a non-cmux terminal).
+    /// (e.g. user opened codex in a non-fleet terminal).
 
     // MARK: - Agent PID inference
 
@@ -29067,7 +29067,7 @@ struct CMUXCLI {
             ? hermesAgentArgumentsByReplacingOpenAICodexProvider(sanitizedCommandParts)
             : sanitizedCommandParts
         // Route the claude executable through the wrapper shim token so the executed
-        // command re-injects cmux hooks even when run via the `$SHELL -lic` restore
+        // command re-injects fleet hooks even when run via the `$SHELL -lic` restore
         // launcher (where the integration's PATH shim / `claude()` function are not
         // active). The token is POSIX-only and the launcher dispatches through the
         // user's shell (fish/csh/tcsh included), so token-bearing commands are wrapped
@@ -29403,7 +29403,7 @@ struct CMUXCLI {
     private static let openCodeSessionPluginSource = #"""
 // cmux-opencode-session-plugin-marker v1
 // Bridges OpenCode session lifecycle events into cmux's restorable session store.
-// Installed by `cmux hooks opencode install` or `cmux hooks setup`.
+// Installed by `fleet hooks opencode install` or `fleet hooks setup`.
 // DO NOT EDIT MANUALLY. cmux upgrades this file in place.
 
 import { spawnSync } from "node:child_process";
@@ -29919,7 +29919,7 @@ export default CMUXSessionRestore;
         let configDirectoryFileError = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.error.configDirectoryIsFile",
-                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `cmux hooks setup` again."
+                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
             ),
             configDir
         )
@@ -30059,7 +30059,7 @@ export default CMUXSessionRestore;
         print(String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.antigravity.removed",
-                defaultValue: "Removed Antigravity cmux hooks from %@"
+                defaultValue: "Removed Antigravity fleet hooks from %@"
             ),
             filePath
         ))
@@ -30122,7 +30122,7 @@ export default CMUXSessionRestore;
         let configDirectoryFileError = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.error.configDirectoryIsFile",
-                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `cmux hooks setup` again."
+                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
             ),
             configDir
         )
@@ -30133,7 +30133,7 @@ export default CMUXSessionRestore;
                 throw CLIError(message: configDirectoryFileError)
             }
             if !automaticReconciliation {
-                print("Required agent configuration is missing. Run `cmux hooks setup` after installing your agent CLI.")
+                print("Required agent configuration is missing. Run `fleet hooks setup` after installing your agent CLI.")
             }
             return
         }
@@ -30146,7 +30146,7 @@ export default CMUXSessionRestore;
                 }
             } else {
                 if !automaticReconciliation {
-                    print("Required agent configuration is missing. Run `cmux hooks setup` after installing your agent CLI.")
+                    print("Required agent configuration is missing. Run `fleet hooks setup` after installing your agent CLI.")
                 }
                 return
             }
@@ -30380,7 +30380,7 @@ export default CMUXSessionRestore;
                     try newContent.write(toFile: configPath, atomically: true, encoding: .utf8)
                     if !automaticReconciliation {
                         if def.name == "codex", !codexHookTrustEntries.isEmpty, trustInstall.installedTrust {
-                            print("Enabled hooks and approved cmux hooks in \(configPath)")
+                            print("Enabled hooks and approved fleet hooks in \(configPath)")
                         } else {
                             print("Enabled hooks in \(configPath)")
                         }
@@ -30633,10 +30633,10 @@ export default CMUXSessionRestore;
         "# cmux-codex-hooks-feature-78f1e4ba-66df-4d35-93c1-67fdf1cbb7df end"
     private static let cmuxCodexHooksFeaturePreviousLinePrefix =
         "# cmux-codex-hooks-feature-78f1e4ba-66df-4d35-93c1-67fdf1cbb7df previous line: "
-    private static let legacyCmuxCodexHooksFeatureBegin = "# cmux hooks codex feature begin"
-    private static let legacyCmuxCodexHooksFeatureEnd = "# cmux hooks codex feature end"
+    private static let legacyCmuxCodexHooksFeatureBegin = "# fleet hooks codex feature begin"
+    private static let legacyCmuxCodexHooksFeatureEnd = "# fleet hooks codex feature end"
     private static let legacyCmuxCodexHooksFeaturePreviousLinePrefix =
-        "# cmux hooks codex feature previous line: "
+        "# fleet hooks codex feature previous line: "
     private static let cmuxCodexHookTrustBegin =
         "# cmux-codex-hook-trust-f5cc24da-7a09-4b20-a756-89e7786f6738 begin"
     private static let cmuxCodexHookTrustEnd =
@@ -30896,7 +30896,7 @@ export default CMUXSessionRestore;
             )
             insertHashes(
                 eventLabel: eventLabel,
-                command: "cmux codex-hook \(event.cmuxSubcommand)",
+                command: "fleet codex-hook \(event.cmuxSubcommand)",
                 timeouts: [hookTimeoutMs, 600]
             )
         }
@@ -30910,7 +30910,7 @@ export default CMUXSessionRestore;
             )
             insertHashes(
                 eventLabel: eventLabel,
-                command: "cmux feed-hook --source \(def.name) --event \(agentEvent)",
+                command: "fleet feed-hook --source \(def.name) --event \(agentEvent)",
                 timeouts: [120_000, 600]
             )
         }
@@ -31404,7 +31404,7 @@ export default CMUXSessionRestore;
         if let sessionId = hermesAgentTUIActiveSessionId(def: def, env: env) {
             return sessionId
         }
-        // A cmux surface UUID is routing context, never a Hermes conversation
+        // A fleet surface UUID is routing context, never a Hermes conversation
         // identity. Missing authoritative Hermes identity must remain empty so
         // the callback cannot corrupt persistence or a future resume command.
         if def.name == "hermes-agent" {
@@ -34034,7 +34034,7 @@ export default CMUXSessionRestore;
         do {
             try runOpenTUIFeedTUI(socketPath: socketPath, socketPassword: resolvedSocketPassword)
         } catch {
-            cliWriteStderr("cmux feed tui: OpenTUI unavailable (\(error)); falling back to legacy TUI.\n")
+            cliWriteStderr("fleet feed tui: OpenTUI unavailable (\(error)); falling back to legacy TUI.\n")
             try runLegacyFeedTUI(socketPath: socketPath, socketPassword: resolvedSocketPassword)
         }
     }
@@ -34045,19 +34045,19 @@ export default CMUXSessionRestore;
             switch argument {
             case "--opentui":
                 guard implementation != .legacy else {
-                    throw CLIError(message: "cmux feed tui: choose only one TUI implementation")
+                    throw CLIError(message: "fleet feed tui: choose only one TUI implementation")
                 }
                 implementation = .openTUI
             case "--legacy":
                 guard implementation != .openTUI else {
-                    throw CLIError(message: "cmux feed tui: choose only one TUI implementation")
+                    throw CLIError(message: "fleet feed tui: choose only one TUI implementation")
                 }
                 implementation = .legacy
             case "--help", "-h":
-                print("Usage: cmux feed tui [--opentui|--legacy]")
+                print("Usage: fleet feed tui [--opentui|--legacy]")
                 return .help
             default:
-                throw CLIError(message: "cmux feed tui: unknown argument \(argument)")
+                throw CLIError(message: "fleet feed tui: unknown argument \(argument)")
             }
         }
         return implementation
@@ -34065,16 +34065,16 @@ export default CMUXSessionRestore;
 
     private func runOpenTUIFeedTUI(socketPath: String, socketPassword: String?) throws {
         guard isatty(STDIN_FILENO) == 1, isatty(STDOUT_FILENO) == 1 else {
-            throw CLIError(message: "cmux feed tui requires an interactive terminal")
+            throw CLIError(message: "fleet feed tui requires an interactive terminal")
         }
         guard let bunPath = resolveBunExecutable() else {
             throw CLIError(message: "Bun is required for the OpenTUI Feed")
         }
 
-        cliWriteStderr("cmux feed tui: preparing OpenTUI Feed...\n")
+        cliWriteStderr("fleet feed tui: preparing OpenTUI Feed...\n")
         let appDirectory = try prepareOpenTUIFeedApp(bunPath: bunPath)
         let sourceURL = appDirectory.appendingPathComponent("index.ts", isDirectory: false)
-        cliWriteStderr("cmux feed tui: starting OpenTUI Feed.\n")
+        cliWriteStderr("fleet feed tui: starting OpenTUI Feed.\n")
         let process = Process()
         process.executableURL = URL(fileURLWithPath: bunPath)
         process.arguments = [sourceURL.path]
@@ -34120,7 +34120,7 @@ export default CMUXSessionRestore;
         let previousHandler = signal(SIGTTOU, SIG_IGN)
         defer { _ = signal(SIGTTOU, previousHandler) }
         guard tcsetpgrp(STDIN_FILENO, processGroup) == 0 else {
-            throw CLIError(message: "cmux feed tui: failed to foreground OpenTUI process: \(String(cString: strerror(errno)))")
+            throw CLIError(message: "fleet feed tui: failed to foreground OpenTUI process: \(String(cString: strerror(errno)))")
         }
     }
 
@@ -34177,7 +34177,7 @@ export default CMUXSessionRestore;
             .appendingPathComponent("package.json", isDirectory: false)
         if !fileManager.fileExists(atPath: installedPackageURL.path)
             || installedOpenTUIVersion(at: installedPackageURL) != Self.openTUIFeedCoreVersion {
-            cliWriteStderr("cmux feed tui: installing @opentui/core \(Self.openTUIFeedCoreVersion)...\n")
+            cliWriteStderr("fleet feed tui: installing @opentui/core \(Self.openTUIFeedCoreVersion)...\n")
             try installOpenTUIFeedDependencies(bunPath: bunPath, appDirectory: appDirectory)
         }
         return appDirectory
@@ -34263,7 +34263,7 @@ export default CMUXSessionRestore;
 
     private func runLegacyFeedTUI(socketPath: String, socketPassword: String?) throws {
         guard isatty(STDIN_FILENO) == 1, isatty(STDOUT_FILENO) == 1 else {
-            throw CLIError(message: "cmux feed tui requires an interactive terminal")
+            throw CLIError(message: "fleet feed tui requires an interactive terminal")
         }
 
         let client = SocketClient(path: socketPath)
@@ -35064,7 +35064,7 @@ export default CMUXSessionRestore;
 
     private func bundledOpenCodePluginSource() throws -> String {
         // The plugin JS is bundled into the .app via `Resources/opencode-plugin.js`.
-        // The `cmux` CLI is often launched from `Contents/Resources/bin/cmux`,
+        // The `cmux` CLI is often launched from `Contents/Resources/bin/fleet`,
         // where Bundle.main can be the CLI executable rather than the containing
         // app. Search the real executable path before falling back to repo dev
         // paths used by `swift run`-style local builds.
@@ -35322,14 +35322,14 @@ export default CMUXSessionRestore;
     }
 
     /// Reads an agent hook JSON payload from stdin, forwards it to the
-    /// running cmux app via the `feed.push` V2 socket verb, and (for
+    /// running fleet app via the `feed.push` V2 socket verb, and (for
     /// actionable events: ExitPlanMode, AskUserQuestion, permission-
     /// requiring tools) blocks until the user resolves the item. The
     /// decision JSON is emitted on stdout in the agent's expected format
     /// so the agent honors the user's choice.
     ///
     /// Usage:
-    ///   echo "<hook_json>" | cmux hooks feed --source <claude|codex|...>
+    ///   echo "<hook_json>" | fleet hooks feed --source <claude|codex|...>
     ///
     /// Designed so agents and wrappers can point a native decision hook
     /// at it and have permission/plan/question events surface in the
@@ -35347,10 +35347,10 @@ export default CMUXSessionRestore;
         _ = telemetry
         let source = optionValue(commandArgs, name: "--source") ?? ""
         guard !source.isEmpty else {
-            throw CLIError(message: "cmux hooks feed requires --source <agent-name>")
+            throw CLIError(message: "fleet hooks feed requires --source <agent-name>")
         }
 
-        // Outside a cmux terminal (no CMUX_SURFACE_ID) → silently no-op.
+        // Outside a fleet terminal (no CMUX_SURFACE_ID) → silently no-op.
         // Also matches the graceful-fallback pattern of the other hooks.
         guard ProcessInfo.processInfo.environment["CMUX_SURFACE_ID"]?.isEmpty == false else {
             print("{}")
@@ -36230,13 +36230,13 @@ export default CMUXSessionRestore;
 
     private func runHooksNoSocketCommand(commandArgs: [String]) throws -> Bool {
         guard let first = commandArgs.first?.lowercased() else {
-            print(subcommandUsage("hooks") ?? "Usage: cmux hooks <setup|uninstall|agent>")
+            print(subcommandUsage("hooks") ?? "Usage: fleet hooks <setup|uninstall|agent>")
             return true
         }
 
         switch first {
         case "help", "--help", "-h":
-            print(subcommandUsage("hooks") ?? "Usage: cmux hooks <setup|uninstall|agent>")
+            print(subcommandUsage("hooks") ?? "Usage: fleet hooks <setup|uninstall|agent>")
             return true
 
         case "setup":
@@ -36263,7 +36263,7 @@ export default CMUXSessionRestore;
 
             let rest = Array(commandArgs.dropFirst())
             guard let action = rest.first?.lowercased() else {
-                print(subcommandUsage("hooks") ?? "Usage: cmux hooks <setup|uninstall|agent>")
+                print(subcommandUsage("hooks") ?? "Usage: fleet hooks <setup|uninstall|agent>")
                 return true
             }
             if def.name == "pi", action == "session-start" {
@@ -36338,7 +36338,7 @@ export default CMUXSessionRestore;
         socketPassword: String? = nil
     ) throws {
         guard let first = commandArgs.first?.lowercased() else {
-            throw CLIError(message: "Usage: cmux hooks <setup|uninstall|feed|claude|agent>")
+            throw CLIError(message: "Usage: fleet hooks <setup|uninstall|feed|claude|agent>")
         }
         let rest = Array(commandArgs.dropFirst())
 
@@ -36437,7 +36437,7 @@ export default CMUXSessionRestore;
         let fm = FileManager.default
         let verb = isUninstall ? "uninstalling" : "installing"
 
-        print("cmux hooks \(isUninstall ? "uninstall" : "setup"): \(verb) agent hooks")
+        print("fleet hooks \(isUninstall ? "uninstall" : "setup"): \(verb) agent hooks")
         if !isUninstall {
             print("  (Claude Code hooks are injected automatically via the claude wrapper)")
         }
@@ -36514,9 +36514,9 @@ export default CMUXSessionRestore;
         let commit = info["CMUXCommit"].flatMap { normalizedCommitHash($0) }
         let baseSummary: String
         if let version = info["CFBundleShortVersionString"], let build = info["CFBundleVersion"] {
-            baseSummary = "cmux \(version) (\(build))"
+            baseSummary = "fleet \(version) (\(build))"
         } else if let version = info["CFBundleShortVersionString"] {
-            baseSummary = "cmux \(version)"
+            baseSummary = "fleet \(version)"
         } else if let build = info["CFBundleVersion"] {
             baseSummary = "cmux build \(build)"
         } else {
@@ -36592,8 +36592,8 @@ export default CMUXSessionRestore;
         print("  \(bold)Email\(reset)\(subdued)               founders@manaflow.com\(reset)")
         print()
         print("  \(subdued)Run \(reset)\(bold)cmux --help\(reset)\(subdued) for all commands.\(reset)")
-        print("  \(subdued)Run \(reset)\(bold)cmux shortcuts\(reset)\(subdued) to edit shortcuts.\(reset)")
-        print("  \(subdued)Run \(reset)\(bold)cmux feedback\(reset)\(subdued) to report a bug.\(reset)")
+        print("  \(subdued)Run \(reset)\(bold)fleet shortcuts\(reset)\(subdued) to edit shortcuts.\(reset)")
+        print("  \(subdued)Run \(reset)\(bold)fleet feedback\(reset)\(subdued) to report a bug.\(reset)")
         print()
     }
 
@@ -36883,11 +36883,11 @@ export default CMUXSessionRestore;
           --password takes precedence, then CMUX_SOCKET_PASSWORD, then the password saved in Settings.
 
         Agent Help:
-          Change cmux settings with `cmux docs settings` and `cmux settings path`; add Dock controls with `cmux docs dock`.
+          Change fleet settings with `fleet docs settings` and `fleet settings path`; add Dock controls with `fleet docs dock`.
           Before editing, back up any existing cmux.json file to a timestamped .bak copy.
           Use printed curl commands to fetch the latest docs/schema; prefer Ghostty config for terminal behavior Ghostty already supports.
           Ghostty config lives at ~/.config/ghostty/config (terminal transparency, blur, font, theme, keybinds, etc.).
-          `cmux reload-config` reloads BOTH Ghostty config and \(FleetAppIdentity.configFileDisplayPath), then refreshes terminals in place. No app restart needed.
+          `fleet reload-config` reloads BOTH Ghostty config and \(FleetAppIdentity.configFileDisplayPath), then refreshes terminals in place. No app restart needed.
 
         Commands:
           welcome

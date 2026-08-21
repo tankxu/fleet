@@ -326,7 +326,7 @@ async function warnFeedDeliveryDropped(
   context: PiExtensionContextSnapshot,
   sessionId: string,
 ): Promise<void> {
-  await warn(context, "cmux feed delivery dropped", {
+  await warn(context, "fleet feed delivery dropped", {
     session_id: sessionId,
     hook_name: "feed",
     reason: "dispatch-dropped",

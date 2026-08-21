@@ -97,9 +97,9 @@ extension CMUXCLI {
                 else {
                     return
                 }
-                // Revalidate immediately before replacement. All cmux install, refresh,
+                // Revalidate immediately before replacement. All fleet install, refresh,
                 // and uninstall mutations share this lock, so an in-flight refresh
-                // cannot recreate an extension that another cmux process removed.
+                // cannot recreate an extension that another fleet process removed.
                 guard try existingPiExtensionContents(at: extensionURL, fileManager: fileManager) == existing else {
                     return
                 }

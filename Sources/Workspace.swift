@@ -2947,7 +2947,7 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
     /// Bonsplit otherwise accents the selected-tab indicator and unread dots with
     /// `cmuxAccentNSColor()`, which follows the user's macOS accent
     /// preference and can override the app's own accent asset. Passing the hex
-    /// keeps pane chrome on the cmux theme color regardless of that preference.
+    /// keeps pane chrome on the fleet theme color regardless of that preference.
     nonisolated static var bonsplitChromeAccentHex: String {
         cmuxAccentNSColor().hexString(includeAlpha: true)
     }
@@ -3290,8 +3290,8 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
         // Remove the default "Welcome" tab that bonsplit creates
         let welcomeTabIds = bonsplitController.allTabIds
 
-        // When the workspace boots with an explicit initial command (`cmux ssh` /
-        // `cmux vm new` both funnel their ssh startup script through this path),
+        // When the workspace boots with an explicit initial command (`fleet ssh` /
+        // `fleet vm new` both funnel their ssh startup script through this path),
         // hold the PTY open after that command exits. Without this Ghostty
         // silently respawns a local login shell and the user can't tell a dead
         // VM apart from a healthy local prompt.

@@ -3068,7 +3068,7 @@ class TerminalController {
                 nil,
                 .err(
                     code: "invalid_params",
-                    message: "Invalid window selector. Use --window <id|ref|index> to target one window, or run `cmux list-windows` to see available windows and retry.",
+                    message: "Invalid window selector. Use --window <id|ref|index> to target one window, or run `fleet list-windows` to see available windows and retry.",
                     data: v2WindowSelectorDetails(params: params)
                 )
             )
@@ -3078,7 +3078,7 @@ class TerminalController {
                 nil,
                 .err(
                     code: "invalid_params",
-                    message: "Choose either --window <id|ref|index> or --all-windows, not both. Run `cmux list-windows` to see available windows and retry.",
+                    message: "Choose either --window <id|ref|index> or --all-windows, not both. Run `fleet list-windows` to see available windows and retry.",
                     data: v2WindowSelectorDetails(params: params)
                 )
             )
@@ -3110,7 +3110,7 @@ class TerminalController {
     private func v2WindowNotFoundResult(params: [String: Any], windowId: UUID) -> V2CallResult {
         .err(
             code: "not_found",
-            message: "Window not found. Run `cmux list-windows` to see available windows, then retry with --window <id|ref|index>.",
+            message: "Window not found. Run `fleet list-windows` to see available windows, then retry with --window <id|ref|index>.",
             data: v2WindowSelectorDetails(params: params) ?? ["window_id": windowId.uuidString]
         )
     }
@@ -4332,7 +4332,7 @@ class TerminalController {
     /// Resolves the workspace by `workspace_id` / surface / pane, falling back to the
     /// selected workspace only when no explicit target is supplied, and returns the
     /// raw configured set. An explicit-but-unresolvable target errors. Secret masking is a
-    /// CLI presentation concern (`cmux workspace env --mask`): the local control
+    /// CLI presentation concern (`fleet workspace env --mask`): the local control
     /// socket already exposes the surrounding workspace state, so values are returned
     /// verbatim and the env set is deliberately kept out of `workspace.list` so a
     /// plain listing never echoes secrets.
@@ -6876,7 +6876,7 @@ class TerminalController {
             )
         }
         guard let url else {
-            return .err(code: "browser_disabled", message: "cmux browser is disabled", data: nil)
+            return .err(code: "browser_disabled", message: "fleet browser is disabled", data: nil)
         }
 
         var result: V2CallResult = .err(
@@ -7007,7 +7007,7 @@ class TerminalController {
                 )
             }
             if v2IsDiffViewerURL(url) {
-                return .err(code: "browser_disabled", message: "cmux browser is disabled", data: nil)
+                return .err(code: "browser_disabled", message: "fleet browser is disabled", data: nil)
             }
             return v2BrowserDisabledExternalOpenResult(rawURL: urlStr, url: url, tabManager: tabManager)
         }
@@ -8024,7 +8024,7 @@ class TerminalController {
                 data: [
                     "timeout_ms": timeoutMs,
                     "url": v2MainSync { webView.url?.absoluteString ?? "about:blank" },
-                    "hint": "Verify the page loaded with 'cmux browser <surface> get url' before waiting"
+                    "hint": "Verify the page loaded with 'fleet browser <surface> get url' before waiting"
                 ]
             )
         }
@@ -10063,7 +10063,7 @@ class TerminalController {
             } else {
                 return .err(
                     code: "invalid_params",
-                    message: "destination_profile does not match a cmux browser profile",
+                    message: "destination_profile does not match a fleet browser profile",
                     data: ["param": "destination_profile"]
                 )
             }
@@ -11502,7 +11502,7 @@ class TerminalController {
           focus_pane <pane-id|index>      - Focus a pane
           focus_surface_by_panel <panel_id> - Focus surface by panel ID
           close_surface [id|idx]          - Close surface (collapse split)
-          reload_config                   - Reload Ghostty config, cmux settings, and refresh terminals
+          reload_config                   - Reload Ghostty config, fleet settings, and refresh terminals
           refresh_surfaces                - Force refresh all terminals
           surface_health [workspace]      - Check view health of all surfaces
 
@@ -14582,7 +14582,7 @@ class TerminalController {
     /// Publish a `terminal.set_font` event to connected iOS device(s) so the
     /// mirrored terminal live-zooms its font (the grid reflows automatically on
     /// the phone). Drives the same iOS apply path as a pinch/zoom step, just
-    /// initiated from the Mac for automation (`cmux mobile set-font <size>`).
+    /// initiated from the Mac for automation (`fleet mobile set-font <size>`).
     ///
     /// Params: `{ "font_size": Number, optional "surface_id": String,
     /// optional "workspace_id": String }`. When `surface_id` is omitted the

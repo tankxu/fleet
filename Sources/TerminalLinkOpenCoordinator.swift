@@ -92,7 +92,7 @@ struct TerminalLinkOpenCoordinator {
         }
 
         guard BrowserLinkOpenSettings.openTerminalLinksInCmuxBrowser(defaults: defaults) else {
-            return openExternally(target.url, reason: "cmux browser disabled")
+            return openExternally(target.url, reason: "fleet browser disabled")
         }
 
         switch target {

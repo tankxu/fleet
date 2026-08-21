@@ -7,8 +7,8 @@ extension CMUXCLI {
 // cmux-amp-session-extension-marker v2
 // Bridges Amp session lifecycle events into cmux's restorable session store
 // AND reports live agent status (idle/thinking/tool calls/done/error) into
-// the cmux tab status bar.
-// Installed by `cmux hooks amp install` or `cmux hooks setup`.
+// the fleet tab status bar.
+// Installed by `fleet hooks amp install` or `fleet hooks setup`.
 // DO NOT EDIT MANUALLY. cmux upgrades this file in place.
 // @i-know-the-amp-plugin-api-is-wip-and-very-experimental-right-now
 
@@ -145,7 +145,7 @@ function threadIdFrom(event: { thread?: { id?: string } } | undefined, ctx?: Amp
 }
 
 // ─── Live status reporting ────────────────────────────────────────────────
-// Fires `cmux set-status` / `cmux clear-status` / `cmux log` so the tab
+// Fires `fleet set-status` / `fleet clear-status` / `fleet log` so the tab
 // status bar reflects what Amp is doing (idle, thinking, running cmd,
 // reading file X, etc.). All calls are fire-and-forget; failures never
 // disturb the agent.
@@ -153,7 +153,7 @@ function threadIdFrom(event: { thread?: { id?: string } } | undefined, ctx?: Amp
 const STATUS_KEY = "amp";
 const LOG_SOURCE = "amp";
 
-// Short verbs shown in the cmux status bar for each Amp tool.
+// Short verbs shown in the fleet status bar for each Amp tool.
 function toolLabel(tool: string): string {
   switch (tool) {
     case "Read":
@@ -188,7 +188,7 @@ function toolLabel(tool: string): string {
   }
 }
 
-// SF Symbol names rendered inside the cmux status badge.
+// SF Symbol names rendered inside the fleet status badge.
 function toolIcon(tool: string): string {
   switch (tool) {
     case "Read":
@@ -245,9 +245,9 @@ function workspaceArgs(): string[] {
   return ws ? ["--workspace", ws] : [];
 }
 
-// Sanitized environment for fire-and-forget cmux status subprocesses.
+// Sanitized environment for fire-and-forget fleet status subprocesses.
 // Strips Amp-provided secrets (`AMP_API_KEY`) so we never propagate them to
-// every spawned `cmux set-status` / `cmux log` / `cmux clear-status` child.
+// every spawned `fleet set-status` / `fleet log` / `fleet clear-status` child.
 // Mirrors the secret-stripping done in `hookEnvironment` without the launch-
 // metadata fields, which are only meaningful for lifecycle hook calls.
 function statusEnvironment(): NodeJS.ProcessEnv {

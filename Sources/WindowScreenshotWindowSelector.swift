@@ -1,7 +1,7 @@
 #if DEBUG
 import AppKit
 
-/// Chooses the visible cmux window targeted by the debug screenshot command.
+/// Chooses the visible fleet window targeted by the debug screenshot command.
 enum WindowScreenshotWindowSelector {
     @MainActor
     static func select(

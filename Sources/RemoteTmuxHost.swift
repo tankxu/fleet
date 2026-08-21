@@ -237,7 +237,7 @@ struct RemoteTmuxHost: Sendable, Equatable, Identifiable {
     /// ``controlPersistSeconds`` so the subsequent pipe-based discovery and
     /// `tmux -CC` control client multiplex over it with no further prompt.
     ///
-    /// Intended to be run by the `cmux ssh-tmux` CLI **inside the user's terminal**
+    /// Intended to be run by the `fleet ssh-tmux` CLI **inside the user's terminal**
     /// (which supplies the tty); the local control client itself uses plain pipes
     /// and cannot prompt. It forces `BatchMode=no` so the interactive prompt always
     /// works even when the user's ssh_config sets `BatchMode yes`, but it does NOT

@@ -17,7 +17,7 @@ final class SleepyModeController {
     // App-lifecycle UI/window controller: it owns NSWindows and IOKit power
     // assertions tied to the app's foreground lifetime, so a process-wide
     // instance is the right ownership boundary. This matches the established
-    // cmux pattern for such controllers (TerminalController.shared,
+    // fleet pattern for such controllers (TerminalController.shared,
     // TaskManagerWindowController.shared, SystemWideHotkeyController.shared,
     // AboutWindowController.shared, and the *WindowController singletons). Its
     // data/service dependencies — the settings store and the power-action

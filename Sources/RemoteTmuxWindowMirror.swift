@@ -6,7 +6,7 @@ import Foundation
 import Observation
 
 /// Owns the per-pane ``TerminalPanel``s and current layout for ONE mirrored tmux
-/// window, so a single cmux tab can render the tmux window's full multi-pane
+/// window, so a single fleet tab can render the tmux window's full multi-pane
 /// split layout side by side — with the native cmux pane chrome (each pane is a
 /// real ``TerminalPanel`` rendered via ``TerminalPanelView``).
 ///

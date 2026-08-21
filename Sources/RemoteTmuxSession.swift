@@ -2,9 +2,9 @@ import Foundation
 
 /// A tmux session discovered on a remote host.
 ///
-/// Mirrors the fields cmux requests from `tmux list-sessions`. The `id` is
+/// Mirrors the fields fleet requests from `tmux list-sessions`. The `id` is
 /// tmux's native session id (e.g. `$2`), which is stable for the lifetime of
-/// the remote tmux server and is what cmux keys its sidebar workspace on.
+/// the remote tmux server and is what fleet keys its sidebar workspace on.
 struct RemoteTmuxSession: Sendable, Equatable, Codable, Identifiable {
     /// tmux's native session id, e.g. `$2`.
     let id: String

@@ -66,7 +66,7 @@ enum GhosttyStartupAppearancePreviewProfile: String, CaseIterable, Identifiable 
         case .realUserConfig:
             return String(
                 localized: "debug.startupAppearance.profile.realUserConfig.detail",
-                defaultValue: "Loads your actual Ghostty and cmux config files."
+                defaultValue: "Loads your actual Ghostty and fleet config files."
             )
         case .freshInstall:
             return String(
@@ -1638,7 +1638,7 @@ class GhosttyApp {
 
 #if DEBUG
         cmuxDebugLog(
-            "loaded cmux app support ghostty config from: \(urls.map(\.path).joined(separator: ", "))"
+            "loaded fleet app support ghostty config from: \(urls.map(\.path).joined(separator: ", "))"
         )
         #endif
         #endif
@@ -6949,7 +6949,7 @@ class GhosttyNSView: NSView, NSUserInterfaceValidations {
         #endif
 
         // Remote-surface guard runs before shouldRoute so we never stat a local
-        // path on the main thread for a remote workspace. When the cmux route
+        // path on the main thread for a remote workspace. When the fleet route
         // is applicable but split creation fails, fall back to the preferred
         // editor so the click never silently no-ops.
         if let termSurface = terminalSurface,
@@ -7260,7 +7260,7 @@ class GhosttyNSView: NSView, NSUserInterfaceValidations {
         makeContextMenu(for: event, sendsTerminalPointerEvent: true)
     }
 
-    /// Builds the terminal's cmux context menu for pane chrome outside the
+    /// Builds the terminal's fleet context menu for pane chrome outside the
     /// terminal viewport without sending an out-of-bounds mouse event to Ghostty.
     func paneContextMenu(for event: NSEvent) -> NSMenu? {
         makeContextMenu(for: event, sendsTerminalPointerEvent: false)

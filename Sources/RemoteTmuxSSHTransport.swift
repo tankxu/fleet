@@ -362,7 +362,7 @@ actor RemoteTmuxSSHTransport {
     /// the host needs **interactive** authentication or host-key confirmation
     /// that batch mode cannot service — a password, an unknown/changed host key,
     /// keyboard-interactive MFA, or a FIDO touch. Used to decide whether to hand
-    /// the user an interactive `ssh` (run in their terminal by `cmux ssh-tmux`) that
+    /// the user an interactive `ssh` (run in their terminal by `fleet ssh-tmux`) that
     /// opens the shared ControlMaster, versus surfacing a genuine
     /// unreachable/transient error.
     ///
@@ -423,7 +423,7 @@ actor RemoteTmuxSSHTransport {
         // handler is installed — and Foundation does not invoke a terminationHandler
         // assigned after the process has already ended, so the continuation would
         // never resume and the caller would hang until its timeout. This matters for
-        // the fast auth-failure exits the `cmux ssh-tmux` flow classifies.
+        // the fast auth-failure exits the `fleet ssh-tmux` flow classifies.
         let exitCode: Int32
         do {
             exitCode = try await withTaskCancellationHandler {

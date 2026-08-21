@@ -298,7 +298,7 @@ extension TerminalController {
         }
     }
 
-    /// `remote.tmux.pane_surfaces` — the tmux pane id → cmux surface id map for
+    /// `remote.tmux.pane_surfaces` — the tmux pane id → fleet surface id map for
     /// EVERY mirrored window, single-pane windows included.
     ///
     /// Content oracles need this. Reading "the focused surface" cannot verify a

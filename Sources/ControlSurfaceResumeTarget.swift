@@ -325,7 +325,7 @@ extension TerminalController {
         // while the restore-time agent snapshot still names the previous
         // conversation. Reuse the session-restore identity gate so the record
         // returned to the CLI always agrees with the binding that generated its
-        // typed `cmux restore <kind> <checkpoint>` selector.
+        // typed `fleet restore <kind> <checkpoint>` selector.
         let restoredAgent = target.restorableAgent
         let compatibleAgent: (
             snapshot: SessionRestorableAgentSnapshot,
@@ -396,7 +396,7 @@ extension TerminalController {
         // Once a newer hook binding supersedes a restored agent snapshot, none
         // of the rejected snapshot's identity-scoped restore data may leak into
         // the record. Rebuild the typed argv from the authoritative binding so
-        // `cmux restore` keeps its shell-free path even during that handoff.
+        // `fleet restore` keeps its shell-free path even during that handoff.
         let workingDirectory = binding.cwd ?? binding.launchCommand?.workingDirectory
         let preparedArguments: [String]?
         if restoredAgent != nil {

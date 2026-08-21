@@ -21,7 +21,7 @@ extension MobilePairingView {
 
     var steps: some View {
         VStack(alignment: .leading, spacing: 10) {
-            step(1, String(localized: "mobile.pairing.step.install", defaultValue: "Install cmux on your iPhone and open it."))
+            step(1, String(localized: "mobile.pairing.step.install", defaultValue: "Install fleet on your iPhone and open it."))
             HStack(spacing: 4) {
                 Spacer(minLength: 30)
                 Text(String(localized: "mobile.pairing.getApp.prompt", defaultValue: "Don't have it yet?"))

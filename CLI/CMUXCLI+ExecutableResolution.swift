@@ -34,7 +34,7 @@ extension CMUXCLI {
         guard let data = FileManager.default.contents(atPath: path) else { return false }
         let prefixData = data.prefix(512)
         guard let prefix = String(data: prefixData, encoding: .utf8) else { return false }
-        return prefix.contains("cmux claude wrapper - injects hooks and session tracking")
+        return prefix.contains("fleet claude wrapper - injects hooks and session tracking")
     }
 
     func isCmuxAgentCommandShim(at path: String) -> Bool {
@@ -261,11 +261,11 @@ extension CMUXCLI {
         }
     }
 
-    /// The whole point of `cmux claude-teams` is "just start a team." Claude Code's
+    /// The whole point of `fleet claude-teams` is "just start a team." Claude Code's
     /// Task tool only opens a teammate in its own split pane when it is called with
     /// a `name`; without a name it runs an in-process subagent (no pane). Left to a
     /// bare prompt the lead tends to use the nameless form — or stops to ask "demo
-    /// *what*?" — so a plain `cmux claude-teams "make a demo team with 5 subagents"`
+    /// *what*?" — so a plain `fleet claude-teams "make a demo team with 5 subagents"`
     /// produced no panes. Append a small system-prompt nudge that steers the lead to
     /// named, split-pane teammates for team/parallel requests so no elaborate prompt
     /// is needed. Kept out of `claudeTeamsLaunchArguments` (and thus the exported
@@ -274,7 +274,7 @@ extension CMUXCLI {
     /// their own system prompt.
     var claudeTeamsTeamSpawnGuidance: String {
         """
-        You are Claude Code running inside cmux, started with `cmux claude-teams`. \
+        You are Claude Code running inside cmux, started with `fleet claude-teams`. \
         Agent teams are enabled and every NAMED teammate opens in its own split \
         pane. When the user asks you to start a team, demo teams, or run several \
         subagents/teammates in parallel, spawn them as named teammates: make one \

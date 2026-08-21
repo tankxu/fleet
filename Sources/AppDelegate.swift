@@ -82,7 +82,7 @@ final class CmuxDebugWindowsCoordinator {
 /// Short-lived helper that watches for the next workspace to appear in a
 /// TabManager and joins it to a target group. Used by group `+` context-menu
 /// actions whose underlying executor creates the workspace asynchronously
-/// (cloudVM in particular launches `cmux vm base open` and returns immediately).
+/// (cloudVM in particular launches `fleet vm base open` and returns immediately).
 /// Subscribes to `tabManager.tabsPublisher` (the legacy Combine bridge fed by
 /// every `tabs` mutation, regardless of whether a NotificationCenter event
 /// fired) so VM workspaces, dropped attaches, or any other slow async path
@@ -841,7 +841,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     private var menuBarVisibilityObserver: NSObjectProtocol?
     private var mobileHostSettingsObserver: NSObjectProtocol?
     private var reloadConfigurationMenuItemRefreshScheduled = false
-    /// Orchestrates per-window cmux config-store reloads + window-title refresh.
+    /// Orchestrates per-window fleet config-store reloads + window-title refresh.
     /// Holds `self` weakly through the environment seam to avoid a retain cycle.
     private lazy var configStoreReloadCoordinator: CmuxConfigStoreReloadCoordinator = {
         CmuxConfigStoreReloadCoordinator(environment: self) { source, storeCount in
@@ -992,7 +992,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         method_exchangeImplementations(originalMethod, swizzledMethod)
     }()
 
-    /// Live `cmux diff` viewer subprocesses, keyed by pid, retained until they exit.
+    /// Live `fleet diff` viewer subprocesses, keyed by pid, retained until they exit.
     /// Declared outside `#if DEBUG` because process retention is production behavior.
     private var diffViewerProcesses: [Int32: Process] = [:]
     /// In-flight agent-aware diff launches, keyed so repeated shortcuts do not fan out large baseline parses.
@@ -1032,7 +1032,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     }
     var debugCloseMainWindowConfirmationHandler: ((NSWindow) -> Bool)?
     /// Test seam: when set, ``openDiffViewerForFocusedWorkspace(for:)`` invokes this
-    /// instead of spawning the bundled `cmux diff` CLI, so shortcut-dispatch tests can
+    /// instead of spawning the bundled `fleet diff` CLI, so shortcut-dispatch tests can
     /// assert routing without launching a subprocess.
     var debugOpenDiffViewerHandler: (() -> Void)?
     var debugCreateMainWindowSourceIsNativeFullScreenOverride: Bool?
@@ -6436,7 +6436,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     }
 
     /// Opens the diff viewer for the focused workspace of `tabManager` by spawning the
-    /// bundled `cmux diff` CLI. This is the single shared diff-open path: both the
+    /// bundled `fleet diff` CLI. This is the single shared diff-open path: both the
     /// command-palette entries and the Open Diff Viewer keyboard shortcut funnel through
     /// here so neither duplicates diff-open logic. Returns `false` (caller beeps) when
     /// there is no focused workspace or the bundled CLI is missing.
@@ -6462,7 +6462,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         }
 #endif
         guard let workspace = tabManager?.selectedWorkspace,
-              let cliURL = Bundle.main.resourceURL?.appendingPathComponent("bin/cmux"),
+              let cliURL = Bundle.main.resourceURL?.appendingPathComponent("bin/fleet"),
               FileManager.default.isExecutableFile(atPath: cliURL.path) else {
             return false
         }
@@ -6867,7 +6867,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         return mainWindowContexts.values.first
     }
 
-    /// Establishes the AppKit and cmux focus owners for an action originating
+    /// Establishes the AppKit and fleet focus owners for an action originating
     /// inside a particular main window. Custom titlebar controls consume their
     /// mouse-down before AppKit's normal dispatch, so they explicitly assume
     /// responsibility for the key-window transfer that dispatch would have
@@ -7557,7 +7557,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         suppressWelcome: Bool = false
     ) -> UUID {
         reserveInitialSocketPathIfNeeded()
-        // Restored terminals can execute their short `cmux restore` input as
+        // Restored terminals can execute their short `fleet restore` input as
         // soon as their PTY comes up. Bind the transport before constructing
         // those surfaces; main-actor command routing naturally waits until the
         // restore pass has registered their windows and bindings.
@@ -9382,7 +9382,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
 #endif
         }
 #if DEBUG
-        // Honor the shared dev-only default display (set via `cmux window
+        // Honor the shared dev-only default display (set via `fleet window
         // default-display` or the Debug menu) so every dev build, any tag and
         // any launch path, opens on the chosen monitor. Focus-safe and a no-op
         // when unset. See DevWindowDisplayDefault.
@@ -9414,7 +9414,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     }
 
     func sendWelcomeCommandWhenReady(to workspace: Workspace, markShownOnSend: Bool = false) {
-        sendTextWhenReady("cmux welcome\n", to: workspace, beforeSend: {
+        sendTextWhenReady("fleet welcome\n", to: workspace, beforeSend: {
             if markShownOnSend {
                 UserDefaults.standard.set(true, forKey: AccountCatalogSection().welcomeShown.userDefaultsKey)
             }
@@ -11222,7 +11222,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
                let requestedActionButtonCount = Int(rawActionButtonCount),
                requestedActionButtonCount > 0 {
                 guard let cmuxConfigStore = context.cmuxConfigStore else {
-                    self.writeBonsplitTabDragUITestData(["setupError": "Missing cmux config store"])
+                    self.writeBonsplitTabDragUITestData(["setupError": "Missing fleet config store"])
                     return
                 }
                 let actionButtonCount = min(requestedActionButtonCount, 32)
@@ -12681,7 +12681,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
             "windowRouteFailure": "",
         ], at: path)
 
-        guard let cliURL = Bundle.main.resourceURL?.appendingPathComponent("bin/cmux"),
+        guard let cliURL = Bundle.main.resourceURL?.appendingPathComponent("bin/fleet"),
               FileManager.default.isExecutableFile(atPath: cliURL.path) else {
             writeMultiWindowNotificationTestData([
                 "windowRouteStatus": "0",
@@ -16410,7 +16410,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
                 newlyCreatedId = id
                 break
             }
-            // cloudVM launches a `cmux vm base open` process and returns before the
+            // cloudVM launches a `fleet vm base open` process and returns before the
             // workspace appears in tabs[]. The synchronous diff above misses
             // it, so watch the tab list while the process is running. Process
             // completion also reports the created workspace UUID as an exact
@@ -16958,7 +16958,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
             return
         }
         let embeddedCLIURL = Bundle.main.bundleURL
-            .appendingPathComponent("Contents/Resources/bin/cmux", isDirectory: false)
+            .appendingPathComponent("Contents/Resources/bin/fleet", isDirectory: false)
             .standardizedFileURL
             .resolvingSymlinksInPath()
         let currentPid = ProcessInfo.processInfo.processIdentifier
@@ -17159,7 +17159,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         // context-menu / web-view-focus entrypoints can focus a WKWebView without
         // updating focusedPanelId. Then confirm that web view actually holds focus,
         // so the bypass stops once focus moves to the sidebar/terminal (where the
-        // page can't run the double-Escape exit anyway and cmux shortcuts must work).
+        // page can't run the double-Escape exit anyway and fleet shortcuts must work).
         guard let panel = shortcutEventBrowserPanel(event),
               panel.isBrowserFocusModeActive,
               isWebViewFocused(panel) else {
@@ -18804,7 +18804,7 @@ extension AppDelegate: UpdateActionDelegate, UpdateActionsHost {
 
 extension AppDelegate {
     /// A connected display, surfaced by the `window.displays` control command and
-    /// the `cmux window display --list` CLI so callers can discover screen names.
+    /// the `fleet window display --list` CLI so callers can discover screen names.
     /// Lifted to ``CmuxWindowing/DisplayInfo``; aliased so existing
     /// `AppDelegate.DisplayInfo` references stay source-identical.
     typealias DisplayInfo = CmuxWindowing.DisplayInfo

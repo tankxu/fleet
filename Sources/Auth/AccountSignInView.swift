@@ -56,7 +56,7 @@ private struct AccountSignInIdleView: View {
                 .cmuxFont(.title2, weight: .semibold)
             Text(String(
                 localized: "account.signIn.prompt",
-                defaultValue: "Continue with your cmux account."
+                defaultValue: "Continue with your fleet account."
             ))
             .foregroundStyle(.secondary)
             .multilineTextAlignment(.center)
@@ -160,7 +160,7 @@ private struct AccountSignInSuccessView: View {
             }
             Text(String(
                 localized: "account.signIn.successBody",
-                defaultValue: "Your cmux account is connected."
+                defaultValue: "Your fleet account is connected."
             ))
             .font(.caption)
             .foregroundStyle(.secondary)
@@ -336,7 +336,7 @@ private extension AccountSignInModel.Failure {
         case .unauthorized:
             return String(
                 localized: "account.signIn.error.unauthorized.recovery",
-                defaultValue: "Confirm you’re using the intended cmux account, then try again."
+                defaultValue: "Confirm you’re using the intended fleet account, then try again."
             )
         case .rejected:
             return String(

@@ -795,7 +795,7 @@ struct MarkdownWebRenderer: NSViewRepresentable {
         ) {
             // The first load (loadHTMLString) has navigationType = .other —
             // allow it. Anything the user clicks (links, anchors, ...) we
-            // route through the cmux tab/browser machinery.
+            // route through the fleet tab/browser machinery.
             if navigationAction.navigationType == .linkActivated,
                let url = navigationAction.request.url {
 #if DEBUG
@@ -829,7 +829,7 @@ struct MarkdownWebRenderer: NSViewRepresentable {
 
         // MARK: - Link routing
 
-        /// Route a clicked link to a brand-new cmux browser tab in the same
+        /// Route a clicked link to a brand-new fleet browser tab in the same
         /// pane as this markdown panel — mirroring how Browser panels open
         /// child links via `openLinkInNewTab`. Falls back to the system
         /// browser only when the in-app browser is disabled or the panel

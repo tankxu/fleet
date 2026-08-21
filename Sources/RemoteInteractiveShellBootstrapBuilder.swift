@@ -298,7 +298,7 @@ enum RemoteInteractiveShellBootstrapBuilder {
         // and garble output (#6352). Here we compile into a private temp
         // directory on the same filesystem as ~/.terminfo, then move each
         // compiled entry into place with an atomic rename, so a concurrent reader
-        // in another cmux ssh session sharing $HOME never observes a partially
+        // in another fleet ssh session sharing $HOME never observes a partially
         // written database. The temp directory comes from `mktemp` when present,
         // otherwise a per-process `$$` directory (unique among live processes) so
         // the atomic-rename path applies even without `mktemp` — no branch ever

@@ -41,7 +41,7 @@ extension CMUXCLI {
         var args: [String] = ["--enable", "hooks", "--dangerously-bypass-hook-trust"]
         for event in eventsToInject {
             let ff = Self.codexFireAndForgetAgentHookShellCommand(
-                "cmux hooks codex \(event.cmuxSubcommand)", for: codexDef
+                "fleet hooks codex \(event.cmuxSubcommand)", for: codexDef
             )
             let command: String
             if let scriptPath = hooksDir.flatMap({
@@ -105,7 +105,7 @@ extension CMUXCLI {
         ) else {
             return nil
         }
-        // Keep generated scripts immutable. Older cmux processes may still write
+        // Keep generated scripts immutable. Older fleet processes may still write
         // the legacy path while newer Codex sessions reference this content ID.
         let url = dir.appendingPathComponent(
             scriptName.filename,
@@ -130,7 +130,7 @@ extension CMUXCLI {
     static func currentCodexWrapperHookScriptFilenames(for def: AgentHookDef) -> Set<String> {
         Set(CodexHookInjectionSchema.current.events.compactMap { event in
             let body = codexFireAndForgetAgentHookShellCommand(
-                "cmux hooks codex \(event.cmuxSubcommand)",
+                "fleet hooks codex \(event.cmuxSubcommand)",
                 for: def
             )
             return CodexHookScriptName(

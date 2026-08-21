@@ -132,7 +132,7 @@ func shouldDispatchBrowserArrowViaFirstResponderKeyDown(
         return true
     }
 
-    // Keep modified arrow routing narrow to avoid stealing cmux shortcuts such
+    // Keep modified arrow routing narrow to avoid stealing fleet shortcuts such
     // as Cmd+Option+Arrow pane focus. Browser document editors own Cmd+Up/Down
     // as trusted keyDown navigation to the start/end of the document.
     return normalizedFlags == [.command] && (keyCode == 125 || keyCode == 126)

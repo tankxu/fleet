@@ -51,7 +51,7 @@ extension TerminalController {
             ownedCLIPaths.append(bundledPath)
         }
         let bundlePath = Bundle.main.bundleURL
-            .appendingPathComponent("Contents/Resources/bin/cmux", isDirectory: false)
+            .appendingPathComponent("Contents/Resources/bin/fleet", isDirectory: false)
             .path
             .trimmingCharacters(in: .whitespacesAndNewlines)
         if !bundlePath.isEmpty {

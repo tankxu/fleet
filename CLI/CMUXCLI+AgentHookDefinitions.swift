@@ -21,7 +21,7 @@ extension CMUXCLI {
         let configDirResolver: (@Sendable () -> String)?
         let sessionStoreSuffix: String // e.g. "cursor" -> ~/.cmuxterm/cursor-hook-sessions.json
         let disableEnvVar: String   // e.g. "CMUX_CURSOR_HOOKS_DISABLED"
-        let hookMarker: String      // Marker in commands: "cmux hooks cursor"
+        let hookMarker: String      // Marker in commands: "fleet hooks cursor"
         let binaryName: String
         let format: HookFormat
         let events: [HookEvent]
@@ -50,7 +50,7 @@ extension CMUXCLI {
         /// separate `session-finalize` subcommand / ``AgentHookAction/sessionFinalize``
         /// action, which performs the destructive cleanup this flag suppresses.
         let sessionEndIsTurnBoundary: Bool
-        /// Events that install a `cmux hooks feed --source <name>` bridge.
+        /// Events that install a `fleet hooks feed --source <name>` bridge.
         let feedHookEvents: [String]
         let postInstallAction: PostInstallAction?
         /// Optional CLI note printed after a successful install (or
@@ -167,7 +167,7 @@ extension CMUXCLI {
     ]
 
     static func hookCommandString(for def: AgentHookDef, event: AgentHookDef.HookEvent) -> String {
-        let command = "cmux hooks \(def.name) \(event.cmuxSubcommand)"
+        let command = "fleet hooks \(def.name) \(event.cmuxSubcommand)"
         let inline: String
         if def.name == "codex", codexHookCanRunFireAndForget(event.cmuxSubcommand) {
             inline = codexFireAndForgetAgentHookShellCommand(command, for: def)
@@ -206,7 +206,7 @@ extension CMUXCLI {
                $0.agentEvent == agentEvent
            }) {
             let inline = codexFireAndForgetAgentHookShellCommand(
-                "cmux hooks codex \(injectedEvent.cmuxSubcommand)",
+                "fleet hooks codex \(injectedEvent.cmuxSubcommand)",
                 for: def
             )
             return codexPersistentHookScriptCommand(
@@ -220,13 +220,13 @@ extension CMUXCLI {
         switch def.format {
         case .kiroAgentJSON:
             inline = exitTwoPropagatingAgentHookShellCommand(
-                "cmux hooks feed --source \(def.name) --event \(agentEvent)",
+                "fleet hooks feed --source \(def.name) --event \(agentEvent)",
                 for: def,
                 noOpCommand: noOpCommand
             )
         default:
             inline = agentHookShellCommand(
-                "cmux hooks feed --source \(def.name) --event \(agentEvent)",
+                "fleet hooks feed --source \(def.name) --event \(agentEvent)",
                 for: def,
                 noOpCommand: noOpCommand
             )
@@ -401,7 +401,7 @@ extension CMUXCLI {
         }
         throw CLIError(message: String(
             localized: "cli.hooks.error.pinnedTargetMissing",
-            defaultValue: "cmux could not connect this hook installation to a running app. Open a cmux workspace and run this command again."
+            defaultValue: "cmux could not connect this hook installation to a running app. Open a fleet workspace and run this command again."
         ))
     }
 
@@ -475,7 +475,7 @@ extension CMUXCLI {
 
     private static func isLegacyCmuxOwnedHookCommand(_ command: String, for def: AgentHookDef) -> Bool {
         // Codex also had older top-level codex-hook/feed-hook commands.
-        // Other generic agents can have stale `cmux hooks ...` files from
+        // Other generic agents can have stale `fleet hooks ...` files from
         // earlier integration attempts, and setup should be able to prune them.
         return legacyCmuxCommandTokenLists(from: command, for: def).contains { tokens in
             isLegacyCmuxOwnedHookTokens(tokens, for: def)
@@ -590,7 +590,7 @@ extension CMUXCLI {
     static func hookMarkers(for def: AgentHookDef) -> [String] {
         var markers = [def.hookMarker]
         if def.name == "codex" {
-            markers.append("cmux codex-hook")
+            markers.append("fleet codex-hook")
         }
         return markers
     }
@@ -598,9 +598,9 @@ extension CMUXCLI {
     /// Marker substrings used when removing / upgrading our own Feed bridge
     /// entries on reinstall or uninstall.
     static func feedHookMarkers(for def: AgentHookDef) -> [String] {
-        var markers = ["cmux hooks feed --source"]
+        var markers = ["fleet hooks feed --source"]
         if def.name == "codex" {
-            markers.append("cmux feed-hook --source")
+            markers.append("fleet feed-hook --source")
         }
         return markers
     }

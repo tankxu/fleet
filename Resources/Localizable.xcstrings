@@ -53504,7 +53504,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "cmux: default socket %@ is unavailable; using %@."
+            "value": "fleet: default socket %@ is unavailable; using %@."
           }
         },
         "ja": {
