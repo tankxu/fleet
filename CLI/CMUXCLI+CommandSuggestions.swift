@@ -6,7 +6,7 @@ extension CMUXCLI {
         if let suggestion = suggestedCommandName(for: command) {
             message += " Did you mean '\(suggestion)'?"
         }
-        message += " Run 'cmux --help' for the full command list."
+        message += " Run 'fleet --help' for the full command list."
         return CLIError(message: message, exitCode: 2)
     }
 

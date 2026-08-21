@@ -1023,7 +1023,7 @@ struct TitlebarControlsView: View {
     private let titlebarShortcutHintYOffset = ShortcutHintDebugSettings.defaultTitlebarHintY
     private let alwaysShowShortcutHints = ShortcutHintDebugSettings().alwaysShowHints
     @LiveSetting(\.shortcuts.showModifierHoldHints) private var showModifierHoldHints
-    @AppStorage(FleetCanvasSettings.enabledKey) private var fleetCanvasEnabled = false
+    @AppStorage(FleetCanvasSettings.enabledKey) private var fleetCanvasEnabled = FleetCanvasSettings.defaultEnabled
 
     private struct TitlebarHintLayoutItem: Identifiable {
         let action: KeyboardShortcutSettings.Action

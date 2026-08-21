@@ -37,7 +37,7 @@ enum FleetCanvasCardDropBridge {
     /// terminal view hierarchy, and in normal presentation a workspace drop onto a
     /// terminal has no meaning and must keep having none.
     static var isBoardPresented: Bool {
-        UserDefaults.standard.bool(forKey: FleetCanvasSettings.enabledKey)
+        FleetCanvasSettings.isEnabled()
     }
 
     static func post(phase: Phase, workspaceId: UUID, edge: FleetCanvasLayoutEdge?) {

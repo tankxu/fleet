@@ -888,7 +888,7 @@ struct ContentView: View {
     @AppStorage(MinimalModeTitlebarDebugSettings.trafficLightTabBarInsetKey) private var titlebarTrafficLightTabBarInset = MinimalModeTitlebarDebugSettings.defaultTrafficLightTabBarInset
     @AppStorage(MinimalModeTitlebarDebugSettings.trafficLightTitlebarLeadingInsetKey) private var titlebarTrafficLightTitlebarLeadingInset = MinimalModeTitlebarDebugSettings.defaultTrafficLightTitlebarLeadingInset
     @AppStorage(PaneChromeSettings.activePaneBorderColorKey) private var activePaneBorderColorHex = PaneChromeSettings.defaultColorHex
-    @AppStorage(FleetCanvasSettings.enabledKey) private var fleetCanvasEnabled = false
+    @AppStorage(FleetCanvasSettings.enabledKey) private var fleetCanvasEnabled = FleetCanvasSettings.defaultEnabled
     @AppStorage(CmuxExtensionSidebarSelection.defaultsKey)
     private var selectedLeftSidebarProviderId = CmuxExtensionSidebarSelection.defaultProviderId
     @LiveSetting(\.betaFeatures.extensions) private var leftSidebarExtensionsExperimentalEnabled

@@ -3682,7 +3682,7 @@ struct CMUXCLI {
 
         guard index < args.count else {
             throw CLIError(
-                message: "Missing command. Usage: cmux <path>|<command> [options]. Run 'cmux --help' for the full command list.",
+                message: "Missing command. Usage: fleet <path>|<command> [options]. Run 'fleet --help' for the full command list.",
                 exitCode: 2
             )
         }
@@ -36556,7 +36556,7 @@ export default CMUXSessionRestore;
 
         let logo = """
         \(c1)  ::\(reset)
-        \(c2)    ::::\(reset)              \(c1)c\(c2)m\(c3)u\(c7)x\(reset)
+        \(c2)    ::::\(reset)              \(c1)f\(c2)l\(c3)e\(c5)e\(c7)t\(reset)
         \(c3)      ::::::\(reset)
         \(c4)        ::::::\(reset)        \(tagline)the open source terminal\(reset)
         \(c5)      ::::::\(reset)          \(tagline)built for coding agents\(reset)
@@ -36570,6 +36570,8 @@ export default CMUXSessionRestore;
           \(bold)\u{2318}N\(reset)\(subdued)                  New workspace\(reset)
           \(bold)\u{2318}T\(reset)\(subdued)                  New tab\(reset)
           \(bold)\u{2318}P\(reset)\(subdued)                  Go to workspace\(reset)
+          \(bold)\u{2303}\u{2318}[\(reset)\(subdued)                Previous workspace\(reset)
+          \(bold)\u{2303}\u{2318}]\(reset)\(subdued)                Next workspace\(reset)
           \(bold)\u{2318}B\(reset)\(subdued)                  Toggle Left Sidebar\(reset)
           \(bold)\u{2318}\u{2325}B\(reset)\(subdued)                 Toggle Right Sidebar\(reset)
           \(bold)\u{2318}D\(reset)\(subdued)                  Split right\(reset)
@@ -36586,12 +36588,12 @@ export default CMUXSessionRestore;
         print()
         print(shortcuts)
         print()
+        print("  \(bold)GitHub\(reset)\(subdued)              https://github.com/tankxu/fleet\(reset)")
+        // Fleet is a fork; upstream owns the docs and nearly all of the code.
+        print("  \(bold)Upstream\(reset)\(subdued)            https://github.com/manaflow-ai/cmux (please leave a star ⭐)\(reset)")
         print("  \(bold)Docs\(reset)\(subdued)                https://cmux.com/docs\(reset)")
-        print("  \(bold)Discord\(reset)\(subdued)             https://discord.gg/xsgFEVrWCZ\(reset)")
-        print("  \(bold)GitHub\(reset)\(subdued)              https://github.com/manaflow-ai/cmux (please leave a star ⭐)\(reset)")
-        print("  \(bold)Email\(reset)\(subdued)               founders@manaflow.com\(reset)")
         print()
-        print("  \(subdued)Run \(reset)\(bold)cmux --help\(reset)\(subdued) for all commands.\(reset)")
+        print("  \(subdued)Run \(reset)\(bold)fleet --help\(reset)\(subdued) for all commands.\(reset)")
         print("  \(subdued)Run \(reset)\(bold)fleet shortcuts\(reset)\(subdued) to edit shortcuts.\(reset)")
         print("  \(subdued)Run \(reset)\(bold)fleet feedback\(reset)\(subdued) to report a bug.\(reset)")
         print()

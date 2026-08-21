@@ -10,6 +10,6 @@ import Foundation
 enum FleetCanvasAutomaticReorderGate {
     /// Whether activity may reorder workspaces right now.
     static func allowsActivityDrivenReordering(defaults: UserDefaults = .standard) -> Bool {
-        !defaults.bool(forKey: FleetCanvasSettings.enabledKey)
+        !FleetCanvasSettings.isEnabled(defaults)
     }
 }

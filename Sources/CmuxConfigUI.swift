@@ -5,6 +5,14 @@ import CmuxFoundation
 struct CmuxConfigUIDefinition: Codable, Sendable, Hashable {
     var newWorkspace: CmuxConfigButtonPlacement?
     var surfaceTabBar: CmuxSurfaceTabBarUIDefinition?
+    var fleetCanvas: CmuxConfigFleetCanvasDefinition?
+}
+
+struct CmuxConfigFleetCanvasDefinition: Codable, Sendable, Hashable {
+    /// Present the board on launch. Omitted means the built-in default, which is
+    /// on — the board is why this app exists. Toggling it in the window still
+    /// wins for the rest of the session and is remembered.
+    var enabledByDefault: Bool?
 }
 
 struct CmuxSurfaceTabBarUIDefinition: Codable, Sendable, Hashable {
