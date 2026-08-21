@@ -36535,13 +36535,13 @@ export default CMUXSessionRestore;
 
         let isDark = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") == "Dark"
 
-        let c1 = trueColor(0, 212, 255)
-        let c2 = trueColor(24, 181, 250)
-        let c3 = trueColor(48, 150, 245)
-        let c4 = trueColor(72, 119, 241)
-        let c5 = trueColor(96, 88, 239)
-        let c6 = trueColor(110, 73, 238)
-        let c7 = trueColor(124, 58, 237)
+        let c1 = trueColor(0, 230, 180)
+        let c2 = trueColor(13, 214, 165)
+        let c3 = trueColor(26, 199, 151)
+        let c4 = trueColor(26, 188, 138)
+        let c5 = trueColor(24, 170, 126)
+        let c6 = trueColor(21, 150, 112)
+        let c7 = trueColor(18, 130, 98)
 
         let tagline: String
         let subdued: String
@@ -36570,8 +36570,8 @@ export default CMUXSessionRestore;
           \(bold)\u{2318}N\(reset)\(subdued)                  New workspace\(reset)
           \(bold)\u{2318}T\(reset)\(subdued)                  New tab\(reset)
           \(bold)\u{2318}P\(reset)\(subdued)                  Go to workspace\(reset)
-          \(bold)\u{2303}\u{2318}[\(reset)\(subdued)                Previous workspace\(reset)
-          \(bold)\u{2303}\u{2318}]\(reset)\(subdued)                Next workspace\(reset)
+          \(bold)\u{2303}\u{2318}[\(reset)\(subdued)                 Previous workspace\(reset)
+          \(bold)\u{2303}\u{2318}]\(reset)\(subdued)                 Next workspace\(reset)
           \(bold)\u{2318}B\(reset)\(subdued)                  Toggle Left Sidebar\(reset)
           \(bold)\u{2318}\u{2325}B\(reset)\(subdued)                 Toggle Right Sidebar\(reset)
           \(bold)\u{2318}D\(reset)\(subdued)                  Split right\(reset)

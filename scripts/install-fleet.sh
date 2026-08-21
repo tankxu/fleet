@@ -10,6 +10,12 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 cd "$REPO_ROOT"
 
+# The Release configuration builds universal (ONLY_ACTIVE_ARCH=NO) because that is
+# what shipping a signed app to other people requires. A local install runs on
+# this machine only, so the second architecture is half the build time spent on
+# code that will never execute here — hence ONLY_ACTIVE_ARCH=YES below. Keep the
+# derived data around between runs; whole-module optimization limits incremental
+# reuse, but it still beats starting cold.
 DERIVED="${FLEET_DERIVED_DATA:-/tmp/fleet-release}"
 APP_DEST="/Applications/Fleet.app"
 BIN_DIR="${FLEET_BIN_DIR:-$HOME/bin}"
@@ -53,6 +59,7 @@ xcodebuild \
   -derivedDataPath "$DERIVED" \
   ${CMUX_DISABLE_AUTOMATIC_PACKAGE_RESOLUTION:+-disableAutomaticPackageResolution} \
   "${SIGN_ARGS[@]}" \
+  ONLY_ACTIVE_ARCH=YES \
   build
 
 APP_SRC="$DERIVED/Build/Products/Release/Fleet.app"
