@@ -33,9 +33,14 @@ import Testing
 
     @Test func legacyApplicationSupportURLPointsAtOldLocation() {
         let legacy = CmuxStateDirectory.legacyApplicationSupportURL(fileManager: .default)
-        // Only used for one-time migration; it must still address the old folder.
-        #expect(legacy?.lastPathComponent == "cmux")
-        #expect(legacy?.path.contains("/Application Support/cmux") == true)
+        // Only used for one-time migration, which moves within one identity:
+        // Application Support/<name> -> .local/state/<name>. Asserting against the
+        // directory name rather than a literal keeps the two halves in step.
+        #expect(legacy?.lastPathComponent == CmuxStateDirectory.directoryName)
+        #expect(
+            legacy?.path.contains("/Application Support/\(CmuxStateDirectory.directoryName)")
+                == true
+        )
     }
 }
 

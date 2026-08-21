@@ -1,4 +1,5 @@
 public import Foundation
+import CmuxFoundation
 
 /// The per-user directory that holds cmux's control-plane runtime state: the
 /// control socket, its `last-socket-path` marker files, the socket password, and
@@ -30,7 +31,12 @@ public import Foundation
 public enum CmuxStateDirectory {
     /// The directory name segment under `~/.local/state` (and the legacy name
     /// under `~/Library/Application Support`).
-    public static let directoryName = "cmux"
+    ///
+    /// Keyed to the running app identity: Fleet and cmux can be installed side by
+    /// side, and a shared directory here means a shared control socket — the two
+    /// apps would fight over one socket path and one password file, and whichever
+    /// bound it first would receive the other's CLI traffic.
+    public static let directoryName = FleetAppIdentity.stateDirectoryName
 
     /// The cmux state directory: `<home>/.local/state/cmux`.
     ///
