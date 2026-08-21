@@ -698,8 +698,21 @@ EOF
   chmod +x "$target"
 }
 
+# Last-resort CLI for the shim: Fleet's bundled CLI when installed, otherwise a
+# leftover cmux install. Fleet's is named fleet, not cmux.
+installed_cli_fallback() {
+  if [[ -x /Applications/Fleet.app/Contents/Resources/bin/fleet ]]; then
+    printf '%s\n' /Applications/Fleet.app/Contents/Resources/bin/fleet
+  else
+    printf '%s\n' /Applications/cmux.app/Contents/Resources/bin/cmux
+  fi
+}
+
 select_cmux_shim_target() {
-  local app_cli_dir="/Applications/cmux.app/Contents/Resources/bin"
+  local app_cli_dir="/Applications/Fleet.app/Contents/Resources/bin"
+  if [[ ! -d "$app_cli_dir" ]]; then
+    app_cli_dir="/Applications/cmux.app/Contents/Resources/bin"
+  fi
   local marker="cmux dev shim (managed by scripts/reload.sh)"
   local target=""
   local path_entry=""
@@ -761,11 +774,11 @@ publish_reload_cli_links() {
 
   # Stable shim that always follows the last reload-selected dev CLI.
   DEV_CLI_SHIM="$HOME/.local/bin/cmux-dev"
-  write_dev_cli_shim "$DEV_CLI_SHIM" "/Applications/cmux.app/Contents/Resources/bin/cmux"
+  write_dev_cli_shim "$DEV_CLI_SHIM" "$(installed_cli_fallback)"
 
   CMUX_SHIM_TARGET="$(select_cmux_shim_target || true)"
   if [[ -n "${CMUX_SHIM_TARGET:-}" ]]; then
-    write_dev_cli_shim "$CMUX_SHIM_TARGET" "/Applications/cmux.app/Contents/Resources/bin/cmux"
+    write_dev_cli_shim "$CMUX_SHIM_TARGET" "$(installed_cli_fallback)"
   fi
 }
 

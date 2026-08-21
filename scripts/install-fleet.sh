@@ -60,6 +60,8 @@ xcodebuild \
   ${CMUX_DISABLE_AUTOMATIC_PACKAGE_RESOLUTION:+-disableAutomaticPackageResolution} \
   "${SIGN_ARGS[@]}" \
   ONLY_ACTIVE_ARCH=YES \
+  ${FLEET_SKIP_STRIP:+} ${FLEET_SKIP_STRIP:-STRIP_INSTALLED_PRODUCT=YES} \
+  ${FLEET_SKIP_STRIP:-COPY_PHASE_STRIP=YES} \
   build
 
 APP_SRC="$DERIVED/Build/Products/Release/Fleet.app"
@@ -108,6 +110,13 @@ fi
 exec "$FLEET_CLI" "$@"
 SHIM
 chmod +x "$BIN_DIR/fleet"
+
+echo "==> Verifying the installed CLI runs"
+if ! "$APP_DEST/Contents/Resources/bin/fleet" --version >/dev/null 2>&1; then
+  echo "error: the installed CLI does not run (exit $?)." >&2
+  echo "       Re-run with FLEET_SKIP_STRIP=1 to install without stripping." >&2
+  exit 1
+fi
 
 echo
 echo "Installed:"
