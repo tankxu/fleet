@@ -359,7 +359,7 @@ private struct ProBadgeDebugView: View {
                         HStack(spacing: 10) {
                             Image(systemName: current == style ? "largecircle.fill.circle" : "circle")
                                 .font(.system(size: 12))
-                                .foregroundStyle(current == style ? Color.accentColor : Color.secondary)
+                                .foregroundStyle(current == style ? cmuxAccentColor() : Color.secondary)
                             ProBadgeLabel(style: style)
                             Text(style.displayName)
                                 .cmuxFont(size: 12)

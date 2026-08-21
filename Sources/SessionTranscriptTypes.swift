@@ -40,7 +40,7 @@ enum SessionTranscriptRole: Equatable, Sendable {
 
     var backgroundColor: Color {
         switch self {
-        case .user: return Color.accentColor.opacity(0.035)
+        case .user: return cmuxAccentColor().opacity(0.035)
         case .assistant: return Color.green.opacity(0.035)
         case .system: return Color.primary.opacity(0.025)
         case .tool: return Color.orange.opacity(0.035)

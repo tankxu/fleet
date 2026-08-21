@@ -1,5 +1,6 @@
 import CmuxSimulator
 import SwiftUI
+import CmuxFoundation
 
 struct SimulatorDeviceQuickControls: View {
   let coordinator: SimulatorPaneCoordinator
@@ -25,7 +26,7 @@ struct SimulatorDeviceQuickControls: View {
       Image(systemName: presentation.symbol)
         .font(.system(size: 17, weight: .medium))
         .frame(width: 28, height: 28)
-        .background(presentation.isActive ? Color.accentColor.opacity(0.2) : .clear)
+        .background(presentation.isActive ? CmuxThemeAccent.color.opacity(0.2) : .clear)
         .clipShape(Circle())
     }
     .buttonStyle(.plain)

@@ -69,7 +69,7 @@ private struct DevWindowDisplayDebugView: View {
                         } label: {
                             HStack(spacing: 8) {
                                 Image(systemName: current == name ? "checkmark.circle.fill" : "circle")
-                                    .foregroundStyle(current == name ? Color.accentColor : Color.secondary)
+                                    .foregroundStyle(current == name ? cmuxAccentColor() : Color.secondary)
                                 Text(name)
                                 Spacer()
                             }

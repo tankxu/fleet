@@ -48,7 +48,7 @@ struct ProjectTargetsTabView: View {
         Button(action: { panel.selectedTargetID = target.id }) {
             HStack(alignment: .top, spacing: 8) {
                 Image(systemName: glyph(for: target.productType))
-                    .foregroundStyle(Color.accentColor)
+                    .foregroundStyle(cmuxAccentColor())
                     .frame(width: 16)
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
@@ -83,7 +83,7 @@ struct ProjectTargetsTabView: View {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(isSelected ? Color.accentColor.opacity(0.15) : .clear)
+            .background(isSelected ? cmuxAccentColor().opacity(0.15) : .clear)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -104,7 +104,7 @@ struct ProjectTargetsTabView: View {
                     HStack(spacing: 8) {
                         Image(systemName: glyph(for: selected.target.productType))
                             .cmuxFont(size: 18)
-                            .foregroundStyle(Color.accentColor)
+                            .foregroundStyle(cmuxAccentColor())
                         VStack(alignment: .leading, spacing: 2) {
                             Text(selected.target.displayName)
                                 .cmuxFont(size: 14, weight: .semibold)
@@ -206,7 +206,7 @@ struct ProjectTargetsTabView: View {
                         .cmuxFont(size: 11, weight: .medium)
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(cmuxAccentColor())
             }
         }
     }

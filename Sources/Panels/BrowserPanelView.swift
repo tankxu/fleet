@@ -1355,7 +1355,7 @@ struct BrowserPanelView: View {
             Task { await panel.toggleOrInjectReactGrab() }
         }) {
             CmuxSystemSymbolImage(systemName: "cursorarrow.click.2", pointSize: devToolsButtonIconSize, weight: .medium)
-                .foregroundStyle(panel.isReactGrabActive ? Color.accentColor : Color.secondary)
+                .foregroundStyle(panel.isReactGrabActive ? cmuxAccentColor() : Color.secondary)
                 .frame(width: addressBarButtonSize, height: addressBarButtonSize, alignment: .center)
         }
         .buttonStyle(OmnibarAddressButtonStyle())

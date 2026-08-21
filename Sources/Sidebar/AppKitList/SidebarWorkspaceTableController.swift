@@ -831,7 +831,7 @@ final class SidebarWorkspaceTableController: NSObject, NSTableViewDataSource, NS
                 width: badgeDiameter,
                 height: badgeDiameter
             )
-            NSColor.controlAccentColor.setFill()
+            cmuxAccentNSColor().setFill()
             NSBezierPath(ovalIn: badgeRect).fill()
 
             let countText = "\(count)" as NSString

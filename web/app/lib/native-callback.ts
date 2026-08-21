@@ -3,7 +3,10 @@ import type { NextRequest } from "next/server";
 export const DEFAULT_NATIVE_CALLBACK_SCHEME = "cmux";
 export const NATIVE_CALLBACK_HOST = "auth-callback";
 
-const NATIVE_SCHEMES = new Set([DEFAULT_NATIVE_CALLBACK_SCHEME, "cmux-nightly"]);
+// "fleet" is the Fleet app's own callback scheme. Fleet and cmux install side by
+// side, so Fleet cannot reuse cmux:// — macOS would hand the sign-in callback to
+// whichever of the two it picks.
+const NATIVE_SCHEMES = new Set([DEFAULT_NATIVE_CALLBACK_SCHEME, "cmux-nightly", "fleet"]);
 
 export function nativeCallbackHrefForScheme(scheme: string): string {
   return `${scheme}://${NATIVE_CALLBACK_HOST}`;

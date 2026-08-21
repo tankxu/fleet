@@ -1,4 +1,5 @@
 import SwiftUI
+import CmuxFoundation
 
 /// Drives the "flash the navigated-to row" affordance that the legacy
 /// in-app settings window had and the SPM package initially dropped.
@@ -129,12 +130,12 @@ private struct SettingsSearchHighlightModifier: ViewModifier {
                     TimelineView(.explicit(frames(from: startedAt))) { context in
                         let opacity = highlightOpacity(at: context.date, startedAt: startedAt)
                         RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(Color.accentColor.opacity(opacity * 0.24))
+                            .fill(CmuxThemeAccent.color.opacity(opacity * 0.24))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .stroke(Color.accentColor.opacity(opacity), lineWidth: 2.5)
+                                    .stroke(CmuxThemeAccent.color.opacity(opacity), lineWidth: 2.5)
                             )
-                            .shadow(color: Color.accentColor.opacity(opacity * 0.24), radius: 8, x: 0, y: 0)
+                            .shadow(color: CmuxThemeAccent.color.opacity(opacity * 0.24), radius: 8, x: 0, y: 0)
                     }
                     // Restart the animation when the user re-navigates to
                     // the same anchor: a changing token forces a fresh

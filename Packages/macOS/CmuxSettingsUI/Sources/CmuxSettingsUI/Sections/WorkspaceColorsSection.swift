@@ -289,19 +289,10 @@ public struct WorkspaceColorsSection: View {
     }
 
 
-    /// cmux-themed accent color used as the live ColorPicker fallback
-    /// when the selection or notification badge has no custom hex.
-    /// Mirrors the legacy `cmuxAccentColor()` helper (see
-    /// `Sources/Sidebar/SidebarAppearanceSupport.swift`) so the rendered
-    /// swatch matches the rest of the app instead of the system accent.
+    /// cmux-themed accent color used as the live ColorPicker fallback when the
+    /// selection or notification badge has no custom hex. Resolves through
+    /// `CmuxThemeAccent` so the swatch cannot drift from app chrome.
     private static func cmuxAccentColor() -> Color {
-        let nsColor = NSColor(name: nil) { appearance in
-            let bestMatch = appearance.bestMatch(from: [.darkAqua, .aqua])
-            if bestMatch == .darkAqua {
-                return NSColor(srgbRed: 0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
-            }
-            return NSColor(srgbRed: 0, green: 136.0 / 255.0, blue: 1.0, alpha: 1.0)
-        }
-        return Color(nsColor: nsColor)
+        CmuxThemeAccent.color
     }
 }

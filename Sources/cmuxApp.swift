@@ -441,7 +441,7 @@ struct cmuxApp: App {
             }
 
             CommandGroup(replacing: .appInfo) {
-                Button(String(localized: "menu.app.about", defaultValue: "About cmux")) {
+                Button(String(localized: "menu.app.about", defaultValue: "About Fleet")) {
                     showAboutPanel()
                 }
                 Button(String(localized: "menu.app.checkForUpdates", defaultValue: "Check for Updates…")) {
@@ -451,7 +451,7 @@ struct cmuxApp: App {
             }
 
             CommandGroup(replacing: .appTermination) {
-                splitCommandButton(title: String(localized: "menu.quitCmux", defaultValue: "Quit cmux"), shortcut: menuShortcut(for: .quit)) {
+                splitCommandButton(title: String(localized: "menu.quitCmux", defaultValue: "Quit Fleet"), shortcut: menuShortcut(for: .quit)) {
                     NSApp.terminate(nil)
                 }
             }
@@ -2403,7 +2403,7 @@ private struct FileExplorerStyleDebugView: View {
                         .background(
                             RoundedRectangle(cornerRadius: 6)
                                 .fill(styleRawValue == style.rawValue
-                                    ? Color.accentColor.opacity(0.1)
+                                    ? cmuxAccentColor().opacity(0.1)
                                     : Color.clear)
                         )
                     }
@@ -3145,7 +3145,7 @@ private struct SidebarFooterIconBalanceVariantCard: View {
                 HStack(spacing: 5) {
                     Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                         .font(.system(size: 11, weight: .medium))
-                        .foregroundStyle(isSelected ? Color.accentColor : .secondary)
+                        .foregroundStyle(isSelected ? cmuxAccentColor() : .secondary)
                     Text(verbatim: "\(Int(variant.pointSize)) pt · \(variant.weight.displayName)")
                         .cmuxFont(size: 10, weight: .semibold)
                 }
@@ -3163,11 +3163,11 @@ private struct SidebarFooterIconBalanceVariantCard: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? Color.accentColor.opacity(0.12) : Color(nsColor: .controlBackgroundColor))
+                    .fill(isSelected ? cmuxAccentColor().opacity(0.12) : Color(nsColor: .controlBackgroundColor))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(isSelected ? Color.accentColor.opacity(0.8) : Color(nsColor: .separatorColor), lineWidth: 1)
+                    .stroke(isSelected ? cmuxAccentColor().opacity(0.8) : Color(nsColor: .separatorColor), lineWidth: 1)
             )
             .contentShape(Rectangle())
         }
@@ -3307,7 +3307,7 @@ private struct AboutPanelView: View {
 
             VStack(alignment: .center, spacing: 32) {
                 VStack(alignment: .center, spacing: 8) {
-                    Text(String(localized: "about.appName", defaultValue: "cmux"))
+                    Text(String(localized: "about.appName", defaultValue: "Fleet"))
                         .cmuxFont(.title)
                         .bold()
                     Text(String(localized: "about.description", defaultValue: "A Ghostty-based terminal with vertical tabs\nand a notification panel for macOS."))
@@ -3900,7 +3900,7 @@ private struct SplitButtonLayoutDebugView: View {
                                         .foregroundColor(.accentColor)
                                         .padding(.horizontal, 6)
                                         .padding(.vertical, 2)
-                                        .background(Capsule().fill(Color.accentColor.opacity(0.14)))
+                                        .background(Capsule().fill(cmuxAccentColor().opacity(0.14)))
                                 }
                                 Spacer(minLength: 0)
                             }
@@ -3908,7 +3908,7 @@ private struct SplitButtonLayoutDebugView: View {
                             .padding(.horizontal, 6)
                             .background(
                                 RoundedRectangle(cornerRadius: 5, style: .continuous)
-                                    .fill(isCurrentStyle ? Color.accentColor.opacity(0.08) : Color.clear)
+                                    .fill(isCurrentStyle ? cmuxAccentColor().opacity(0.08) : Color.clear)
                             )
                         }
 
@@ -4702,7 +4702,7 @@ private struct TabBarBackdropLabSidebar: View {
                 .cmuxFont(.caption2, weight: .bold)
             ForEach(0..<4, id: \.self) { index in
                 RoundedRectangle(cornerRadius: 4, style: .continuous)
-                    .fill(index == 0 ? Color.accentColor.opacity(0.85) : Color.white.opacity(0.12))
+                    .fill(index == 0 ? cmuxAccentColor().opacity(0.85) : Color.white.opacity(0.12))
                     .frame(height: 18)
             }
             Spacer(minLength: 0)

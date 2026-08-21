@@ -18,7 +18,7 @@ struct BrowserDesignModeToolbarButton: View {
                 pointSize: iconPointSize,
                 weight: .medium
             )
-            .foregroundStyle(controller.isActive ? Color.accentColor : inactiveColor)
+            .foregroundStyle(controller.isActive ? cmuxAccentColor() : inactiveColor)
             .frame(width: hitSize, height: hitSize, alignment: .center)
         }
         .buttonStyle(OmnibarAddressButtonStyle())

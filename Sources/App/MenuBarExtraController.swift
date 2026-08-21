@@ -724,7 +724,10 @@ enum MenuBarIconRenderer {
         image.lockFocus()
         defer { image.unlockFocus() }
 
-        let glyphRect = NSRect(x: 1.2, y: 1.5, width: 11.6, height: 15.0)
+        // Square, unlike the old chevron: the Fleet mark is square, and reusing
+        // the taller rect would stretch it. Inset on the trailing/top side leaves
+        // the unread badge its corner.
+        let glyphRect = NSRect(x: 0.8, y: 2.0, width: 14.0, height: 14.0)
         drawGlyph(in: glyphRect)
 
         if let text = badgeText {
@@ -736,32 +739,25 @@ enum MenuBarIconRenderer {
     }
 
     private static func drawGlyph(in rect: NSRect) {
-        // Match the canonical cmux center-mark path from Icon Center Image Artwork.svg.
-        let srcMinX: CGFloat = 384.0
-        let srcMinY: CGFloat = 255.0
-        let srcWidth: CGFloat = 369.0
-        let srcHeight: CGFloat = 513.0
-
-        func map(_ x: CGFloat, _ y: CGFloat) -> NSPoint {
-            let nx = (x - srcMinX) / srcWidth
-            let ny = (y - srcMinY) / srcHeight
-            return NSPoint(
-                x: rect.minX + nx * rect.width,
-                y: rect.minY + (1.0 - ny) * rect.height
-            )
+        // The Fleet mark, shipped as an alpha-only template asset generated from
+        // `design/fleet-icon-source.png` by `scripts/generate-fleet-icon.swift`.
+        // Drawn rather than path-coded because the mark is four tapered blades
+        // whose curvature does not survive being hand-transcribed.
+        guard let glyph = NSImage(named: NSImage.Name("MenuBarIcon")) else {
+            // A missing asset must not leave an invisible status item.
+            NSColor.black.setFill()
+            rect.fill()
+            return
         }
-
-        let path = NSBezierPath()
-        path.move(to: map(384.0, 255.0))
-        path.line(to: map(753.0, 511.5))
-        path.line(to: map(384.0, 768.0))
-        path.line(to: map(384.0, 654.0))
-        path.line(to: map(582.692, 511.5))
-        path.line(to: map(384.0, 369.0))
-        path.close()
-
-        NSColor.black.setFill()
-        path.fill()
+        glyph.isTemplate = true
+        glyph.draw(
+            in: rect,
+            from: .zero,
+            operation: .sourceOver,
+            fraction: 1,
+            respectFlipped: true,
+            hints: [.interpolation: NSImageInterpolation.high.rawValue]
+        )
     }
 
     private static func drawBadge(text: String, in rect: NSRect, config: MenuBarBadgeRenderConfig) {
@@ -770,7 +766,7 @@ enum MenuBarIconRenderer {
         let fontSize: CGFloat = text.count > 1 ? config.multiDigitFontSize : config.singleDigitFontSize
         let attrs: [NSAttributedString.Key: Any] = [
             .font: NSFont.systemFont(ofSize: fontSize, weight: .bold), // Fixed 18x18 status-item bitmap.
-            .foregroundColor: NSColor.systemBlue,
+            .foregroundColor: cmuxAccentNSColor(),
             .paragraphStyle: paragraph,
         ]
         let yOffset: CGFloat = text.count > 1 ? config.multiDigitYOffset : config.singleDigitYOffset

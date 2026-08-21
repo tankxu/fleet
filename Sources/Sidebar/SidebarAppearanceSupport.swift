@@ -75,23 +75,9 @@ func titlebarControlForegroundNSColor(opacity: CGFloat, appearance: WindowAppear
     )
 }
 
+/// The cmux theme color, defined once in `CmuxThemeAccent`.
 func cmuxAccentNSColor(for colorScheme: ColorScheme) -> NSColor {
-    switch colorScheme {
-    case .dark:
-        return NSColor(
-            srgbRed: 0,
-            green: 145.0 / 255.0,
-            blue: 1.0,
-            alpha: 1.0
-        )
-    default:
-        return NSColor(
-            srgbRed: 0,
-            green: 136.0 / 255.0,
-            blue: 1.0,
-            alpha: 1.0
-        )
-    }
+    CmuxThemeAccent.nsColor(for: colorScheme)
 }
 
 func cmuxAccentNSColor(for appAppearance: NSAppearance?) -> NSColor {

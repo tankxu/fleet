@@ -74,12 +74,12 @@ struct AppIconPickerRow: View {
                         .background(
                             RoundedRectangle(cornerRadius: 8, style: .continuous)
                                 .fill(isSelected
-                                    ? Color.accentColor.opacity(0.12)
+                                    ? CmuxThemeAccent.color.opacity(0.12)
                                     : Color.clear)
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
+                                .stroke(isSelected ? CmuxThemeAccent.color : Color.clear, lineWidth: 2)
                         )
                     }
                     .buttonStyle(.plain)

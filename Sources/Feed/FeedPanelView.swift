@@ -1946,7 +1946,7 @@ struct FeedButton: View {
         }
 
         switch kind {
-        case .ghost: return Color.accentColor
+        case .ghost: return cmuxAccentColor()
         case .soft: return Color.gray
         case .dark: return Color.black
         case .light: return Color.white
@@ -2491,7 +2491,7 @@ private struct PlanBodyView: View {
                         ForEach(Array(items.enumerated()), id: \.offset) { _, item in
                             HStack(alignment: .top, spacing: 8) {
                                 Circle()
-                                    .fill(Color.blue.opacity(0.85))
+                                    .fill(cmuxAccentColor().opacity(0.85))
                                     .frame(width: 3.5, height: 3.5)
                                     .padding(.top, 5.5)
                                     .frame(width: 10, alignment: .center)
@@ -3243,7 +3243,7 @@ private final class FeedInlineTextEditorView: NSView {
             textView.isEditable = isEnabled
             textView.isSelectable = isEnabled
             textView.textColor = isEnabled ? .labelColor : .disabledControlTextColor
-            textView.insertionPointColor = .controlAccentColor
+            textView.insertionPointColor = cmuxAccentNSColor()
         }
     }
 
@@ -3317,7 +3317,7 @@ private final class FeedInlineTextEditorView: NSView {
             textView.font = font
             placeholderField.font = font
             textView.textColor = self.isEnabled ? .labelColor : .disabledControlTextColor
-            textView.insertionPointColor = .controlAccentColor
+            textView.insertionPointColor = cmuxAccentNSColor()
         }
         if enabledChanged {
             self.isEnabled = isEnabled

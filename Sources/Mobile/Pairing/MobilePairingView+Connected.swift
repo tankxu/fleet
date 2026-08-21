@@ -49,7 +49,7 @@ extension MobilePairingView {
                 .cmuxFont(.caption, weight: .bold)
                 .foregroundStyle(.white)
                 .frame(width: 20, height: 20)
-                .background(Color.accentColor, in: Circle())
+                .background(cmuxAccentColor(), in: Circle())
             Text(text).cmuxFont(.callout).fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
         }

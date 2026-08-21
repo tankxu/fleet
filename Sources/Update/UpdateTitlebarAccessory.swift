@@ -1023,7 +1023,7 @@ struct TitlebarControlsView: View {
     private let titlebarShortcutHintYOffset = ShortcutHintDebugSettings.defaultTitlebarHintY
     private let alwaysShowShortcutHints = ShortcutHintDebugSettings().alwaysShowHints
     @LiveSetting(\.shortcuts.showModifierHoldHints) private var showModifierHoldHints
-    @AppStorage("fleetCanvasEnabled") private var fleetCanvasEnabled = false
+    @AppStorage(FleetCanvasSettings.enabledKey) private var fleetCanvasEnabled = false
 
     private struct TitlebarHintLayoutItem: Identifiable {
         let action: KeyboardShortcutSettings.Action
@@ -1132,6 +1132,11 @@ struct TitlebarControlsView: View {
         let hintLayoutItems = titlebarHintLayoutItems(config: config)
         let focusHistoryAvailability = focusHistoryNavigationAvailabilitySnapshot
         let content = HStack(spacing: config.spacing) {
+            // The board replaces the single-workspace presentation the sidebar
+            // navigates, so its toggle would be a control that visibly does
+            // nothing. Hidden rather than disabled: a dimmed button still reads as
+            // "temporarily unavailable" and invites clicking.
+            if !fleetCanvasEnabled {
             TitlebarControlButton(
                 config: config,
                 foregroundColor: foregroundColor,
@@ -1149,6 +1154,7 @@ struct TitlebarControlsView: View {
                 sidebarIconLabel(config: config, iconGeometryKeyPrefix: "titlebarControl_toggleSidebarIcon")
             }
             .safeHelp(KeyboardShortcutSettings.Action.toggleSidebar.tooltip(String(localized: "titlebar.sidebar.tooltip", defaultValue: "Show or hide the sidebar")))
+            }
 
             TitlebarControlButton(
                 config: config,

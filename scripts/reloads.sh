@@ -2,6 +2,9 @@
 set -euo pipefail
 
 APP_NAME="cmux STAGING"
+# User-visible app name. Deliberately separate from APP_NAME, which is the
+# .app bundle filename every dev script and CLI path lookup depends on.
+DISPLAY_NAME="Fleet STAGING"
 BUNDLE_ID="com.cmuxterm.app.staging"
 BASE_APP_NAME="cmux"
 DERIVED_DATA=""
@@ -134,6 +137,7 @@ if [[ -n "$TAG" ]]; then
   fi
   if [[ "$NAME_SET" -eq 0 ]]; then
     APP_NAME="cmux STAGING ${TAG}"
+    DISPLAY_NAME="Fleet STAGING ${TAG}"
   fi
   if [[ "$BUNDLE_SET" -eq 0 ]]; then
     BUNDLE_ID="com.cmuxterm.app.staging.${TAG_ID}"
@@ -154,8 +158,8 @@ if [[ -n "$DERIVED_DATA" ]]; then
 fi
 if [[ -z "$TAG" ]]; then
   XCODEBUILD_ARGS+=(
-    INFOPLIST_KEY_CFBundleName="$APP_NAME"
-    INFOPLIST_KEY_CFBundleDisplayName="$APP_NAME"
+    INFOPLIST_KEY_CFBundleName="$DISPLAY_NAME"
+    INFOPLIST_KEY_CFBundleDisplayName="$DISPLAY_NAME"
     PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID"
   )
 fi
@@ -211,10 +215,10 @@ rm -rf "$STAGING_APP_PATH"
 cp -R "$APP_PATH" "$STAGING_APP_PATH"
 INFO_PLIST="$STAGING_APP_PATH/Contents/Info.plist"
 if [[ -f "$INFO_PLIST" ]]; then
-  /usr/libexec/PlistBuddy -c "Set :CFBundleName $APP_NAME" "$INFO_PLIST" 2>/dev/null \
-    || /usr/libexec/PlistBuddy -c "Add :CFBundleName string $APP_NAME" "$INFO_PLIST"
-  /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName $APP_NAME" "$INFO_PLIST" 2>/dev/null \
-    || /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string $APP_NAME" "$INFO_PLIST"
+  /usr/libexec/PlistBuddy -c "Set :CFBundleName $DISPLAY_NAME" "$INFO_PLIST" 2>/dev/null \
+    || /usr/libexec/PlistBuddy -c "Add :CFBundleName string $DISPLAY_NAME" "$INFO_PLIST"
+  /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName $DISPLAY_NAME" "$INFO_PLIST" 2>/dev/null \
+    || /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string $DISPLAY_NAME" "$INFO_PLIST"
   /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $BUNDLE_ID" "$INFO_PLIST" 2>/dev/null \
     || /usr/libexec/PlistBuddy -c "Add :CFBundleIdentifier string $BUNDLE_ID" "$INFO_PLIST"
 

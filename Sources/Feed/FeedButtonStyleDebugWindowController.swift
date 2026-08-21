@@ -988,14 +988,14 @@ private struct FeedButtonStyleDebugView: View {
             .background(
                 RoundedRectangle(cornerRadius: 7, style: .continuous)
                     .fill(palette == activePalette
-                          ? Color.accentColor.opacity(0.18)
+                          ? cmuxAccentColor().opacity(0.18)
                           : Color.primary.opacity(0.05))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 7, style: .continuous)
                     .stroke(
                         palette == activePalette
-                            ? Color.accentColor.opacity(0.5)
+                            ? cmuxAccentColor().opacity(0.5)
                             : Color.primary.opacity(0.08),
                         lineWidth: 0.8
                     )
@@ -1205,14 +1205,14 @@ private struct FeedButtonStyleDebugView: View {
             .background(
                 RoundedRectangle(cornerRadius: 7, style: .continuous)
                     .fill(preset == activePreset
-                          ? Color.accentColor.opacity(0.18)
+                          ? cmuxAccentColor().opacity(0.18)
                           : Color.primary.opacity(0.05))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 7, style: .continuous)
                     .stroke(
                         preset == activePreset
-                            ? Color.accentColor.opacity(0.5)
+                            ? cmuxAccentColor().opacity(0.5)
                             : Color.primary.opacity(0.08),
                         lineWidth: 0.8
                     )
@@ -1227,7 +1227,7 @@ private struct FeedButtonStyleDebugView: View {
                 ForEach(FeedButton.Kind.allCases) { kind in
                     HStack(spacing: 8) {
                         Image(systemName: selectedKind == kind ? "checkmark.circle.fill" : "circle")
-                            .foregroundStyle(selectedKind == kind ? Color.accentColor : Color.secondary)
+                            .foregroundStyle(selectedKind == kind ? cmuxAccentColor() : Color.secondary)
                             .frame(width: 15)
                         Text(kind.debugLabel)
                             .cmuxFont(size: 12, weight: .medium)

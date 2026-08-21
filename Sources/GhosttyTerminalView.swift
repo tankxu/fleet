@@ -3876,7 +3876,7 @@ class GhosttyNSView: NSView, NSUserInterfaceValidations {
     private func setupKeyboardCopyModeCursorOverlay() {
         keyboardCopyModeCursorOverlayView.wantsLayer = true
         keyboardCopyModeCursorOverlayView.layer?.backgroundColor = NSColor.clear.cgColor
-        keyboardCopyModeCursorOverlayView.layer?.borderColor = NSColor.controlAccentColor.cgColor
+        keyboardCopyModeCursorOverlayView.layer?.borderColor = cmuxAccentNSColor().cgColor
         keyboardCopyModeCursorOverlayView.layer?.borderWidth = 1
         keyboardCopyModeCursorOverlayView.isHidden = true
         addSubview(keyboardCopyModeCursorOverlayView, positioned: .above, relativeTo: nil)
@@ -8222,7 +8222,7 @@ final class GhosttySurfaceScrollView: NSView {
 
     private var lastFlashStyle: FlashStyle = .navigation
     private var workspaceAttentionColor = WorkspaceAttentionColor(configuredHex: nil)
-    private var workspaceAttentionNSColor = NSColor.systemBlue
+    private var workspaceAttentionNSColor = WorkspaceAttentionCoordinator.notificationRingStyle.accent.strokeColor
     private let keyboardCopyModeBadgeContainerView: GhosttyFlashOverlayView
     private let keyboardCopyModeBadgeView: GhosttyPassthroughVisualEffectView
     private let keyboardCopyModeBadgeIconView: NSImageView
@@ -8523,7 +8523,7 @@ final class GhosttySurfaceScrollView: NSView {
         notificationRingOverlayView.layer?.masksToBounds = false
         notificationRingOverlayView.autoresizingMask = [.width, .height]
         let notificationRingStyle = WorkspaceAttentionCoordinator.notificationRingStyle
-        let notificationRingColor = NSColor.systemBlue
+        let notificationRingColor = notificationRingStyle.accent.strokeColor
         notificationRingLayer.fillColor = NSColor.clear.cgColor
         notificationRingLayer.strokeColor = notificationRingColor.cgColor
         notificationRingLayer.lineWidth = NotificationRingMetrics.lineWidth
@@ -8542,7 +8542,7 @@ final class GhosttySurfaceScrollView: NSView {
         flashOverlayView.layer?.masksToBounds = false
         flashOverlayView.autoresizingMask = [.width, .height]
         let flashStyle = WorkspaceAttentionCoordinator.flashStyle(for: .navigation)
-        let flashColor = NSColor.systemBlue
+        let flashColor = flashStyle.accent.strokeColor
         flashLayer.fillColor = NSColor.clear.cgColor
         flashLayer.strokeColor = flashColor.cgColor
         flashLayer.lineWidth = NotificationRingMetrics.lineWidth
@@ -9354,6 +9354,8 @@ final class GhosttySurfaceScrollView: NSView {
         CATransaction.commit()
     }
 
+    private static let notificationRingPulseKey = "cmux.notificationRing.pulse"
+
     func setNotificationRing(visible: Bool) {
         if !Thread.isMainThread {
             DispatchQueue.main.async { [weak self] in
@@ -9364,14 +9366,55 @@ final class GhosttySurfaceScrollView: NSView {
 
         let targetHidden = !visible
         let targetOpacity: Float = visible ? 1 : 0
+        // Reduce Motion means "no pulse wanted", so a ring already up under that
+        // setting is in its desired state and must not re-enter the transaction on
+        // every repeated call.
+        let wantsPulse = visible && !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
+        let isPulsing = notificationRingLayer.animation(forKey: Self.notificationRingPulseKey) != nil
         guard notificationRingOverlayView.isHidden != targetHidden ||
-                notificationRingLayer.opacity != targetOpacity else { return }
+                notificationRingLayer.opacity != targetOpacity ||
+                wantsPulse != isPulsing else { return }
 
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         notificationRingOverlayView.isHidden = targetHidden
         notificationRingLayer.opacity = targetOpacity
+        if visible {
+            startNotificationRingPulse()
+        } else {
+            notificationRingLayer.removeAnimation(forKey: Self.notificationRingPulseKey)
+        }
         CATransaction.commit()
+    }
+
+    /// Starts the ring breathing.
+    ///
+    /// Core Animation drives this on the render server, so it costs no app-side
+    /// timer and nothing on the typing path — which is why this must never become
+    /// a display-link or a manual redraw loop.
+    private func startNotificationRingPulse() {
+        // Reduce Motion is read when the ring appears rather than observed
+        // continuously: the setting changes about once in a user's lifetime, and a
+        // ring that is already up will pick up the new value the next time it is
+        // raised.
+        guard !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else {
+            notificationRingLayer.removeAnimation(forKey: Self.notificationRingPulseKey)
+            return
+        }
+        guard notificationRingLayer.animation(forKey: Self.notificationRingPulseKey) == nil else { return }
+
+        let pulse = WorkspaceAttentionRingPulse.standard
+        let animation = CABasicAnimation(keyPath: "opacity")
+        animation.fromValue = pulse.maximumOpacity
+        animation.toValue = pulse.minimumOpacity
+        animation.duration = pulse.halfCycleDuration
+        animation.autoreverses = true
+        animation.repeatCount = .infinity
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        // Shared phase so every waiting pane breathes in step.
+        animation.beginTime = pulse.alignedBeginTime(now: CACurrentMediaTime())
+        animation.isRemovedOnCompletion = false
+        notificationRingLayer.add(animation, forKey: Self.notificationRingPulseKey)
     }
 
     func setWorkspaceAttentionColor(_ color: WorkspaceAttentionColor) {
@@ -10066,6 +10109,15 @@ final class GhosttySurfaceScrollView: NSView {
             scheduleAutomaticFirstResponderApply(reason: "setActive")
         } else if !active {
             resignOwnedFirstResponderIfNeeded(reason: "setActive(false)")
+            // See `TerminalSurfaceFocusPolicy`: resigning only covers panes that
+            // own the responder chain, so a mounted-but-inactive pane would keep
+            // a stale focus intent and blink a solid cursor.
+            if TerminalSurfaceFocusPolicy.shouldClearFocusIntent(
+                isPaneActive: false,
+                ownsFirstResponder: isSurfaceViewFirstResponder()
+            ) {
+                surfaceView.terminalSurface?.setFocus(false)
+            }
         }
     }
 

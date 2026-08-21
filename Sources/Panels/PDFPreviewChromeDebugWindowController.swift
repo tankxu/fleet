@@ -170,7 +170,7 @@ private struct PDFPreviewChromeDebugView: View {
         return VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
+                    .foregroundStyle(isSelected ? cmuxAccentColor() : Color.secondary)
                     .frame(width: 16)
 
                 Text(variant.title)
@@ -201,11 +201,11 @@ private struct PDFPreviewChromeDebugView: View {
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(isSelected ? Color.accentColor.opacity(0.12) : Color.clear)
+                .fill(isSelected ? cmuxAccentColor().opacity(0.12) : Color.clear)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(isSelected ? Color.accentColor.opacity(0.35) : Color.secondary.opacity(0.18), lineWidth: 1)
+                .stroke(isSelected ? cmuxAccentColor().opacity(0.35) : Color.secondary.opacity(0.18), lineWidth: 1)
         )
     }
 

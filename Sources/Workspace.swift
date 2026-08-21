@@ -2942,6 +2942,16 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
         return false
     }
 
+    /// Theme color handed to Bonsplit chrome.
+    ///
+    /// Bonsplit otherwise accents the selected-tab indicator and unread dots with
+    /// `cmuxAccentNSColor()`, which follows the user's macOS accent
+    /// preference and can override the app's own accent asset. Passing the hex
+    /// keeps pane chrome on the cmux theme color regardless of that preference.
+    nonisolated static var bonsplitChromeAccentHex: String {
+        cmuxAccentNSColor().hexString(includeAlpha: true)
+    }
+
     nonisolated static func bonsplitChromeColors(
         backgroundColor: NSColor,
         backgroundOpacity: Double,
@@ -2968,7 +2978,8 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
                 tabBarBackgroundHex: "#00000000",
                 splitButtonBackdropHex: "#00000000",
                 paneBackgroundHex: "#00000000",
-                borderHex: borderHex
+                borderHex: borderHex,
+                accentHex: bonsplitChromeAccentHex
             )
         }
 
@@ -2983,7 +2994,8 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
             tabBarBackgroundHex: surfaceHex,
             splitButtonBackdropHex: surfaceHex,
             paneBackgroundHex: paneBackgroundHex,
-            borderHex: borderHex
+            borderHex: borderHex,
+            accentHex: bonsplitChromeAccentHex
         )
     }
 
@@ -3010,7 +3022,8 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
                 tabBarBackgroundHex: "#00000000",
                 splitButtonBackdropHex: "#00000000",
                 paneBackgroundHex: "#00000000",
-                borderHex: borderHex
+                borderHex: borderHex,
+                accentHex: bonsplitChromeAccentHex
             )
         }
 
@@ -3025,7 +3038,8 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
             tabBarBackgroundHex: backgroundHex,
             splitButtonBackdropHex: backgroundHex,
             paneBackgroundHex: paneBackgroundHex,
-            borderHex: borderHex
+            borderHex: borderHex,
+            accentHex: bonsplitChromeAccentHex
         )
     }
 
@@ -3037,7 +3051,8 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
             lhs.tabBarBackgroundHex == rhs.tabBarBackgroundHex &&
             lhs.splitButtonBackdropHex == rhs.splitButtonBackdropHex &&
             lhs.paneBackgroundHex == rhs.paneBackgroundHex &&
-            lhs.borderHex == rhs.borderHex
+            lhs.borderHex == rhs.borderHex &&
+            lhs.accentHex == rhs.accentHex
     }
 
     private static func bonsplitChromeColorsLogDescription(
@@ -13215,7 +13230,7 @@ extension Workspace: BonsplitDelegate {
         }
     }
 
-    private func selectedTerminalPanel(inPane pane: PaneID) -> TerminalPanel? {
+    func selectedTerminalPanel(inPane pane: PaneID) -> TerminalPanel? {
         guard let selectedTab = bonsplitController.selectedTab(inPane: pane),
               let panelId = panelIdFromSurfaceId(selectedTab.id) else {
             return nil
@@ -13321,6 +13336,8 @@ extension Workspace: BonsplitDelegate {
             switch target {
             case .currentTerminal:
                 self.selectedTerminalPanel(inPane: pane)?.sendInput(shellInput)
+            case .currentTerminalWhenIdle:
+                self.sendCommandPreferringIdleTerminal(shellInput, inPane: pane)
             case .newTabInCurrentPane:
                 _ = self.newTerminalSurface(
                     inPane: pane,

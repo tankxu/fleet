@@ -28,6 +28,10 @@ final class PaneDropTargetView: NSView {
         super.init(frame: frameRect)
         registerForDraggedTypes(Array(Set([
             DragOverlayRoutingPolicy.bonsplitTabTransferType,
+            // Workspace drags, so the fleet board can accept a drop anywhere on a
+            // card instead of only on its header. Handled only while the board is
+            // presented; see `FleetCanvasCardDropBridge`.
+            DragOverlayRoutingPolicy.sidebarTabReorderType,
         ]).union(PasteboardFileURLReader.fileURLPasteboardTypes)))
         setupDropZoneOverlayView()
     }
@@ -59,7 +63,12 @@ final class PaneDropTargetView: NSView {
 
         let hasTabTransfer = DragOverlayRoutingPolicy.hasBonsplitTabTransfer(pasteboardTypes)
         let hasFileDropPayload = DragOverlayRoutingPolicy.hasFileDropPayload(pasteboardTypes)
-        guard hasTabTransfer || hasFileDropPayload else { return false }
+        // While the fleet board is up, a workspace drag must be able to land on a
+        // card's body, which this view covers.
+        let hasWorkspaceDrag = DragOverlayRoutingPolicy.hasSidebarTabReorder(pasteboardTypes)
+            && FleetCanvasCardDropBridge.isBoardPresented
+        guard hasTabTransfer || hasFileDropPayload || hasWorkspaceDrag else { return false }
+        if hasWorkspaceDrag, !hasTabTransfer, !hasFileDropPayload { return true }
 
         if hasFileDropPayload, !hasTabTransfer {
             return routingContext.allowsFileDropPaneHitTesting
@@ -90,7 +99,27 @@ final class PaneDropTargetView: NSView {
         return capture ? self : nil
     }
 
+    /// Reports a workspace drag to the fleet board and returns the operation to
+    /// advertise, or `nil` when this drag is not a board drop.
+    private func boardWorkspaceDropOperation(
+        _ sender: any NSDraggingInfo,
+        phase: FleetCanvasCardDropBridge.Phase
+    ) -> NSDragOperation? {
+        guard FleetCanvasCardDropBridge.isBoardPresented,
+              DragOverlayRoutingPolicy.hasSidebarTabReorder(sender.draggingPasteboard.types),
+              let workspaceId = dropContext?.workspaceId else { return nil }
+        let point = convert(sender.draggingLocation, from: nil)
+        // AppKit's y grows upward here; the board's edge maths is top-down.
+        let flipped = CGPoint(x: point.x, y: bounds.height - point.y)
+        let edge = FleetCanvasDropTarget.edge(location: flipped, size: bounds.size)
+        FleetCanvasCardDropBridge.post(phase: phase, workspaceId: workspaceId, edge: edge)
+        return .move
+    }
+
     override func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
+        if let operation = boardWorkspaceDropOperation(sender, phase: .hover) {
+            return operation
+        }
         if let dropContext {
             transferDropRouter.begin(context: dropContext)
         } else {
@@ -102,12 +131,20 @@ final class PaneDropTargetView: NSView {
     }
 
     override func draggingUpdated(_ sender: any NSDraggingInfo) -> NSDragOperation {
+        if let operation = boardWorkspaceDropOperation(sender, phase: .hover) {
+            return operation
+        }
         let operation = updateDragState(sender, phase: "updated")
         dropRoutingRegistration.update(sender, operation: operation, targetView: self)
         return operation
     }
 
     override func draggingExited(_ sender: (any NSDraggingInfo)?) {
+        if let workspaceId = dropContext?.workspaceId,
+           FleetCanvasCardDropBridge.isBoardPresented,
+           DragOverlayRoutingPolicy.hasSidebarTabReorder(sender?.draggingPasteboard.types) {
+            FleetCanvasCardDropBridge.post(phase: .exit, workspaceId: workspaceId, edge: nil)
+        }
         dropRoutingRegistration.clear(sender)
         clearDragState(phase: "exited")
         transferDropRouter.clear()
@@ -120,6 +157,10 @@ final class PaneDropTargetView: NSView {
     }
 
     override func prepareForDragOperation(_ sender: any NSDraggingInfo) -> Bool {
+        if FleetCanvasCardDropBridge.isBoardPresented,
+           DragOverlayRoutingPolicy.hasSidebarTabReorder(sender.draggingPasteboard.types) {
+            return dropContext != nil
+        }
         guard let dropContext else {
             transferDropRouter.clear()
             return false
@@ -155,6 +196,13 @@ final class PaneDropTargetView: NSView {
     }
 
     override func performDragOperation(_ sender: any NSDraggingInfo) -> Bool {
+        if FleetCanvasCardDropBridge.isBoardPresented,
+           boardWorkspaceDropOperation(sender, phase: .perform) != nil {
+            dropRoutingRegistration.clear(sender)
+            clearDragState(phase: "perform.board")
+            transferDropRouter.clear()
+            return true
+        }
         let modifierFlags = DragOverlayRoutingPolicy.currentModifierFlags
         defer {
             dropRoutingRegistration.clear(sender)

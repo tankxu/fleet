@@ -55,7 +55,7 @@ struct StackAccountAvatarView: View {
     }
 
     private var fallbackForegroundColor: Color {
-        loadingSystemName == nil ? Color.accentColor : Color(nsColor: .secondaryLabelColor)
+        loadingSystemName == nil ? cmuxAccentColor() : Color(nsColor: .secondaryLabelColor)
     }
 
     private var initial: String? {

@@ -1705,6 +1705,9 @@ class TabManager: ObservableObject {
     // MARK: - Reordering (WorkspaceReorderCoordinator, CmuxWorkspaces)
 
     func moveTabToTop(_ tabId: UUID) {
+        // Activity-driven promotion only. Explicit user commands go through
+        // `moveTabsToTop`, which the fleet board does not gate.
+        guard FleetCanvasAutomaticReorderGate.allowsActivityDrivenReordering() else { return }
         workspaceReordering.moveTabToTop(tabId)
     }
 
@@ -1713,6 +1716,7 @@ class TabManager: ObservableObject {
     }
 
     func moveTabToTopForNotification(_ tabId: UUID) {
+        guard FleetCanvasAutomaticReorderGate.allowsActivityDrivenReordering() else { return }
         workspaceReordering.moveTabToTopForNotification(tabId)
     }
 

@@ -24,7 +24,7 @@ struct SpinnerCard: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 5)
                             .padding(.vertical, 1)
-                            .background(Capsule().fill(Color.accentColor))
+                            .background(Capsule().fill(cmuxAccentColor()))
                     }
                     Spacer()
                     Text(spec.energy.rawValue)

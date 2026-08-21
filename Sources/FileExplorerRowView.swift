@@ -35,7 +35,7 @@ final class FileExplorerRowView: NSTableRowView {
 
     private func selectionFillColor(isFocused: Bool) -> NSColor {
         if isFocused {
-            return .controlAccentColor.withAlphaComponent(0.20)
+            return cmuxAccentNSColor().withAlphaComponent(0.20)
         }
         return .labelColor.withAlphaComponent(0.08)
     }

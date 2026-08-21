@@ -332,9 +332,9 @@ private struct ProjectFilesFileRow: View {
                                 .padding(.vertical, 1)
                                 .background(
                                     RoundedRectangle(cornerRadius: 3)
-                                        .fill(Color.accentColor.opacity(0.15))
+                                        .fill(cmuxAccentColor().opacity(0.15))
                                 )
-                                .foregroundStyle(Color.accentColor)
+                                .foregroundStyle(cmuxAccentColor())
                         }
                     }
                 }
@@ -343,7 +343,7 @@ private struct ProjectFilesFileRow: View {
             .padding(.vertical, 2)
             .padding(.trailing, 6)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(isSelected ? Color.accentColor.opacity(0.18) : .clear)
+            .background(isSelected ? cmuxAccentColor().opacity(0.18) : .clear)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -425,7 +425,7 @@ private struct ProjectFilesDetailStrip: View {
         let target = module.target(for: membership.targetID)
         HStack(spacing: 6) {
             Image(systemName: "checkmark.square")
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(cmuxAccentColor())
             Text(target?.displayName ?? String(membership.targetID.rawValue.prefix(8)))
                 .cmuxFont(size: 12)
             Text("· \(membership.role.rawValue)")

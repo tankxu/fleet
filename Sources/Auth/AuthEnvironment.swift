@@ -1,5 +1,6 @@
 import CMUXAuthCore
 import Foundation
+import CmuxFoundation
 
 enum AuthEnvironment {
     private static let developmentStackProjectID = "454ecd03-1db2-4050-845e-4ce5b0cd9895"
@@ -49,6 +50,14 @@ enum AuthEnvironment {
         }
         if bundleIdentifier == "com.cmuxterm.app.nightly" {
             return "cmux-nightly"
+        }
+        // Fleet ships alongside cmux, so it must not register cmux:// as well:
+        // macOS would hand the sign-in callback to whichever app it picks, and a
+        // callback delivered to the other app is a failed sign-in. Requires
+        // "fleet" in the web NATIVE_SCHEMES allowlist. CMUX_AUTH_CALLBACK_SCHEME
+        // still overrides this, which is the bridge until that ships.
+        if let bundleIdentifier, bundleIdentifier.hasPrefix(FleetAppIdentity.fleetBundlePrefix) {
+            return "fleet"
         }
         return "cmux"
     }

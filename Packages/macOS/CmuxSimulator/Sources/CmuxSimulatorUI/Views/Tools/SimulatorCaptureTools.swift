@@ -1,5 +1,6 @@
 import CmuxSimulator
 import SwiftUI
+import CmuxFoundation
 
 struct SimulatorCaptureTools: View {
     let coordinator: SimulatorPaneCoordinator
@@ -33,7 +34,7 @@ struct SimulatorCaptureTools: View {
                         await $0.toggleVideoRecording(codec: videoCodec)
                     }
                 }
-                .tint(coordinator.isVideoRecording ? Color.red : Color.accentColor)
+                .tint(coordinator.isVideoRecording ? Color.red : CmuxThemeAccent.color)
             }
         }
     }

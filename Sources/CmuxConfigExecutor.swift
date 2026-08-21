@@ -134,6 +134,10 @@ struct CmuxConfigExecutor {
             switch target {
             case .currentTerminal:
                 targetTerminal?.sendInput(shellInput)
+            case .currentTerminalWhenIdle:
+                // Same decision as the surface-tab-bar path, so a config action and
+                // a button behave identically.
+                targetWorkspace?.sendCommandPreferringIdleTerminal(shellInput, inPane: nil)
             case .newTabInCurrentPane:
                 targetWorkspace?.clearSplitZoom()
                 targetWorkspace?.newTerminalSurfaceInFocusedPane(focus: true, initialInput: shellInput)

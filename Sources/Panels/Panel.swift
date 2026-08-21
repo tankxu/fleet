@@ -121,12 +121,21 @@ public enum WorkspaceAttentionFlashReason: String, Equatable, Sendable {
 
 /// The built-in attention color used when no configured override is valid.
 enum WorkspaceAttentionFlashAccent: Equatable, Sendable {
-    case notificationBlue
+    /// Attention yellow, held deliberately apart from the theme color: an
+    /// unread ring or a focus flash exists to break out of the surrounding
+    /// chrome, and a ring painted in the accent that already tints tabs, pane
+    /// borders, and selection reads as decoration instead of a signal.
+    case attentionYellow
 
     var strokeColor: NSColor {
         switch self {
-        case .notificationBlue:
-            return .systemBlue
+        case .attentionYellow:
+            return NSColor(
+                srgbRed: 255.0 / 255.0,
+                green: 212.0 / 255.0,
+                blue: 38.0 / 255.0,
+                alpha: 1.0
+            )
         }
     }
 }
@@ -163,13 +172,13 @@ struct WorkspaceAttentionFlashDecision: Equatable, Sendable {
 
 enum WorkspaceAttentionCoordinator {
     static let notificationRingStyle = WorkspaceAttentionFlashPresentation(
-        accent: .notificationBlue,
+        accent: .attentionYellow,
         glowOpacity: 0.35,
         glowRadius: 3
     )
 
     static let flashRingStyle = WorkspaceAttentionFlashPresentation(
-        accent: .notificationBlue,
+        accent: .attentionYellow,
         glowOpacity: 0.6,
         glowRadius: 6
     )

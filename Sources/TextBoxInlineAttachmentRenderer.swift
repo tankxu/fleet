@@ -81,7 +81,7 @@ final class TextBoxInlineAttachmentRenderer {
         var accentComponents: [CGFloat] = []
         appearance.performAsCurrentDrawingAppearance {
             foregroundComponents = colorComponents(foregroundColor)
-            accentComponents = colorComponents(.controlAccentColor)
+            accentComponents = colorComponents(cmuxAccentNSColor())
         }
         let key = TextBoxInlineAttachmentRenderKey(
             attachmentID: attachment.id,
@@ -304,7 +304,7 @@ final class TextBoxInlineAttachmentRenderer {
             ).fill()
 
             let border = isFocused
-                ? NSColor.controlAccentColor.withAlphaComponent(0.95)
+                ? cmuxAccentNSColor().withAlphaComponent(0.95)
                 : foregroundColor.withAlphaComponent(0.14)
             border.setStroke()
             let borderPath = NSBezierPath(
