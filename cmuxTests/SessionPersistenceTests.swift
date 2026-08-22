@@ -434,10 +434,46 @@ final class SessionPersistenceTests: XCTestCase {
     func testRestorePolicyAllowsFinderStyleLaunchArgumentsOnly() {
         let shouldRestore = SessionRestorePolicy.shouldAttemptRestore(
             arguments: ["/Applications/cmux.app/Contents/MacOS/cmux", "-psn_0_12345"],
-            environment: [:]
+            environment: [:],
+            configuredRestore: true
         )
 
         XCTAssertTrue(shouldRestore)
+    }
+
+    func testRestorePolicyStartsFreshUnlessConfigOptsIn() {
+        // Fleet default: a plain launch does not replay the previous session.
+        let unconfigured = SessionRestorePolicy.shouldAttemptRestore(
+            arguments: ["/Applications/cmux.app/Contents/MacOS/cmux"],
+            environment: [:]
+        )
+        XCTAssertFalse(unconfigured)
+
+        let optedOut = SessionRestorePolicy.shouldAttemptRestore(
+            arguments: ["/Applications/cmux.app/Contents/MacOS/cmux"],
+            environment: [:],
+            configuredRestore: false
+        )
+        XCTAssertFalse(optedOut)
+
+        let optedIn = SessionRestorePolicy.shouldAttemptRestore(
+            arguments: ["/Applications/cmux.app/Contents/MacOS/cmux"],
+            environment: [:],
+            configuredRestore: true
+        )
+        XCTAssertTrue(optedIn)
+    }
+
+    func testRestorePolicyEnvironmentKillSwitchBeatsConfig() {
+        // The env var has to win, or a config that opts in would make
+        // CMUX_DISABLE_SESSION_RESTORE useless for tests and scripts.
+        let shouldRestore = SessionRestorePolicy.shouldAttemptRestore(
+            arguments: ["/Applications/cmux.app/Contents/MacOS/cmux"],
+            environment: ["CMUX_DISABLE_SESSION_RESTORE": "1"],
+            configuredRestore: true
+        )
+
+        XCTAssertFalse(shouldRestore)
     }
 
     func testRestorePolicySkipsWhenRunningUnderXCTest() {

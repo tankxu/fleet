@@ -3474,7 +3474,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         Self.removeLegacyPersistedWindowGeometry()
         syncManualRestoreSnapshotCachePruningCrashDiagnostics()
         let sanitizedStartupSnapshot = loadStartupSessionSnapshotPruningCrashDiagnostics()
-        guard SessionRestorePolicy.shouldAttemptRestore() else { return }
+        let configuredRestore = FleetLaunchConfig.bool(
+            atPath: SessionRestorePolicy.restoreConfigPath,
+            fileURL: CmuxConfigLocation().userConfigFile
+        )
+        guard SessionRestorePolicy.shouldAttemptRestore(configuredRestore: configuredRestore)
+        else { return }
         startupSessionSnapshot = sanitizedStartupSnapshot
     }
 

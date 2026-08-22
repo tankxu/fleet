@@ -39,6 +39,33 @@ struct FleetCanvasLaunchDefaultTests {
         #expect(FleetCanvasSettings.isEnabled(store) == false)
     }
 
+    @Test("Key paths resolve through the shared reader")
+    func sharedReaderWalksKeyPaths() {
+        let jsonc = Data("""
+        {
+          // Both launch-time settings come through one reader.
+          "ui": {
+            "fleetCanvas": { "enabledByDefault": true },
+            "session": { "restoreOnLaunch": false },
+          },
+        }
+        """.utf8)
+        #expect(
+            FleetLaunchConfig.bool(atPath: ["ui", "session", "restoreOnLaunch"], configData: jsonc)
+                == false
+        )
+        #expect(
+            FleetLaunchConfig.bool(atPath: ["ui", "fleetCanvas", "enabledByDefault"], configData: jsonc)
+                == true
+        )
+        // A path that runs past a leaf must not crash or invent a value.
+        #expect(
+            FleetLaunchConfig.bool(atPath: ["ui", "session", "restoreOnLaunch", "deeper"], configData: jsonc)
+                == nil
+        )
+        #expect(FleetLaunchConfig.bool(atPath: ["nope"], configData: jsonc) == nil)
+    }
+
     @Test("Reads ui.fleetCanvas.enabledByDefault, comments and all")
     func parsesJSONCConfig() {
         let jsonc = Data("""

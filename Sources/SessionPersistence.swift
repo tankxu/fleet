@@ -156,11 +156,25 @@ enum SessionRestorePolicy {
         return false
     }
 
+    /// Config path for opting back into session restore.
+    static let restoreConfigPath = ["ui", "session", "restoreOnLaunch"]
+
+    /// Whether a launch restores the previous session.
+    ///
+    /// Fleet starts fresh by default. Restore replays the previous terminal
+    /// screens, which means every launch appends another prompt to output from a
+    /// shell that no longer exists, and the workspaces it brings back are stale
+    /// by then. Set `ui.session.restoreOnLaunch` to true to get the upstream
+    /// behavior back.
     static func shouldAttemptRestore(
         arguments: [String] = CommandLine.arguments,
-        environment: [String: String] = ProcessInfo.processInfo.environment
+        environment: [String: String] = ProcessInfo.processInfo.environment,
+        configuredRestore: Bool? = nil
     ) -> Bool {
         if environment["CMUX_DISABLE_SESSION_RESTORE"] == "1" {
+            return false
+        }
+        if configuredRestore != true {
             return false
         }
         if isRunningUnderAutomatedTests(environment: environment) {

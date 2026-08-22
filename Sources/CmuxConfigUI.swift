@@ -6,6 +6,14 @@ struct CmuxConfigUIDefinition: Codable, Sendable, Hashable {
     var newWorkspace: CmuxConfigButtonPlacement?
     var surfaceTabBar: CmuxSurfaceTabBarUIDefinition?
     var fleetCanvas: CmuxConfigFleetCanvasDefinition?
+    var session: CmuxConfigSessionDefinition?
+}
+
+struct CmuxConfigSessionDefinition: Codable, Sendable, Hashable {
+    /// Replay the previous session on launch. Off by default: restore brings back
+    /// the previous terminal screens, so each launch appends another prompt to
+    /// output from a shell that is already gone.
+    var restoreOnLaunch: Bool?
 }
 
 struct CmuxConfigFleetCanvasDefinition: Codable, Sendable, Hashable {
