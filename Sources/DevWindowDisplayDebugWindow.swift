@@ -56,7 +56,7 @@ private struct DevWindowDisplayDebugView: View {
                 .cmuxFont(.headline)
             Text(String(
                 localized: "debug.devWindowDisplay.description",
-                defaultValue: "New DEBUG cmux windows open on the selected display. Shared across all tagged dev builds; applied at window creation."
+                defaultValue: "New DEBUG Fleet windows open on the selected display. Shared across all tagged dev builds; applied at window creation."
             ))
             .cmuxFont(.subheadline)
             .foregroundStyle(.secondary)

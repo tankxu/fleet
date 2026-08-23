@@ -95,7 +95,7 @@ struct AccountIdentityCard: View {
             // the row shape matches when displayName is set to "".
             return identity.displayName
         }
-        return String(localized: "settings.account.signedOut.subtitle", defaultValue: "Sign in with your cmux account to enable sync across devices.")
+        return String(localized: "settings.account.signedOut.subtitle", defaultValue: "Sign in with your Fleet account to enable sync across devices.")
     }
 
     private var buttonTitle: String {

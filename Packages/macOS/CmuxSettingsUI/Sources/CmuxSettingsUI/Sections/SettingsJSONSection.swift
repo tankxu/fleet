@@ -17,7 +17,7 @@ public struct SettingsJSONSection: View {
 
     public var body: some View {
         Group {
-            SettingsSectionHeader(String(localized: "settings.section.settingsJSON", defaultValue: "cmux.json"), section: .settingsJSON)
+            SettingsSectionHeader(String(localized: "settings.section.settingsJSON", defaultValue: "Fleet.json"), section: .settingsJSON)
                 .accessibilityIdentifier("SettingsJSONSection")
             SettingsCard {
                 userConfigFileRow
@@ -33,7 +33,7 @@ public struct SettingsJSONSection: View {
             configurationReview: .action,
             searchAnchorID: "setting:settingsJSON:open-file",
             String(localized: "settings.settingsJSON.file", defaultValue: "User config file"),
-            subtitle: String(localized: "settings.settingsJSON.file.subtitle", defaultValue: "Edit cmux-owned app settings, shortcuts, automation, sidebar, notifications, and browser behavior."),
+            subtitle: String(localized: "settings.settingsJSON.file.subtitle", defaultValue: "Edit Fleet-owned app settings, shortcuts, automation, sidebar, notifications, and browser behavior."),
             controlWidth: 330
         ) {
             HStack(spacing: 8) {

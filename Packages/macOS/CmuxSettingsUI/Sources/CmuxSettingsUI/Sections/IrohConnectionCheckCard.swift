@@ -120,7 +120,7 @@ struct IrohConnectionCheckCard: View {
     private var relayAllowlistText: String {
         let header = String(
             localized: "settings.networking.check.allowlist.header",
-            defaultValue: "Allow outbound HTTPS and WebSocket access to these cmux relay origins:"
+            defaultValue: "Allow outbound HTTPS and WebSocket access to these Fleet relay origins:"
         )
         return ([header] + safeRelayOrigins.map { "- \($0)" }).joined(separator: "\n")
     }
@@ -133,7 +133,7 @@ struct IrohConnectionCheckCard: View {
         var lines = [
             String(
                 localized: "settings.networking.check.report.header",
-                defaultValue: "cmux Connection Report"
+                defaultValue: "Fleet Connection Report"
             ),
             "\(String(localized: "settings.networking.check.path", defaultValue: "Active Route")): \(selectedPath(report.selectedPath))",
         ]
@@ -171,7 +171,7 @@ struct IrohConnectionCheckCard: View {
             String(
                 format: String(
                     localized: "settings.networking.check.path.managedRelay",
-                    defaultValue: "cmux Relay (%1$@, %2$@)"
+                    defaultValue: "Fleet Relay (%1$@, %2$@)"
                 ),
                 provider,
                 region
@@ -242,7 +242,7 @@ struct IrohConnectionCheckCard: View {
         case .retry:
             String(
                 localized: "settings.networking.check.action.retry",
-                defaultValue: "Retry. If this continues, share the safe report with cmux support."
+                defaultValue: "Retry. If this continues, share the safe report with Fleet support."
             )
         case .checkInternet:
             String(
@@ -252,7 +252,7 @@ struct IrohConnectionCheckCard: View {
         case .openMacApp:
             String(
                 localized: "settings.networking.check.action.mac",
-                defaultValue: "Keep cmux open and confirm both apps use the same account."
+                defaultValue: "Keep Fleet open and confirm both apps use the same account."
             )
         case .allowRelayTraffic:
             String(
@@ -265,7 +265,7 @@ struct IrohConnectionCheckCard: View {
         case .refreshAccount:
             String(
                 localized: "settings.networking.check.action.account",
-                defaultValue: "Confirm you are signed in, then reopen cmux and run the check again."
+                defaultValue: "Confirm you are signed in, then reopen Fleet and run the check again."
             )
         case .reviewRelaySettings:
             String(
@@ -277,7 +277,7 @@ struct IrohConnectionCheckCard: View {
         case .updateOrRepair:
             String(
                 localized: "settings.networking.check.action.repair",
-                defaultValue: "Update cmux on both devices. If needed, pair them again."
+                defaultValue: "Update Fleet on both devices. If needed, pair them again."
             )
         }
     }

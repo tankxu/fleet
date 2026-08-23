@@ -178,7 +178,7 @@ extension CMUXCLI {
             } else if sshPTYAttachWrapperWillRetry(sessionRunningExitCode) {
                 message = String(
                     localized: "cli.sshPtyAttach.bridgeClosedSessionRunningReconnecting",
-                    defaultValue: "The SSH terminal connection ended while the remote session is still running; cmux is reconnecting.",
+                    defaultValue: "The SSH terminal connection ended while the remote session is still running; Fleet is reconnecting.",
                     bundle: CLIExecutableLocator.enclosingAppBundle() ?? .main
                 )
             } else {

@@ -92,7 +92,7 @@ final class MarkdownViewerAssets {
             ),
             "remoteImageConsentMessage": String(
                 localized: "markdown.web.remoteImageConsentMessage",
-                defaultValue: "cmux will not contact this image URL until you load this image."
+                defaultValue: "Fleet will not contact this image URL until you load this image."
             ),
             "remoteImageLoadImage": String(
                 localized: "markdown.web.remoteImageLoadImage",

@@ -104,7 +104,7 @@ struct OnboardingConnectionView: View {
         }
         return L10n.string(
             "mobile.onboarding.connect.body",
-            defaultValue: "Use the same cmux account on both devices. Your Mac connects automatically."
+            defaultValue: "Use the same Fleet account on both devices. Your Mac connects automatically."
         )
     }
 }

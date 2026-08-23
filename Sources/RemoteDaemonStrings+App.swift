@@ -12,11 +12,11 @@ extension RemoteDaemonStrings {
         RemoteDaemonStrings(
             missingPersistentPTYCapability: String(
                 localized: "remoteDaemon.error.missingPersistentPTYCapability",
-                defaultValue: "remote daemon does not support persistent SSH PTY sessions; reconnect the remote workspace to update cmux"
+                defaultValue: "remote daemon does not support persistent SSH PTY sessions; reconnect the remote workspace to update Fleet"
             ),
             missingRequiredFunctionality: String(
                 localized: "remoteDaemon.error.missingRequiredFunctionality",
-                defaultValue: "remote daemon is missing required functionality; reconnect the remote workspace to update cmux"
+                defaultValue: "remote daemon is missing required functionality; reconnect the remote workspace to update Fleet"
             )
         )
     }

@@ -708,7 +708,7 @@ struct TaskComposerDirectoryPickerView: View {
         case .unsupported:
             L10n.string(
                 "mobile.taskComposer.directoryPicker.failure.unsupported",
-                defaultValue: "Update cmux on this Mac to search its folders. You can still choose a recent location."
+                defaultValue: "Update Fleet on this Mac to search its folders. You can still choose a recent location."
             )
         case .unavailable:
             L10n.string(
@@ -749,7 +749,7 @@ struct TaskComposerDirectoryPickerView: View {
         case .unsupported:
             L10n.string(
                 "mobile.taskComposer.directoryPicker.browse.failure.update.title",
-                defaultValue: "Update cmux on This Mac"
+                defaultValue: "Update Fleet on This Mac"
             )
         default:
             L10n.string(
@@ -784,7 +784,7 @@ struct TaskComposerDirectoryPickerView: View {
         case .unsupported:
             L10n.string(
                 "mobile.taskComposer.directoryPicker.browse.failure.update.message",
-                defaultValue: "Install the latest cmux on the Mac to browse every accessible folder."
+                defaultValue: "Install the latest Fleet on the Mac to browse every accessible folder."
             )
         case .notFound, .notDirectory:
             L10n.string(
@@ -794,7 +794,7 @@ struct TaskComposerDirectoryPickerView: View {
         case .permissionDenied:
             L10n.string(
                 "mobile.taskComposer.directoryPicker.browse.failure.permission",
-                defaultValue: "Allow cmux to access this location on the Mac, then retry."
+                defaultValue: "Allow Fleet to access this location on the Mac, then retry."
             )
         case .unreadable:
             L10n.string(
@@ -804,7 +804,7 @@ struct TaskComposerDirectoryPickerView: View {
         case .rejected, .cancelled:
             L10n.string(
                 "mobile.taskComposer.directoryPicker.browse.failure.generic",
-                defaultValue: "The Mac could not list this folder. If this is a protected folder such as Downloads, allow cmux access in Mac System Settings › Privacy & Security › Files & Folders, then retry."
+                defaultValue: "The Mac could not list this folder. If this is a protected folder such as Downloads, allow Fleet access in Mac System Settings › Privacy & Security › Files & Folders, then retry."
             )
         }
     }

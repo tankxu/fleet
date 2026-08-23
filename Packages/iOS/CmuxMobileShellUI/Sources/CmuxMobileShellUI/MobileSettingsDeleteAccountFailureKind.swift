@@ -70,12 +70,12 @@ enum DeleteAccountFailureKind: Equatable {
         case .stackDeleteIncomplete:
             return L10n.string(
                 "mobile.settings.deleteAccountPartialFailureMessage",
-                defaultValue: "Your cmux data was deleted, but account sign-in cleanup did not finish. Try Delete Account again to complete deletion."
+                defaultValue: "Your Fleet data was deleted, but account sign-in cleanup did not finish. Try Delete Account again to complete deletion."
             )
         case .serverCleanupIncomplete:
             return L10n.string(
                 "mobile.settings.deleteAccountServerCleanupIncompleteMessage",
-                defaultValue: "Your account sign-in was deleted, but some cmux cleanup did not finish. You will be signed out. Contact support if cmux data is still visible."
+                defaultValue: "Your account sign-in was deleted, but some Fleet cleanup did not finish. You will be signed out. Contact support if Fleet data is still visible."
             )
         case .timedOut:
             return L10n.string(

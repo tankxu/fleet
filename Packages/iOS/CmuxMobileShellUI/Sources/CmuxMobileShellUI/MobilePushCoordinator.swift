@@ -1038,7 +1038,7 @@ public final class MobilePushCoordinator {
         let content = UNMutableNotificationContent()
         content.title = String(
             localized: "mobile.push.debugReply.title",
-            defaultValue: "cmux reply test",
+            defaultValue: "Fleet reply test",
             bundle: .module
         )
         content.subtitle = workspace.name

@@ -26,18 +26,18 @@ struct ConfigSettingsView: View {
         case .cmux:
             return String(
                 localized: "settings.config.banner.cmux",
-                defaultValue: "This is the cmux Ghostty config selected for this build. Edit it here, then Save to reload cmux."
+                defaultValue: "This is the Fleet Ghostty config selected for this build. Edit it here, then Save to reload Fleet."
             )
         case .synced:
             if currentSnapshot.hasStandaloneGhosttyConfig {
                 return String(
                     localized: "settings.config.banner.synced",
-                    defaultValue: "This is a generated preview of the effective config. Edit the fleet tab to change what cmux reads."
+                    defaultValue: "This is a generated preview of the effective config. Edit the fleet tab to change what Fleet reads."
                 )
             }
             return String(
                 localized: "settings.config.banner.syncedNoGhostty",
-                defaultValue: "This is a generated preview of the effective config. No base Ghostty config file was found, so only cmux overrides are shown."
+                defaultValue: "This is a generated preview of the effective config. No base Ghostty config file was found, so only Fleet overrides are shown."
             )
         }
     }
@@ -428,7 +428,7 @@ private extension ConfigSource {
     var localizedTitle: String {
         switch self {
         case .cmux:
-            return String(localized: "settings.config.source.cmux", defaultValue: "cmux")
+            return String(localized: "settings.config.source.cmux", defaultValue: "Fleet")
         case .synced:
             return String(localized: "settings.config.source.synced", defaultValue: "synced")
         }

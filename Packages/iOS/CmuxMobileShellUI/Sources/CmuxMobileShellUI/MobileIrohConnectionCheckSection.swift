@@ -95,7 +95,7 @@ struct MobileIrohConnectionCheckSection: View {
     private var relayAllowlistText: String {
         let header = L10n.string(
             "mobile.iroh.check.allowlist.header",
-            defaultValue: "Allow outbound HTTPS and WebSocket access to these cmux relay origins:"
+            defaultValue: "Allow outbound HTTPS and WebSocket access to these Fleet relay origins:"
         )
         return ([header] + safeRelayOrigins.map { "- \($0)" }).joined(separator: "\n")
     }
@@ -108,7 +108,7 @@ struct MobileIrohConnectionCheckSection: View {
         var lines = [
             L10n.string(
                 "mobile.iroh.check.report.header",
-                defaultValue: "cmux Connection Report"
+                defaultValue: "Fleet Connection Report"
             ),
             "\(L10n.string("mobile.iroh.check.path", defaultValue: "Active Route")): \(selectedPath(report.selectedPath))",
         ]
@@ -137,7 +137,7 @@ struct MobileIrohConnectionCheckSection: View {
             String(
                 format: L10n.string(
                     "mobile.iroh.check.path.managedRelay",
-                    defaultValue: "cmux Relay (%1$@, %2$@)"
+                    defaultValue: "Fleet Relay (%1$@, %2$@)"
                 ),
                 provider,
                 region
@@ -202,7 +202,7 @@ struct MobileIrohConnectionCheckSection: View {
         case .retry:
             L10n.string(
                 "mobile.iroh.check.action.retry",
-                defaultValue: "Retry. If this continues, share the safe report with cmux support."
+                defaultValue: "Retry. If this continues, share the safe report with Fleet support."
             )
         case .checkInternet:
             L10n.string(
@@ -212,7 +212,7 @@ struct MobileIrohConnectionCheckSection: View {
         case .openMacApp:
             L10n.string(
                 "mobile.iroh.check.action.mac",
-                defaultValue: "Open cmux on your Mac and confirm both apps use the same account."
+                defaultValue: "Open Fleet on your Mac and confirm both apps use the same account."
             )
         case .allowRelayTraffic:
             L10n.string(
@@ -225,7 +225,7 @@ struct MobileIrohConnectionCheckSection: View {
         case .refreshAccount:
             L10n.string(
                 "mobile.iroh.check.action.account",
-                defaultValue: "Confirm you are signed in, then reopen cmux and run the check again."
+                defaultValue: "Confirm you are signed in, then reopen Fleet and run the check again."
             )
         case .reviewRelaySettings:
             L10n.string(
@@ -237,7 +237,7 @@ struct MobileIrohConnectionCheckSection: View {
         case .updateOrRepair:
             L10n.string(
                 "mobile.iroh.check.action.repair",
-                defaultValue: "Update cmux on both devices. If needed, remove and pair the Mac again."
+                defaultValue: "Update Fleet on both devices. If needed, remove and pair the Mac again."
             )
         }
     }

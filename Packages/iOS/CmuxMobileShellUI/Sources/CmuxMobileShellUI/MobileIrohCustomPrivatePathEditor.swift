@@ -89,13 +89,13 @@ struct MobileIrohCustomPrivatePathEditor: View {
                 } footer: {
                     Text(L10n.string(
                         "mobile.iroh.private.custom.addresses.footer",
-                        defaultValue: "Enter one IPv4 or IPv6 address per line, without a port. cmux combines it with the Mac's current broker-authenticated Iroh UDP port."
+                        defaultValue: "Enter one IPv4 or IPv6 address per line, without a port. Fleet combines it with the Mac's current broker-authenticated Iroh UDP port."
                     ))
                     if let mac = availableMacs.first(where: { $0.id == selectedMacDeviceID }),
                        !mac.supportsPrivatePaths {
                         Text(L10n.string(
                             "mobile.iroh.private.custom.macUpdateRequired",
-                            defaultValue: "Update cmux on this Mac before using private addresses."
+                            defaultValue: "Update Fleet on this Mac before using private addresses."
                         ))
                         .foregroundStyle(.orange)
                     }

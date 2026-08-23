@@ -276,7 +276,7 @@ extension ProUpgradePresenter {
             ProWelcomeChecklistPresenter.workspaceReuseState.clear()
         }
 
-        let title = String(localized: "proWelcome.workspace.title", defaultValue: "Welcome to cmux Pro")
+        let title = String(localized: "proWelcome.workspace.title", defaultValue: "Welcome to Fleet Pro")
         guard let workspace = appDelegate.performProUpgradeWorkspaceAction(
             title: title,
             url: url,

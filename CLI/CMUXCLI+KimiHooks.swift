@@ -37,7 +37,7 @@ extension CMUXCLI {
         let configDirectoryFileError = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.error.configDirectoryIsFile",
-                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
+                defaultValue: "Fleet could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
             ),
             configDir
         )
@@ -196,7 +196,7 @@ extension CMUXCLI {
                 print(String.localizedStringWithFormat(
                     String(
                         localized: "cli.hooks.kimi.removedZero",
-                        defaultValue: "Removed 0 cmux hook(s) from %@"
+                        defaultValue: "Removed 0 Fleet hook(s) from %@"
                     ),
                     configURL.path
                 ))
@@ -221,7 +221,7 @@ extension CMUXCLI {
         let warning = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.kimi.legacyCleanupWarning",
-                defaultValue: "Warning: fleet hooks are active at %@, but cmux could not remove its legacy hook block from %@. Check that path and re-run `fleet hooks setup kimi` to finish cleanup."
+                defaultValue: "Warning: fleet hooks are active at %@, but Fleet could not remove its legacy hook block from %@. Check that path and re-run `fleet hooks setup kimi` to finish cleanup."
             ),
             activeConfigURL.path,
             legacyConfigURL.path
@@ -233,7 +233,7 @@ extension CMUXCLI {
         let warning = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.kimi.legacyUninstallWarning",
-                defaultValue: "Warning: cmux could not remove its legacy hook block from %@. Check that path and re-run `fleet hooks uninstall kimi` to finish cleanup."
+                defaultValue: "Warning: Fleet could not remove its legacy hook block from %@. Check that path and re-run `fleet hooks uninstall kimi` to finish cleanup."
             ),
             legacyConfigURL.path
         )

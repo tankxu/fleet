@@ -52,7 +52,7 @@ private struct AccountSignInIdleView: View {
             Image(systemName: "person.crop.circle.badge.plus")
                 .cmuxFont(size: 34)
                 .foregroundStyle(.tint)
-            Text(String(localized: "account.signIn.heading", defaultValue: "Sign in to cmux"))
+            Text(String(localized: "account.signIn.heading", defaultValue: "Sign in to Fleet"))
                 .cmuxFont(.title2, weight: .semibold)
             Text(String(
                 localized: "account.signIn.prompt",
@@ -245,7 +245,7 @@ private extension AccountSignInModel.LoadingStage {
         case .openingBrowser:
             return String(
                 localized: "account.signIn.loading.opening.instructions",
-                defaultValue: "cmux is preparing a secure sign-in window."
+                defaultValue: "Fleet is preparing a secure sign-in window."
             )
         case .waiting:
             return String(
@@ -260,7 +260,7 @@ private extension AccountSignInModel.LoadingStage {
         case .finishing:
             return String(
                 localized: "account.signIn.loading.finishing.instructions",
-                defaultValue: "cmux is verifying your account. Keep this pane open."
+                defaultValue: "Fleet is verifying your account. Keep this pane open."
             )
         }
     }
@@ -278,19 +278,19 @@ private extension AccountSignInModel.Failure {
         case .offline:
             return String(localized: "account.signIn.error.offline.title", defaultValue: "No internet connection")
         case .network:
-            return String(localized: "account.signIn.error.network.title", defaultValue: "Couldn’t reach cmux")
+            return String(localized: "account.signIn.error.network.title", defaultValue: "Couldn’t reach Fleet")
         case .timedOut:
             return String(localized: "account.signIn.error.timedOut.title", defaultValue: "Sign-in timed out")
         case .server:
-            return String(localized: "account.signIn.error.server.title", defaultValue: "cmux sign-in is temporarily unavailable")
+            return String(localized: "account.signIn.error.server.title", defaultValue: "Fleet sign-in is temporarily unavailable")
         case .invalidLink:
             return String(localized: "account.signIn.error.invalidLink.title", defaultValue: "That sign-in link is no longer valid")
         case .browserUnavailable:
             return String(localized: "account.signIn.error.browserUnavailable.title", defaultValue: "Couldn’t open sign-in")
         case .unauthorized:
-            return String(localized: "account.signIn.error.unauthorized.title", defaultValue: "cmux couldn’t authorize this sign-in")
+            return String(localized: "account.signIn.error.unauthorized.title", defaultValue: "Fleet couldn’t authorize this sign-in")
         case .rejected:
-            return String(localized: "account.signIn.error.rejected.title", defaultValue: "cmux couldn’t complete the sign-in")
+            return String(localized: "account.signIn.error.rejected.title", defaultValue: "Fleet couldn’t complete the sign-in")
         case .unknown:
             return String(localized: "account.signIn.error.unknown.title", defaultValue: "Couldn’t finish sign-in")
         }
@@ -316,12 +316,12 @@ private extension AccountSignInModel.Failure {
         case .timedOut:
             return String(
                 localized: "account.signIn.error.timedOut.recovery",
-                defaultValue: "The sign-in window did not return to cmux. Reopen the browser link or start a new attempt."
+                defaultValue: "The sign-in window did not return to Fleet. Reopen the browser link or start a new attempt."
             )
         case .server:
             return String(
                 localized: "account.signIn.error.server.recovery",
-                defaultValue: "Try again in a moment. Your account and existing cmux workspaces are unchanged."
+                defaultValue: "Try again in a moment. Your account and existing Fleet workspaces are unchanged."
             )
         case .invalidLink:
             return String(

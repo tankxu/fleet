@@ -541,7 +541,7 @@ struct WorkspaceListView: View {
                         descriptionOverride: initialConnectionTimedOut
                             ? L10n.string(
                                 "mobile.loading.timeout.message",
-                                defaultValue: "cmux could not finish restoring this session. Check that the selected cmux build is running, then retry."
+                                defaultValue: "Fleet could not finish restoring this session. Check that the selected Fleet build is running, then retry."
                             )
                             : disconnectedConnectionFailureDescription,
                         retry: initialConnectionTimedOut ? retryInitialConnection : nil,

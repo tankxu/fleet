@@ -73,11 +73,11 @@ struct SetupHelpView: View {
             Text(highlight == nil
                 ? L10n.string(
                     "mobile.setupHelp.introReference",
-                    defaultValue: "To see your computer's terminals here, sign in to the same cmux account on both devices and keep cmux running on the computer. Connection is automatic after that."
+                    defaultValue: "To see your computer's terminals here, sign in to the same Fleet account on both devices and keep Fleet running on the computer. Connection is automatic after that."
                 )
                 : L10n.string(
                     "mobile.setupHelp.intro",
-                    defaultValue: "To see your computer's terminals here, sign in to the same cmux account on both devices and keep cmux running on the computer. The step you are on is marked below."
+                    defaultValue: "To see your computer's terminals here, sign in to the same Fleet account on both devices and keep Fleet running on the computer. The step you are on is marked below."
                 ))
             .font(.subheadline)
             .foregroundStyle(.secondary)
@@ -124,7 +124,7 @@ struct SetupHelpView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(L10n.string(
                     "mobile.setupHelp.networkBody",
-                    defaultValue: "cmux connects through Iroh, which links this phone to your computer directly when possible and through an encrypted cmux relay when not. Both devices verify your account, and the relay cannot read your terminals. No network setup is required."
+                    defaultValue: "Fleet connects through Iroh, which links this phone to your computer directly when possible and through an encrypted Fleet relay when not. Both devices verify your account, and the relay cannot read your terminals. No network setup is required."
                 ))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
@@ -150,7 +150,7 @@ struct SetupHelpView: View {
 
                 Text(L10n.string(
                     "mobile.setupHelp.lanBody",
-                    defaultValue: "If both devices are on Tailscale, another VPN, or the same network, cmux can use it as a faster direct path. The connection stays encrypted and verified either way."
+                    defaultValue: "If both devices are on Tailscale, another VPN, or the same network, Fleet can use it as a faster direct path. The connection stays encrypted and verified either way."
                 ))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
@@ -167,7 +167,7 @@ struct SetupHelpView: View {
         } footer: {
             Text(L10n.string(
                 "mobile.setupHelp.sameAccountFooter",
-                defaultValue: "Both devices must be signed in to the same cmux account. A private network never replaces that check."
+                defaultValue: "Both devices must be signed in to the same Fleet account. A private network never replaces that check."
             ))
         }
         .accessibilityIdentifier("MobileSetupHelpNetworkSection")

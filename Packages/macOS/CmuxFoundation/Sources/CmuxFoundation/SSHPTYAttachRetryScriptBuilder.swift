@@ -31,7 +31,7 @@ public struct SSHPTYAttachRetryScriptBuilder: Sendable {
         let noProgressPolicy = SSHPTYAttachExitCode.noProgressShellPolicy()
         let reattachingFormat = String(
             localized: "cli.sshPtyAttach.bridgeClosedReattaching",
-            defaultValue: "[cmux] remote PTY bridge closed; reattaching (attempt %s/%s)."
+            defaultValue: "[Fleet] remote PTY bridge closed; reattaching (attempt %s/%s)."
         ).remoteCommandShellQuoted
         let retryWithoutReauthenticationStatus =
             SSHPTYAttachExitCode.retryableWithoutReauthentication.rawValue

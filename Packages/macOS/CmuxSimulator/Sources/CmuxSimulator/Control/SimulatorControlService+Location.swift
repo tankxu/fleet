@@ -468,7 +468,7 @@ extension SimulatorControlService {
                 arguments: ["simctl", "location", deviceID],
                 message: String(
                     localized: "simulator.control.locationRouteNotRunning",
-                    defaultValue: "cmux has no running location route for this device."
+                    defaultValue: "Fleet has no running location route for this device."
                 )
             )
         }
@@ -542,7 +542,7 @@ extension SimulatorControlService {
                 arguments: ["simctl", "location", deviceID],
                 message: String(
                     localized: "simulator.control.locationRouteNotPaused",
-                    defaultValue: "cmux has no paused location route for this device."
+                    defaultValue: "Fleet has no paused location route for this device."
                 )
             )
         }

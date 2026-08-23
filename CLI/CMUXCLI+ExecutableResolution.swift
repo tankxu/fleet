@@ -6,7 +6,7 @@ extension CMUXCLI {
     func managedTerminalRequiredMessage(displayName: String) -> String {
         let format = String(
             localized: "cli.tmux-compat.error.managedTerminalRequired",
-            defaultValue: "%@ must be launched from a cmux-managed terminal surface. Open a terminal surface in cmux and run this command there."
+            defaultValue: "%@ must be launched from a Fleet-managed terminal surface. Open a terminal surface in Fleet and run this command there."
         )
         return String(format: format, displayName)
     }

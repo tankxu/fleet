@@ -66,8 +66,8 @@ public struct GlobalHotkeySection: View {
                 searchAnchorID: "setting:globalHotkey:enable-hotkey",
                 String(localized: "settings.globalHotkey.enable", defaultValue: "Enable System-Wide Hotkey"),
                 subtitle: enabled.current
-                    ? String(localized: "settings.globalHotkey.enable.subtitleOn", defaultValue: "Press the shortcut from any app to show or hide all cmux windows.")
-                    : String(localized: "settings.globalHotkey.enable.subtitleOff", defaultValue: "Turn this on to show or hide all cmux windows from any app.")
+                    ? String(localized: "settings.globalHotkey.enable.subtitleOn", defaultValue: "Press the shortcut from any app to show or hide all Fleet windows.")
+                    : String(localized: "settings.globalHotkey.enable.subtitleOff", defaultValue: "Turn this on to show or hide all Fleet windows from any app.")
             ) {
                 Toggle("", isOn: Binding(get: { enabled.current }, set: { enabled.set($0) }))
                     .labelsHidden()

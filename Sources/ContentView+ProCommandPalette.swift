@@ -18,7 +18,7 @@ extension ContentView {
         return [
             CommandPaletteCommandContribution(
                 commandId: commandPaletteProWelcomeChecklistCommandId,
-                title: constant(String(localized: "command.pro.welcomeChecklist.title", defaultValue: "Welcome to cmux Pro")),
+                title: constant(String(localized: "command.pro.welcomeChecklist.title", defaultValue: "Welcome to Fleet Pro")),
                 subtitle: constant(String(localized: "command.auth.subtitle", defaultValue: "Account")),
                 keywords: ["pro", "welcome", "checklist", "onboarding", "cloud", "billing", "ios", "provider"],
                 when: { context in
@@ -27,7 +27,7 @@ extension ContentView {
             ),
             CommandPaletteCommandContribution(
                 commandId: commandPaletteProUpgradeCommandId,
-                title: constant(String(localized: "command.pro.upgrade.title", defaultValue: "Upgrade to cmux Pro")),
+                title: constant(String(localized: "command.pro.upgrade.title", defaultValue: "Upgrade to Fleet Pro")),
                 subtitle: constant(String(localized: "command.auth.subtitle", defaultValue: "Account")),
                 keywords: ["pro", "upgrade", "subscription", "billing", "plan", "pricing", "cloud", "purchase", "buy"],
                 when: { context in

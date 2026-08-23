@@ -57,7 +57,7 @@ enum SettingsNavigationTarget: String, CaseIterable, Identifiable {
         case .keyboardShortcuts:
             return String(localized: "settings.section.keyboardShortcuts", defaultValue: "Keyboard Shortcuts")
         case .settingsJSON:
-            return String(localized: "settings.section.settingsJSON", defaultValue: "cmux.json")
+            return String(localized: "settings.section.settingsJSON", defaultValue: "Fleet.json")
         case .reset:
             return String(localized: "settings.section.reset", defaultValue: "Reset")
         }
@@ -329,7 +329,7 @@ enum SettingsSearchIndex {
 
     private static let settingEntries: [SettingsSearchEntry] = [
         setting(.account, "account", String(localized: "settings.section.account", defaultValue: "Account"), "sign in login team sync user profile"),
-        setting(.account, "pro", String(localized: "settings.account.pro.title", defaultValue: "cmux Pro"), "pro upgrade subscription billing plan pricing cloud"),
+        setting(.account, "pro", String(localized: "settings.account.pro.title", defaultValue: "Fleet Pro"), "pro upgrade subscription billing plan pricing cloud"),
         setting(.app, "language", String(localized: "settings.app.language", defaultValue: "Language"), "locale translation japanese english restart"),
         setting(.app, "appearance", String(localized: "settings.app.appearance", defaultValue: "Appearance"), "theme light dark system"),
         setting(.app, "app-icon", String(localized: "settings.app.appIcon", defaultValue: "App Icon"), "dock icon alternate"),
@@ -342,9 +342,9 @@ enum SettingsSearchIndex {
         setting(.app, "focus-pane-first-click", String(localized: "settings.app.paneFirstClickFocus", defaultValue: "Focus Pane on First Click"), "mouse click focus"),
         setting(.app, "file-drops", String(localized: "settings.app.fileDrop.defaultBehavior", defaultValue: "File Drops"), "drag drop files finder path text terminal editor split preview shift"),
         setting(.app, "preferred-editor", String(localized: "settings.app.preferredEditor", defaultValue: "Open Files With"), "editor code zed subl cmd click file"),
-        setting(.app, "supported-file-previews", String(localized: "settings.app.openSupportedFilesInCmux", defaultValue: "Open Supported Files in cmux"), "cmd click file preview pdf image audio video quick look editor"),
+        setting(.app, "supported-file-previews", String(localized: "settings.app.openSupportedFilesInCmux", defaultValue: "Open Supported Files in Fleet"), "cmd click file preview pdf image audio video quick look editor"),
         setting(.app, "terminal-config", String(localized: "settings.app.configWindow", defaultValue: "Terminal Config"), "ghostty config merged preview macos-option-as-alt option as alt left option right option alt key meta"),
-        setting(.app, "markdown-viewer", String(localized: "settings.app.openMarkdownInCmuxViewer", defaultValue: "Open Markdown in cmux Viewer"), "md markdown viewer"),
+        setting(.app, "markdown-viewer", String(localized: "settings.app.openMarkdownInCmuxViewer", defaultValue: "Open Markdown in Fleet Viewer"), "md markdown viewer"),
         setting(.app, "markdown-font-size", String(localized: "settings.app.markdownFontSize", defaultValue: "Markdown Viewer Font Size"), "md markdown viewer font size points zoom scale text bigger smaller"),
         setting(.app, "markdown-font-family", String(localized: "settings.app.markdownFontFamily", defaultValue: "Markdown Viewer Font"), "markdown.fontFamily md markdown viewer font font-family family typeface system stack custom"),
         setting(.app, "markdown-max-width", String(localized: "settings.app.markdownMaxWidth", defaultValue: "Markdown Viewer Max Width"), "markdown.maxWidth md markdown viewer width column reading line length pixels px"),
@@ -405,8 +405,8 @@ enum SettingsSearchIndex {
         setting(.sidebarAppearance, "show-pull-requests", String(localized: "settings.app.showPullRequests", defaultValue: "Show Pull Requests in Sidebar"), "review pr mr link"),
         setting(.sidebarAppearance, "watch-git-status", String(localized: "settings.app.watchGitStatus", defaultValue: "Watch Git Status in Sidebar"), "git status branch watcher index lock"),
         setting(.sidebarAppearance, "make-pr-clickable", String(localized: "settings.app.makeSidebarPullRequestClickable", defaultValue: "Make Sidebar PR Clickable"), "pull requests pull request pr mr review clickable links select workspace row"),
-        setting(.sidebarAppearance, "open-pr-links", String(localized: "settings.app.openSidebarPRLinks", defaultValue: "Open Sidebar PR Links in cmux Browser"), "pull request link browser"),
-        setting(.sidebarAppearance, "open-port-links", String(localized: "settings.app.openSidebarPortLinks", defaultValue: "Open Sidebar Port Links in cmux Browser"), "port link browser"),
+        setting(.sidebarAppearance, "open-pr-links", String(localized: "settings.app.openSidebarPRLinks", defaultValue: "Open Sidebar PR Links in Fleet Browser"), "pull request link browser"),
+        setting(.sidebarAppearance, "open-port-links", String(localized: "settings.app.openSidebarPortLinks", defaultValue: "Open Sidebar Port Links in Fleet Browser"), "port link browser"),
         setting(.sidebarAppearance, "show-ssh", String(localized: "settings.app.showSSH", defaultValue: "Show SSH in Sidebar"), "remote target"),
         setting(.sidebarAppearance, "show-ports", String(localized: "settings.app.showPorts", defaultValue: "Show Listening Ports in Sidebar"), "localhost port"),
         setting(.sidebarAppearance, "show-log", String(localized: "settings.app.showLog", defaultValue: "Show Latest Log in Sidebar"), "status message"),
@@ -434,7 +434,7 @@ enum SettingsSearchIndex {
                 "automation.workspaceAutoNaming automation.autoNamingAgent workspace auto naming auto name ai naming names rename workspace rename tab title titles generated name agent summarizer summarize conversation",
                 String(localized: "settings.automation.workspaceAutoNaming.subtitleOn", defaultValue: "Workspaces and tabs are named from agent conversations."),
                 String(localized: "settings.automation.workspaceAutoNaming.subtitleOff", defaultValue: "Workspace and tab names are never generated."),
-                String(localized: "settings.automation.workspaceAutoNaming.note", defaultValue: "When enabled, cmux summarizes supported agent sessions into short workspace and tab names using each agent's own binary, refreshed as the topic shifts. Manual renames always win and stop auto-naming for that workspace or tab. Uses your agent account for the short summarization calls."),
+                String(localized: "settings.automation.workspaceAutoNaming.note", defaultValue: "When enabled, Fleet summarizes supported agent sessions into short workspace and tab names using each agent's own binary, refreshed as the topic shifts. Manual renames always win and stop auto-naming for that workspace or tab. Uses your agent account for the short summarization calls."),
                 String(localized: "settings.automation.autoNamingAgent", defaultValue: "Naming Agent"),
                 String(localized: "settings.automation.autoNamingAgent.auto", defaultValue: "Automatic")
             ].joined(separator: " ")
@@ -448,14 +448,14 @@ enum SettingsSearchIndex {
         setting(.automation, "port-base", String(localized: "settings.automation.portBase", defaultValue: "Port Base"), "CMUX_PORT start"),
         setting(.automation, "port-range", String(localized: "settings.automation.portRange", defaultValue: "Port Range Size"), "CMUX_PORT_END workspace ports"),
         setting(.browser, "search-engine", String(localized: "settings.browser.searchEngine", defaultValue: "Default Search Engine"), "address bar query google duckduckgo bing kagi brave startpage perplexity exa yahoo ecosia qwant mojeek wikipedia github baidu yandex custom search provider"),
-        setting(.browser, "enable-browser", String(localized: "settings.browser.enabled", defaultValue: "Enable cmux Browser"), "webview tabs links"),
+        setting(.browser, "enable-browser", String(localized: "settings.browser.enabled", defaultValue: "Enable Fleet Browser"), "webview tabs links"),
         setting(.browser, "search-suggestions", String(localized: "settings.browser.searchSuggestions", defaultValue: "Show Search Suggestions"), "browser address bar suggestions"),
         setting(.browser, "theme", String(localized: "settings.browser.theme", defaultValue: "Browser Theme"), "web appearance light dark system"),
         setting(.browser, "default-zoom-level", String(localized: "settings.browser.defaultZoomLevel", defaultValue: "Default Page Zoom"), "default browser zoom level page magnification percent scale actual size"),
         setting(.browser, "hidden-webview-discard", String(localized: "settings.browser.hiddenWebViewDiscard", defaultValue: "Discard Hidden Browser WebViews"), "memory hidden tabs webview discard unload"),
         setting(.browser, "hidden-webview-discard-delay", String(localized: "settings.browser.hiddenWebViewDiscardDelay", defaultValue: "Hidden WebView Discard Delay"), "memory hidden tabs delay seconds discard"),
         setting(.browser, "ask-where-to-save-downloads", String(localized: "settings.browser.askWhereToSaveDownloads", defaultValue: "Ask Where to Save Downloads"), "downloads save panel download folder attachments files pdf gmail"),
-        setting(.browser, "terminal-links", String(localized: "settings.browser.openTerminalLinks", defaultValue: "Open Terminal Links in cmux Browser"), "click links browser"),
+        setting(.browser, "terminal-links", String(localized: "settings.browser.openTerminalLinks", defaultValue: "Open Terminal Links in Fleet Browser"), "click links browser"),
         setting(.browser, "intercept-open", String(localized: "settings.browser.interceptOpen", defaultValue: "Intercept open http(s) in Terminal"), "open command urls"),
         setting(.browser, "host-whitelist", String(localized: "settings.browser.hostWhitelist", defaultValue: "Hosts to Open in Embedded Browser"), "hosts wildcard terminal links"),
         setting(.browser, "external-patterns", String(localized: "settings.browser.externalPatterns", defaultValue: "URLs to Always Open Externally"), "regex url rules default browser"),
@@ -473,7 +473,7 @@ enum SettingsSearchIndex {
         setting(.workspaceColors, "selection", String(localized: "settings.workspaceColors.selectionColor", defaultValue: "Selection Highlight"), "selected workspace background"),
         setting(.workspaceColors, "badge", String(localized: "settings.workspaceColors.notificationBadgeColor", defaultValue: "Notification Badge"), "unread notification color"),
         setting(.workspaceColors, "palette", String(localized: "settings.workspaceColors.resetPalette", defaultValue: "Reset Palette"), "named colors palette"),
-        setting(.settingsJSON, "open-file", String(localized: "settings.settingsJSON.openFile", defaultValue: "Open cmux.json"), "config json file editor dotfiles"),
+        setting(.settingsJSON, "open-file", String(localized: "settings.settingsJSON.openFile", defaultValue: "Open Fleet.json"), "config json file editor dotfiles"),
         setting(.settingsJSON, "documentation", String(localized: "settings.settingsJSON.documentation", defaultValue: "Documentation"), "fleet json schema reference docs"),
         setting(.reset, "reset-all", String(localized: "settings.reset.resetAll", defaultValue: "Reset All Settings"), "restore defaults")
     ] + terminalScrollSpeedSettingEntries

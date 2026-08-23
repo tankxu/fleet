@@ -114,7 +114,7 @@ extension BrowserImportOutcome {
                 String(
                     format: String(
                         localized: "browser.import.complete.createdProfiles",
-                        defaultValue: "Created cmux profiles: %@"
+                        defaultValue: "Created Fleet profiles: %@"
                     ),
                     createdDestinationProfileNames.joined(separator: ", ")
                 )

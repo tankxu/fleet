@@ -425,7 +425,7 @@ struct cmuxApp: App {
                 splitCommandButton(title: String(localized: "menu.app.settings", defaultValue: "Settings…"), shortcut: menuShortcut(for: .openSettings)) {
                     appDelegate.openPreferencesWindow(debugSource: "menu.cmdComma")
                 }
-                Button(String(localized: "menu.app.openCmuxSettingsFile", defaultValue: "Open cmux.json")) {
+                Button(String(localized: "menu.app.openCmuxSettingsFile", defaultValue: "Open Fleet.json")) {
                     openCmuxSettingsFileInEditor()
                 }
                 Button(String(localized: "menu.app.ghosttySettings", defaultValue: "Ghostty Settings…")) {
@@ -434,7 +434,7 @@ struct cmuxApp: App {
                 splitCommandButton(title: String(localized: "menu.app.reloadConfiguration", defaultValue: "Reload Configuration"), shortcut: menuShortcut(for: .reloadConfiguration)) {
                     dispatchReloadConfigurationMenuCommand()
                 }
-                Button(String(localized: "menu.app.makeDefaultTerminal", defaultValue: "Make cmux the Default Terminal")) {
+                Button(String(localized: "menu.app.makeDefaultTerminal", defaultValue: "Make Fleet the Default Terminal")) {
                     DefaultTerminalUserAction.setAsDefault(debugSource: "menu.makeDefaultTerminal")
                 }
                 Divider()
@@ -4733,7 +4733,7 @@ private struct TabBarBackdropLabTerminalPane: View {
         ZStack(alignment: .topLeading) {
             Color(nsColor: color.withAlphaComponent(opacity))
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(String(localized: "debug.tabBarBackdropLab.terminal.prompt", defaultValue: "lawrence in ~/cmux")) \(title)")
+                Text("\(String(localized: "debug.tabBarBackdropLab.terminal.prompt", defaultValue: "lawrence in ~/Fleet")) \(title)")
                     .foregroundStyle(Color.green)
                 Text(String(localized: "debug.tabBarBackdropLab.terminal.overflow", defaultValue: "tab titles intentionally overflow under the split buttons"))
                     .foregroundStyle(Color.white.opacity(0.78))

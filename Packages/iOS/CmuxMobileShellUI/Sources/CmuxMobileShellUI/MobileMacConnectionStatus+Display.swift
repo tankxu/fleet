@@ -23,9 +23,9 @@ extension MobileMacConnectionStatus {
         case .connected:
             return L10n.string("mobile.connection.connectedDescription", defaultValue: "Live terminal sync is active.")
         case .reconnecting:
-            return L10n.string("mobile.connection.reconnectingDescription", defaultValue: "Trying to reach the selected cmux build.")
+            return L10n.string("mobile.connection.reconnectingDescription", defaultValue: "Trying to reach the selected Fleet build.")
         case .unavailable:
-            return L10n.string("mobile.connection.unavailableDescription", defaultValue: "The live connection dropped. The selected cmux build may still be online. Tap Reconnect.")
+            return L10n.string("mobile.connection.unavailableDescription", defaultValue: "The live connection dropped. The selected Fleet build may still be online. Tap Reconnect.")
         }
     }
 

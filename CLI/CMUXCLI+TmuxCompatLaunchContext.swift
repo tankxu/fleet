@@ -219,7 +219,7 @@ extension CMUXCLI {
     ) throws -> ClaudeTeamsShimPlan {
         let downstreamTmuxMissing = String(
             localized: "cli.tmux-compat.error.downstreamTmuxMissing",
-            defaultValue: "cmux tmux shim: no downstream tmux executable found"
+            defaultValue: "Fleet tmux shim: no downstream tmux executable found"
         )
         let script = """
         #!/usr/bin/env bash

@@ -105,7 +105,7 @@ struct CLISocketPathResolution: Sendable {
     var failureMessage: String {
         let header = String(
             localized: "cli.socket.error.discoveryFailed",
-            defaultValue: "No live cmux socket found. Tried:"
+            defaultValue: "No live Fleet socket found. Tried:"
         )
         let paths = candidatePaths.map { "  \($0)" }.joined(separator: "\n")
         return paths.isEmpty ? header : "\(header)\n\(paths)"

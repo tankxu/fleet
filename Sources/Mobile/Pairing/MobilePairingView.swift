@@ -99,7 +99,7 @@ struct MobilePairingView: View {
 
     private var signInRow: some View {
         requirementRow(
-            title: String(localized: "mobile.pairing.req.signIn.title", defaultValue: "Signed in to cmux"),
+            title: String(localized: "mobile.pairing.req.signIn.title", defaultValue: "Signed in to Fleet"),
             subtitle: model.signedInEmail
                 ?? String(localized: "mobile.pairing.req.signIn.subtitle", defaultValue: "Sign in to authorize this Mac for pairing.")
         ) {

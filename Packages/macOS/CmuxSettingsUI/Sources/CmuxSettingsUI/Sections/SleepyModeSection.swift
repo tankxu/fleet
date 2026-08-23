@@ -26,7 +26,7 @@ public struct SleepyModeSection: View {
                     String(localized: "sleepyMode.settings.theme", defaultValue: "Theme")
                 ) {
                     Picker("", selection: $store.theme) {
-                        Text(String(localized: "sleepyMode.theme.cmux", defaultValue: "cmux")).tag(SleepyTheme.cmux)
+                        Text(String(localized: "sleepyMode.theme.cmux", defaultValue: "Fleet")).tag(SleepyTheme.cmux)
                         Text(String(localized: "sleepyMode.theme.blossom", defaultValue: "Blossom")).tag(SleepyTheme.blossom)
                         Text(String(localized: "sleepyMode.theme.mint", defaultValue: "Mint")).tag(SleepyTheme.mint)
                         Text(String(localized: "sleepyMode.theme.mono", defaultValue: "Mono")).tag(SleepyTheme.mono)
@@ -40,7 +40,7 @@ public struct SleepyModeSection: View {
                     String(localized: "sleepyMode.settings.mascot", defaultValue: "Mascot")
                 ) {
                     Picker("", selection: $store.mascot) {
-                        Text(String(localized: "sleepyMode.mascot.cmux", defaultValue: "cmux mascot")).tag(SleepyMascot.cmux)
+                        Text(String(localized: "sleepyMode.mascot.cmux", defaultValue: "Fleet mascot")).tag(SleepyMascot.cmux)
                         Text(String(localized: "sleepyMode.mascot.cat", defaultValue: "Cat")).tag(SleepyMascot.cat)
                         Text(String(localized: "sleepyMode.mascot.ghost", defaultValue: "Ghost")).tag(SleepyMascot.ghost)
                         Text(String(localized: "sleepyMode.mascot.logoFace", defaultValue: "Logo face")).tag(SleepyMascot.logoFace)
@@ -55,7 +55,7 @@ public struct SleepyModeSection: View {
                     Picker("", selection: $store.glow) {
                         Text(String(localized: "sleepyMode.glow.black", defaultValue: "Black")).tag(SleepyGlow.black)
                         Text(String(localized: "sleepyMode.glow.midnight", defaultValue: "Midnight")).tag(SleepyGlow.midnight)
-                        Text(String(localized: "sleepyMode.glow.cmux", defaultValue: "cmux")).tag(SleepyGlow.cmux)
+                        Text(String(localized: "sleepyMode.glow.cmux", defaultValue: "Fleet")).tag(SleepyGlow.cmux)
                         Text(String(localized: "sleepyMode.glow.aurora", defaultValue: "Aurora")).tag(SleepyGlow.aurora)
                         Text(String(localized: "sleepyMode.glow.sunset", defaultValue: "Sunset")).tag(SleepyGlow.sunset)
                         Text(String(localized: "sleepyMode.glow.ocean", defaultValue: "Ocean")).tag(SleepyGlow.ocean)

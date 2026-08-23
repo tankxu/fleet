@@ -10,7 +10,7 @@ struct AppRemotePTYBridgeStrings: RemotePTYBridgeStrings {
     var missingPersistentPTYCapability: String {
         String(
             localized: "remoteDaemon.error.missingPersistentPTYCapability",
-            defaultValue: "remote daemon does not support persistent SSH PTY sessions; reconnect the remote workspace to update cmux"
+            defaultValue: "remote daemon does not support persistent SSH PTY sessions; reconnect the remote workspace to update Fleet"
         )
     }
 

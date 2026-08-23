@@ -1613,7 +1613,7 @@ final class TerminalNotificationStore: ObservableObject {
             )
             let format = String(
                 localized: "notificationHook.failure.body",
-                defaultValue: "cmux used default notification behavior because '%@' failed."
+                defaultValue: "Fleet used default notification behavior because '%@' failed."
             )
             let content = UNMutableNotificationContent()
             content.title = title
@@ -2427,8 +2427,8 @@ final class TerminalNotificationStore: ObservableObject {
         }
 
         let alert = notificationSettingsAlertFactory()
-        alert.messageText = String(localized: "dialog.enableNotifications.title", defaultValue: "Enable Notifications for cmux")
-        alert.informativeText = String(localized: "dialog.enableNotifications.message", defaultValue: "Notifications are disabled for cmux. Enable them in System Settings to see alerts.")
+        alert.messageText = String(localized: "dialog.enableNotifications.title", defaultValue: "Enable Notifications for Fleet")
+        alert.informativeText = String(localized: "dialog.enableNotifications.message", defaultValue: "Notifications are disabled for Fleet. Enable them in System Settings to see alerts.")
         alert.addButton(withTitle: String(localized: "dialog.enableNotifications.openSettings", defaultValue: "Open Settings"))
         alert.addButton(withTitle: String(localized: "dialog.enableNotifications.notNow", defaultValue: "Not Now"))
         alert.beginSheetModal(for: window) { [weak self] response in

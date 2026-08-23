@@ -33,7 +33,7 @@ struct MobileIrohSettingsView: View {
                 ) {
                     Text(L10n.string("mobile.iroh.preference.automatic", defaultValue: "Automatic"))
                         .tag(PreferenceChoice.automatic)
-                    Text(L10n.string("mobile.iroh.preference.managed", defaultValue: "Selected cmux Relays"))
+                    Text(L10n.string("mobile.iroh.preference.managed", defaultValue: "Selected Fleet Relays"))
                         .tag(PreferenceChoice.managed)
                     Text(L10n.string("mobile.iroh.preference.custom", defaultValue: "Custom Relays"))
                         .tag(PreferenceChoice.custom)
@@ -56,7 +56,7 @@ struct MobileIrohSettingsView: View {
             } footer: {
                 Text(L10n.string(
                     "mobile.iroh.relays.footer",
-                    defaultValue: "Direct peer-to-peer stays enabled. cmux verifies a signed relay catalog, so fleet changes do not require an app update."
+                    defaultValue: "Direct peer-to-peer stays enabled. Fleet verifies a signed relay catalog, so fleet changes do not require an app update."
                 ))
             }
 
@@ -137,7 +137,7 @@ struct MobileIrohSettingsView: View {
             } footer: {
                 Text(L10n.string(
                     "mobile.iroh.pathPreference.footer",
-                    defaultValue: "When enabled, cmux requires a reachable direct, local-network, or private-network path and will not fall back to a relay. Applies on the next reconnect."
+                    defaultValue: "When enabled, Fleet requires a reachable direct, local-network, or private-network path and will not fall back to a relay. Applies on the next reconnect."
                 ))
             }
 
@@ -389,7 +389,7 @@ struct MobileIrohSettingsView: View {
 
     private var policyStatusText: String {
         switch model.snapshot.policySource {
-        case .server: L10n.string("mobile.iroh.policy.server", defaultValue: "Verified from cmux")
+        case .server: L10n.string("mobile.iroh.policy.server", defaultValue: "Verified from Fleet")
         case .cached: L10n.string("mobile.iroh.policy.cached", defaultValue: "Last Verified Catalog")
         case .unavailable: L10n.string("mobile.iroh.policy.unavailable", defaultValue: "Unavailable")
         }

@@ -2857,7 +2857,7 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
         let informativeText = String(
             format: String(
                 localized: "surfaceResumeApproval.runPrompt.message",
-                defaultValue: "cmux is restoring a terminal with this resume command:\n\nWorking directory: %@\n\n%@"
+                defaultValue: "Fleet is restoring a terminal with this resume command:\n\nWorking directory: %@\n\n%@"
             ),
             binding.cwd ?? String(localized: "surfaceResumeApproval.cwd.none", defaultValue: "None"),
             binding.command
@@ -11452,7 +11452,7 @@ final class Workspace: Identifiable, ObservableObject, FilePreviewTabMetadataHos
         let failure = NSAlert()
         failure.alertStyle = .warning
         failure.messageText = String(localized: "alert.moveTab.failed.title", defaultValue: "Move Failed")
-        failure.informativeText = String(localized: "alert.moveTab.failed.message", defaultValue: "cmux could not move this tab to the selected destination.")
+        failure.informativeText = String(localized: "alert.moveTab.failed.message", defaultValue: "Fleet could not move this tab to the selected destination.")
         failure.addButton(withTitle: String(localized: "alert.ok", defaultValue: "OK"))
         _ = failure.runModal()
     }

@@ -71,7 +71,7 @@ enum GhosttyStartupAppearancePreviewProfile: String, CaseIterable, Identifiable 
         case .freshInstall:
             return String(
                 localized: "debug.startupAppearance.profile.freshInstall.detail",
-                defaultValue: "No user theme or terminal colors, so cmux applies its managed default colors."
+                defaultValue: "No user theme or terminal colors, so Fleet applies its managed default colors."
             )
         case .userThemePair:
             return String(

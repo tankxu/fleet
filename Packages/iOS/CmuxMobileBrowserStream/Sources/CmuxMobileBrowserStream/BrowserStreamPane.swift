@@ -175,7 +175,7 @@ public struct BrowserStreamPane: View {
         } else if state.streamStatus == .paused {
             statusOverlay(
                 title: L10n.string("mobile.browserStream.paused", defaultValue: "Stream Paused"),
-                detail: L10n.string("mobile.browserStream.pausedDetail", defaultValue: "Return to cmux to resume the browser mirror."),
+                detail: L10n.string("mobile.browserStream.pausedDetail", defaultValue: "Return to Fleet to resume the browser mirror."),
                 symbol: "pause.circle"
             )
             .accessibilityIdentifier("BrowserStreamPausedOverlay")
@@ -235,7 +235,7 @@ public struct BrowserStreamPane: View {
                     .font(.headline)
                 Text(
                     state.connectionStatus == .reconnecting
-                        ? L10n.string("mobile.connection.reconnectingDescription", defaultValue: "Trying to reach the selected cmux build.")
+                        ? L10n.string("mobile.connection.reconnectingDescription", defaultValue: "Trying to reach the selected Fleet build.")
                         : L10n.string("mobile.browserStream.disconnectedDetail", defaultValue: "Reconnect to the Mac to continue streaming.")
                 )
                     .font(.subheadline)

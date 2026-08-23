@@ -58,7 +58,7 @@ struct MobileSettingsAccountSection: View {
         } footer: {
             Text(L10n.string(
                 "mobile.settings.accountFooter",
-                defaultValue: "This device must be signed in to the same cmux account as the computer you pair with."
+                defaultValue: "This device must be signed in to the same Fleet account as the computer you pair with."
             ))
         }
         .alert(
@@ -75,7 +75,7 @@ struct MobileSettingsAccountSection: View {
         } message: {
             Text(L10n.string(
                 "mobile.settings.deleteAccountMessage",
-                defaultValue: "This permanently deletes your cmux account and cmux data. You will be signed out on this device."
+                defaultValue: "This permanently deletes your Fleet account and Fleet data. You will be signed out on this device."
             ))
         }
         .alert(

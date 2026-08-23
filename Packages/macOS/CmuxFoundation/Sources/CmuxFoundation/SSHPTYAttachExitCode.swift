@@ -77,7 +77,7 @@ public enum SSHPTYAttachExitCode: Int32 {
         let noProgressPolicy = noProgressShellPolicy()
         let reattachingFormat = String(
             localized: "cli.sshPtyAttach.bridgeClosedReattaching",
-            defaultValue: "[cmux] remote PTY bridge closed; reattaching (attempt %s/%s)."
+            defaultValue: "[Fleet] remote PTY bridge closed; reattaching (attempt %s/%s)."
         ).remoteCommandShellQuoted
         let retryWithoutReauthenticationStatus = retryableWithoutReauthentication.rawValue
         let sessionRunningStatus = bridgeClosedSessionRunning.rawValue
@@ -167,11 +167,11 @@ public enum SSHPTYAttachExitCode: Int32 {
     ) {
         let pluralFormat = String(
             localized: "cli.sshPtyAttach.noProgressRetryLimitReached.other",
-            defaultValue: "[cmux] remote PTY bridge made no progress after %s attempts; stopping retries."
+            defaultValue: "[Fleet] remote PTY bridge made no progress after %s attempts; stopping retries."
         ).remoteCommandShellQuoted
         let singularFormat = String(
             localized: "cli.sshPtyAttach.noProgressRetryLimitReached.one",
-            defaultValue: "[cmux] remote PTY bridge made no progress after %s attempt; stopping retries."
+            defaultValue: "[Fleet] remote PTY bridge made no progress after %s attempt; stopping retries."
         ).remoteCommandShellQuoted
         return (
             configurationLines: [

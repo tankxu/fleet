@@ -20,7 +20,7 @@ extension CmxRoutePingResult {
         case .refused:
             return L10n.string(
                 "mobile.computers.ping.refused",
-                defaultValue: "Reachable, but cmux isn't listening"
+                defaultValue: "Reachable, but Fleet isn't listening"
             )
         case .unreachable:
             return L10n.string(

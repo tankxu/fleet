@@ -85,13 +85,13 @@ extension UpdateStateModel {
         if let networkError = networkError(from: nsError) {
             switch networkError.code {
             case NSURLErrorNotConnectedToInternet:
-                return String(localized: "update.error.noInternet.message", defaultValue: "cmux can’t reach the update server. Check your internet connection and try again.")
+                return String(localized: "update.error.noInternet.message", defaultValue: "Fleet can’t reach the update server. Check your internet connection and try again.")
             case NSURLErrorTimedOut:
                 return String(localized: "update.error.timedOut.message", defaultValue: "The update server took too long to respond. Try again in a moment.")
             case NSURLErrorCannotFindHost:
                 return String(localized: "update.error.serverNotFound.message", defaultValue: "The update server can’t be found. Check your connection or try again later.")
             case NSURLErrorCannotConnectToHost:
-                return String(localized: "update.error.serverUnreachable.message", defaultValue: "cmux couldn’t connect to the update server. Check your connection or try again later.")
+                return String(localized: "update.error.serverUnreachable.message", defaultValue: "Fleet couldn’t connect to the update server. Check your connection or try again later.")
             case NSURLErrorNetworkConnectionLost:
                 return String(localized: "update.error.connectionLost.message", defaultValue: "The network connection was lost while checking for updates. Try again.")
             case NSURLErrorSecureConnectionFailed,
@@ -107,7 +107,7 @@ extension UpdateStateModel {
         if nsError.domain == SUSparkleErrorDomain {
             switch nsError.code {
             case 2001:
-                return String(localized: "update.error.feedDownload.message", defaultValue: "cmux couldn't download the update feed. Check your connection and try again.")
+                return String(localized: "update.error.feedDownload.message", defaultValue: "Fleet couldn't download the update feed. Check your connection and try again.")
             case 1000, 1002:
                 return String(localized: "update.error.feedRead.message", defaultValue: "The update feed could not be read. Please try again later.")
             case 4:
@@ -117,9 +117,9 @@ extension UpdateStateModel {
             case 1, 2, 3001, 3002:
                 return String(localized: "update.error.signatureError.message", defaultValue: "The update's signature could not be verified. Please try again later.")
             case 1003, 1005:
-                return String(localized: "update.error.permissionError.message", defaultValue: "Move cmux into Applications and relaunch to enable updates.")
+                return String(localized: "update.error.permissionError.message", defaultValue: "Move Fleet into Applications and relaunch to enable updates.")
             case 4005, 4010:
-                return String(localized: "update.error.installRecovery.message", defaultValue: "Move cmux into Applications and relaunch to enable updates. If it’s already in Applications, restart your Mac and try again, or download the latest version below.")
+                return String(localized: "update.error.installRecovery.message", defaultValue: "Move Fleet into Applications and relaunch to enable updates. If it’s already in Applications, restart your Mac and try again, or download the latest version below.")
             default:
                 break
             }

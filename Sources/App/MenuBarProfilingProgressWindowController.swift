@@ -57,7 +57,7 @@ final class MenuBarProfilingProgressWindowController: NSWindowController {
             backing: .buffered,
             defer: false
         )
-        window.title = String(localized: "statusMenu.profiling.title", defaultValue: "Profiling cmux")
+        window.title = String(localized: "statusMenu.profiling.title", defaultValue: "Profiling Fleet")
         window.isReleasedWhenClosed = false
         super.init(window: window)
         window.delegate = self
@@ -131,7 +131,7 @@ final class MenuBarProfilingProgressWindowController: NSWindowController {
     private func buildInterface() {
         guard let contentView = window?.contentView else { return }
 
-        titleLabel.stringValue = String(localized: "statusMenu.profiling.reviewTitle", defaultValue: "Send a cmux profile")
+        titleLabel.stringValue = String(localized: "statusMenu.profiling.reviewTitle", defaultValue: "Send a Fleet profile")
         titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
         titleLabel.lineBreakMode = .byTruncatingTail
 

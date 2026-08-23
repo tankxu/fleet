@@ -62,7 +62,7 @@ extension CMUXCLI {
             throw CLIError(message: String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.campfire.error.notCmuxExtension",
-                    defaultValue: "%@ exists and is not a cmux extension; leaving it alone"
+                    defaultValue: "%@ exists and is not a Fleet extension; leaving it alone"
                 ),
                 extensionURL.path
             ))
@@ -101,7 +101,7 @@ extension CMUXCLI {
             print(String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.campfire.noneFound",
-                    defaultValue: "No Campfire cmux extension found at %@"
+                    defaultValue: "No Campfire Fleet extension found at %@"
                 ),
                 extensionURL.path
             ))
@@ -112,7 +112,7 @@ extension CMUXCLI {
             print(String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.campfire.refuseRemoveMissingMarker",
-                    defaultValue: "Refusing to remove %@: missing cmux marker"
+                    defaultValue: "Refusing to remove %@: missing Fleet marker"
                 ),
                 extensionURL.path
             ))
@@ -122,7 +122,7 @@ extension CMUXCLI {
         print(String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.campfire.removed",
-                defaultValue: "Removed Campfire cmux extension from %@"
+                defaultValue: "Removed Campfire Fleet extension from %@"
             ),
             extensionURL.path
         ))

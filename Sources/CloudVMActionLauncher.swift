@@ -53,12 +53,12 @@ final class CloudVMActionLauncher {
                 presentStartFailure(
                     summary: String(
                         localized: "command.cloudVM.failed.missingCLI",
-                        defaultValue: "The bundled cmux CLI is missing from this app build."
+                        defaultValue: "The bundled Fleet CLI is missing from this app build."
                     ),
                     output: "",
                     action: String(
                         localized: "command.cloudVM.failed.action.missingCLI",
-                        defaultValue: "Install or reload a fresh cmux build, then try Start Cloud VM again. You can also run `fleet vm base open` in a terminal to see the full error."
+                        defaultValue: "Install or reload a fresh Fleet build, then try Start Cloud VM again. You can also run `fleet vm base open` in a terminal to see the full error."
                     ),
                     preferredWindow: preferredWindow
                 )
@@ -154,7 +154,7 @@ final class CloudVMActionLauncher {
                     output: error.localizedDescription,
                     action: String(
                         localized: "command.cloudVM.failed.action.launch",
-                        defaultValue: "Reload cmux so the bundled CLI is available, then try again. If it still fails, run `fleet vm base open` in a terminal and send us the output."
+                        defaultValue: "Reload Fleet so the bundled CLI is available, then try again. If it still fails, run `fleet vm base open` in a terminal and send us the output."
                     ),
                     preferredWindow: preferredWindow
                 )

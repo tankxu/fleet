@@ -95,7 +95,7 @@ struct TerminalPickerMenu: View, Equatable {
         } else {
             Section(L10n.string("mobile.browserStream.menuTitle", defaultValue: "Mac Browsers")) {
                 Label(
-                    L10n.string("mobile.macUpdateHint.browserStream", defaultValue: "Update cmux on your Mac to stream browser panes"),
+                    L10n.string("mobile.macUpdateHint.browserStream", defaultValue: "Update Fleet on your Mac to stream browser panes"),
                     systemImage: "arrow.down.circle"
                 )
                 .accessibilityIdentifier("BrowserStreamMacUpdateHint")

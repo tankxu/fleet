@@ -222,7 +222,7 @@ private struct PermissionRequestView: View {
                 Text(String(localized: "update.popover.enableAutoUpdates", defaultValue: "Enable automatic updates?"))
                     .cmuxFont(size: 13, weight: .semibold)
 
-                Text(String(localized: "update.popover.autoUpdatesDescription", defaultValue: "cmux can automatically check for updates in the background."))
+                Text(String(localized: "update.popover.autoUpdatesDescription", defaultValue: "Fleet can automatically check for updates in the background."))
                     .cmuxFont(size: 11)
                     .foregroundColor(.secondary)
                     .fixedSize(horizontal: false, vertical: true)

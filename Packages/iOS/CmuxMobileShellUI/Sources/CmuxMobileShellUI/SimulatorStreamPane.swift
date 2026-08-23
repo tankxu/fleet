@@ -318,7 +318,7 @@ struct SimulatorStreamPane: View {
                 .font(.headline)
                 Text(
                     state.connectionStatus == .reconnecting
-                        ? L10n.string("mobile.connection.reconnectingDescription", defaultValue: "Trying to reach the selected cmux build.")
+                        ? L10n.string("mobile.connection.reconnectingDescription", defaultValue: "Trying to reach the selected Fleet build.")
                         : L10n.string("mobile.simulatorStream.disconnectedDetail", defaultValue: "Reconnect to the Mac to continue streaming.")
                 )
                 .font(.subheadline)

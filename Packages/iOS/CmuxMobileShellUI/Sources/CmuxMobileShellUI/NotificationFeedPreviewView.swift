@@ -302,7 +302,7 @@ private func makeNotificationFeedPreviewFixtureItems(referenceDate: Date) -> [Mo
             isRead: false,
             workspaceTitle: L10n.string(
                 "mobile.notificationFeed.preview.workspace.ios",
-                defaultValue: "cmux iOS"
+                defaultValue: "Fleet iOS"
             ),
             surfaceTitle: L10n.string("mobile.notificationFeed.preview.surface.codex", defaultValue: "Codex"),
             connectionStatus: .connected

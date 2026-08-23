@@ -219,12 +219,12 @@ extension MobilePairingFailureCategory {
             _ = (host, port)
             return L10n.string(
                 "mobile.pairing.appNotRunning",
-                defaultValue: "Your Mac is reachable, but cmux isn't running there (or mobile pairing is off). Open cmux on the Mac, then try again."
+                defaultValue: "Your Mac is reachable, but Fleet isn't running there (or mobile pairing is off). Open Fleet on the Mac, then try again."
             )
         case .localNetworkBlocked:
             return L10n.string(
                 "mobile.pairing.localNetworkPermission",
-                defaultValue: "iOS blocked the connection. Allow cmux to use the Local Network in iOS Settings, then try again."
+                defaultValue: "iOS blocked the connection. Allow Fleet to use the Local Network in iOS Settings, then try again."
             )
         case let .dnsFailed(host, _):
             if let host {
@@ -243,7 +243,7 @@ extension MobilePairingFailureCategory {
         case let .handshakeTimedOut(host, port):
             return Self.hostPortMessage(
                 key: "mobile.pairing.connectTimedOutFormat",
-                defaultValue: "No response from %@:%d. Make sure the Mac is awake, cmux is running, and the private route is active.",
+                defaultValue: "No response from %@:%d. Make sure the Mac is awake, Fleet is running, and the private route is active.",
                 fallbackKey: "mobile.pairing.requestTimedOut",
                 fallbackDefaultValue: "The computer did not respond. Check the host and port, then try again.",
                 host: host,
@@ -261,7 +261,7 @@ extension MobilePairingFailureCategory {
         case .accountMismatch:
             return L10n.string(
                 "mobile.pairing.accountMismatch",
-                defaultValue: "This Mac is signed in to a different cmux account. Sign out and sign back in with the account that owns this Mac."
+                defaultValue: "This Mac is signed in to a different Fleet account. Sign out and sign back in with the account that owns this Mac."
             )
         case let .emailMismatch(expected, actual):
             let format = if let actual, !actual.isEmpty {
@@ -288,17 +288,17 @@ extension MobilePairingFailureCategory {
             if macChannelIsRelease {
                 return L10n.string(
                     "mobile.pairing.authEnvironmentMismatch",
-                    defaultValue: "This dev build is signed in to cmux's development auth environment, so its account can never match a Mac running the release app — even with the same email."
+                    defaultValue: "This dev build is signed in to Fleet's development auth environment, so its account can never match a Mac running the release app — even with the same email."
                 )
             }
             return L10n.string(
                 "mobile.pairing.authEnvironmentMismatch.devMac",
-                defaultValue: "This iPhone uses cmux's production sign-in, but this Mac runs a dev build on the development auth environment, so their accounts can never match — even with the same email."
+                defaultValue: "This iPhone uses Fleet's production sign-in, but this Mac runs a dev build on the development auth environment, so their accounts can never match — even with the same email."
             )
         case .buildIncompatible:
             return L10n.string(
                 "mobile.pairing.buildIncompatible",
-                defaultValue: "This iPhone build cannot connect to that cmux build."
+                defaultValue: "This iPhone build cannot connect to that Fleet build."
             )
         case .ticketExpired:
             return L10n.string(
@@ -308,12 +308,12 @@ extension MobilePairingFailureCategory {
         case .invalidCode:
             return L10n.string(
                 "mobile.pairing.invalidCode",
-                defaultValue: "This isn't a cmux pairing QR. On cmux 0.64.17, scan the Pair iPhone code. On newer versions, scan the code in Tailscale Pairing."
+                defaultValue: "This isn't a Fleet pairing QR. On Fleet 0.64.17, scan the Pair iPhone code. On newer versions, scan the code in Tailscale Pairing."
             )
         case .unrecognizedVersion:
             return L10n.string(
                 "mobile.pairing.unrecognizedVersion",
-                defaultValue: "This QR needs a newer version of cmux. Update the app and try again."
+                defaultValue: "This QR needs a newer version of Fleet. Update the app and try again."
             )
         case .loopbackRejected:
             return L10n.string(
@@ -327,7 +327,7 @@ extension MobilePairingFailureCategory {
         case .macUpdateRequired:
             return L10n.string(
                 "mobile.pairing.macUpdateRequired",
-                defaultValue: "Update cmux on this Mac to connect securely."
+                defaultValue: "Update Fleet on this Mac to connect securely."
             )
         case .unsupportedRoute:
             return L10n.string(
@@ -342,7 +342,7 @@ extension MobilePairingFailureCategory {
         case .routeCleanupBlocked:
             return L10n.string(
                 "mobile.pairing.routeCleanupBlocked",
-                defaultValue: "cmux paused new connections because earlier connection cleanups are still stuck."
+                defaultValue: "Fleet paused new connections because earlier connection cleanups are still stuck."
             )
         case .connectAttemptGated:
             return L10n.string(
@@ -378,22 +378,22 @@ extension MobilePairingFailureCategory {
         case .hostUnreachable, .dnsFailed, .handshakeTimedOut:
             return L10n.string(
                 "mobile.pairing.guidance.reachability",
-                defaultValue: "Iroh reconnects automatically. For a saved private-network fallback, connect both devices to that network, wake the Mac, and open cmux."
+                defaultValue: "Iroh reconnects automatically. For a saved private-network fallback, connect both devices to that network, wake the Mac, and open Fleet."
             )
         case .listenerNotRunning, .connectionDropped:
             return L10n.string(
                 "mobile.pairing.guidance.openMacApp",
-                defaultValue: "Open cmux on your Mac, then scan the QR or link from it again."
+                defaultValue: "Open Fleet on your Mac, then scan the QR or link from it again."
             )
         case .localNetworkBlocked:
             return L10n.string(
                 "mobile.pairing.guidance.localNetwork",
-                defaultValue: "Settings > cmux > Local Network, then try again."
+                defaultValue: "Settings > Fleet > Local Network, then try again."
             )
         case .accountMismatch, .emailMismatch, .authFailed:
             return L10n.string(
                 "mobile.pairing.guidance.sameAccount",
-                defaultValue: "Both devices must be signed in to the same cmux account."
+                defaultValue: "Both devices must be signed in to the same Fleet account."
             )
         case let .authEnvironmentMismatch(macChannelIsRelease):
             if macChannelIsRelease {
@@ -406,7 +406,7 @@ extension MobilePairingFailureCategory {
             // Mac's QR), so product terms only — no script paths or flags.
             return L10n.string(
                 "mobile.pairing.guidance.authEnvironment.devMac",
-                defaultValue: "Pair with a Mac running the release cmux app, or use a development-channel iPhone build for dev Macs."
+                defaultValue: "Pair with a Mac running the release Fleet app, or use a development-channel iPhone build for dev Macs."
             )
         case .buildIncompatible:
             return L10n.string(
@@ -416,22 +416,22 @@ extension MobilePairingFailureCategory {
         case .ticketExpired, .unsupportedRoute, .noSupportedRoute:
             return L10n.string(
                 "mobile.pairing.guidance.rescanFresh",
-                defaultValue: "On cmux 0.64.17, open Pair iPhone. On newer versions, open Tailscale Pairing. Then scan a fresh QR or link."
+                defaultValue: "On Fleet 0.64.17, open Pair iPhone. On newer versions, open Tailscale Pairing. Then scan a fresh QR or link."
             )
         case .unrecognizedVersion:
             return L10n.string(
                 "mobile.pairing.guidance.updateApp",
-                defaultValue: "Update cmux from the App Store (or TestFlight), then scan again."
+                defaultValue: "Update Fleet from the App Store (or TestFlight), then scan again."
             )
         case .macUpdateRequired:
             return L10n.string(
                 "mobile.pairing.guidance.macUpdateRequired",
-                defaultValue: "Your saved computer will reconnect automatically after you update cmux on the Mac. You do not need to sign out or pair again."
+                defaultValue: "Your saved computer will reconnect automatically after you update Fleet on the Mac. You do not need to sign out or pair again."
             )
         case .routeCleanupBlocked:
             return L10n.string(
                 "mobile.pairing.guidance.routeCleanupBlocked",
-                defaultValue: "Force-quit and reopen cmux on this iPhone, then reconnect. If this returns, restart cmux on the Mac."
+                defaultValue: "Force-quit and reopen Fleet on this iPhone, then reconnect. If this returns, restart Fleet on the Mac."
             )
         case .connectAttemptGated:
             return L10n.string(

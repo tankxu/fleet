@@ -69,7 +69,7 @@ extension TaskComposerSheet {
     static var draftPersistenceFailureMessage: String {
         L10n.string(
             "mobile.taskComposer.failure.draftPersistence",
-            defaultValue: "cmux couldn’t save this draft safely. Reopen the composer and try again."
+            defaultValue: "Fleet couldn’t save this draft safely. Reopen the composer and try again."
         )
     }
 

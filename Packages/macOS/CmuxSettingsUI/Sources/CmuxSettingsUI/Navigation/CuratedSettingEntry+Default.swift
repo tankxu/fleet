@@ -123,7 +123,7 @@ extension Array where Element == CuratedSettingEntry {
                 id: "memory-guardrail",
                 title: String(localized: "settings.terminal.memoryGuardrail", defaultValue: "Runaway Memory Guardrail"),
                 detailText: [
-                    String(localized: "settings.terminal.memoryGuardrail.subtitleOn", defaultValue: "cmux warns you with a badge and a banner when one pane's process tree uses too much memory, so a single leak can't crash the whole app."),
+                    String(localized: "settings.terminal.memoryGuardrail.subtitleOn", defaultValue: "Fleet warns you with a badge and a banner when one pane's process tree uses too much memory, so a single leak can't crash the whole app."),
                     String(localized: "settings.terminal.memoryGuardrail.subtitleOff", defaultValue: "No warning is shown when a pane's process tree grows large. A leaking process can OOM-suspend the entire app."),
                 ].joined(separator: " "),
                 synonyms: "terminal.runawayMemoryGuardrail.enabled runaway memory guardrail high memory warning badge banner oom leak process tree pane"
@@ -222,7 +222,7 @@ extension Array where Element == CuratedSettingEntry {
                 detailText: [
                     String(
                         localized: "settings.mobile.phonePush.forwarding.subtitleOn",
-                        defaultValue: "Sends local agent alerts from this Mac to cmux on your iPhone and iPad."
+                        defaultValue: "Sends local agent alerts from this Mac to Fleet on your iPhone and iPad."
                     ),
                     String(
                         localized: "settings.mobile.phonePush.forwarding.subtitleOff",
@@ -312,7 +312,7 @@ extension Array where Element == CuratedSettingEntry {
                 detailText: [
                     String(localized: "settings.automation.workspaceAutoNaming.subtitleOn", defaultValue: "Workspaces and tabs are named from agent conversations."),
                     String(localized: "settings.automation.workspaceAutoNaming.subtitleOff", defaultValue: "Workspace and tab names are never generated."),
-                    String(localized: "settings.automation.workspaceAutoNaming.note", defaultValue: "When enabled, cmux summarizes supported agent sessions into short workspace and tab names using each agent's own binary, refreshed as the topic shifts. Manual renames always win and stop auto-naming for that workspace or tab. Uses your agent account for the short summarization calls."),
+                    String(localized: "settings.automation.workspaceAutoNaming.note", defaultValue: "When enabled, Fleet summarizes supported agent sessions into short workspace and tab names using each agent's own binary, refreshed as the topic shifts. Manual renames always win and stop auto-naming for that workspace or tab. Uses your agent account for the short summarization calls."),
                     String(localized: "settings.automation.autoNamingAgent", defaultValue: "Naming Agent"),
                     String(localized: "settings.automation.autoNamingAgent.auto", defaultValue: "Automatic"),
                 ].joined(separator: " "),

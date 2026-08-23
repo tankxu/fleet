@@ -836,7 +836,7 @@ struct WorkspaceDetailView: View {
         }
         return L10n.string(
             "mobile.feedback.explanation.email",
-            defaultValue: "Emails your feedback to the cmux team, stamped with your app version and device."
+            defaultValue: "Emails your feedback to the Fleet team, stamped with your app version and device."
         )
     }
 

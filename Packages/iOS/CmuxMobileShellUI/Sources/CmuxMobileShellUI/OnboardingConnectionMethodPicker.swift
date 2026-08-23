@@ -21,7 +21,7 @@ struct OnboardingConnectionMethodPicker: View {
                 ),
                 subtitle: L10n.string(
                     "mobile.onboarding.connect.method.automaticDetail",
-                    defaultValue: "Requires cmux 0.64.20 or later on your Mac."
+                    defaultValue: "Requires Fleet 0.64.20 or later on your Mac."
                 ),
                 systemImage: "bolt.fill",
                 accessibilityIdentifier: "MobileOnboardingConnectionMethodAutomatic"
@@ -34,7 +34,7 @@ struct OnboardingConnectionMethodPicker: View {
                 ),
                 subtitle: L10n.string(
                     "mobile.onboarding.connect.method.tailscaleDetail",
-                    defaultValue: "Works with cmux 0.64.17 or later. Scan once to authorize the Mac."
+                    defaultValue: "Works with Fleet 0.64.17 or later. Scan once to authorize the Mac."
                 ),
                 systemImage: "qrcode",
                 accessibilityIdentifier: "MobileOnboardingConnectionMethodTailscale"

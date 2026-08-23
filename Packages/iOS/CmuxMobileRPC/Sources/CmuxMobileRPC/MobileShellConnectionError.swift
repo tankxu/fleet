@@ -48,7 +48,7 @@ public enum MobileShellConnectionError: LocalizedError, DiagnosticFailureProvidi
         case .routeCleanupBlocked:
             return L10n.string(
                 "mobile.connection.routeCleanupBlocked",
-                defaultValue: "Connection cleanup is stuck. Restart cmux on this device before reconnecting."
+                defaultValue: "Connection cleanup is stuck. Restart Fleet on this device before reconnecting."
             )
         case .connectAttemptGated:
             return L10n.string(

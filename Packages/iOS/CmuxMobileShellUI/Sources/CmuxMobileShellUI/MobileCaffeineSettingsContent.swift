@@ -62,7 +62,7 @@ struct MobileCaffeineSettingsContent: View {
             if !isSupported {
                 Text(L10n.string(
                     "mobile.settings.keepMacAwake.updateRequired",
-                    defaultValue: "Update cmux on this Mac to control Keep Mac Awake from iPhone."
+                    defaultValue: "Update Fleet on this Mac to control Keep Mac Awake from iPhone."
                 ))
                 .foregroundStyle(.secondary)
             } else if statusLoadFailed {
@@ -93,7 +93,7 @@ struct MobileCaffeineSettingsContent: View {
         } footer: {
             Text(L10n.string(
                 "mobile.settings.keepMacAwake.footer",
-                defaultValue: "Prevents this Mac from sleeping while cmux is open. Its display can still turn off."
+                defaultValue: "Prevents this Mac from sleeping while Fleet is open. Its display can still turn off."
             ))
         }
     }

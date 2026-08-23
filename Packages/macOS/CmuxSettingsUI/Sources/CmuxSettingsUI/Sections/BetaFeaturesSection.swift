@@ -180,7 +180,7 @@ public struct BetaFeaturesSection: View {
             searchAnchorID: "setting:betaFeatures:remoteTmux",
             String(localized: "settings.betaFeatures.remoteTmux", defaultValue: "Remote tmux"),
             subtitle: remoteTmux.current
-                ? String(localized: "settings.betaFeatures.remoteTmux.subtitleOn", defaultValue: "Mirrors a remote host's tmux sessions in the sidebar over ssh tmux -CC; sessions become workspaces and windows become tabs. Quitting cmux leaves the remote tmux server running.")
+                ? String(localized: "settings.betaFeatures.remoteTmux.subtitleOn", defaultValue: "Mirrors a remote host's tmux sessions in the sidebar over ssh tmux -CC; sessions become workspaces and windows become tabs. Quitting Fleet leaves the remote tmux server running.")
                 : String(localized: "settings.betaFeatures.remoteTmux.subtitleOff", defaultValue: "Hides remote tmux mirroring until you enable it here.")
         ) {
             Toggle("", isOn: Binding(get: { remoteTmux.current }, set: { remoteTmux.set($0) }))

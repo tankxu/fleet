@@ -47,7 +47,7 @@ extension MobileMacUpdateHint {
         if isVersionInferred {
             let format = L10n.string(
                 "mobile.macUpdateHint.bodyFormatUnknownVersion",
-                defaultValue: "Updating %1$@ to cmux %2$@ or later adds: %3$@."
+                defaultValue: "Updating %1$@ to Fleet %2$@ or later adds: %3$@."
             )
             return String(
                 format: format,
@@ -58,7 +58,7 @@ extension MobileMacUpdateHint {
         }
         let format = L10n.string(
             "mobile.macUpdateHint.bodyFormat",
-            defaultValue: "%1$@ is on cmux %2$@. Updating to %3$@ or later adds: %4$@."
+            defaultValue: "%1$@ is on Fleet %2$@. Updating to %3$@ or later adds: %4$@."
         )
         return String(
             format: format,

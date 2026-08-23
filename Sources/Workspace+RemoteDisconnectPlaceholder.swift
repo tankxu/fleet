@@ -173,15 +173,15 @@ extension Workspace {
         let encodedTarget = Data(target.utf8).base64EncodedString()
         let endedLineFormat = String(
             localized: "remote.disconnectBanner.sessionEnded",
-            defaultValue: "[cmux] remote session disconnected: %s"
+            defaultValue: "[Fleet] remote session disconnected: %s"
         )
         let reconnectLine = String(
             localized: "remote.disconnectBanner.reconnectHint",
-            defaultValue: "[cmux] Press Enter to reconnect. This terminal will stay disconnected until then."
+            defaultValue: "[Fleet] Press Enter to reconnect. This terminal will stay disconnected until then."
         )
         let reconnectUnavailableLine = String(
             localized: "remote.disconnectBanner.reconnectUnavailableHint",
-            defaultValue: "[cmux] Reconnect this workspace from the sidebar or by running the original fleet remote command again."
+            defaultValue: "[Fleet] Reconnect this workspace from the sidebar or by running the original fleet remote command again."
         )
         let encodedEndedFormat = Data(endedLineFormat.utf8).base64EncodedString()
         let encodedReconnectLine = Data(reconnectLine.utf8).base64EncodedString()

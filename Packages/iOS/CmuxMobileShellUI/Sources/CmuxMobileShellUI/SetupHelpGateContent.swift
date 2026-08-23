@@ -23,7 +23,7 @@ struct SetupHelpGateContent {
                 title: L10n.string("mobile.setupHelp.signInTitle", defaultValue: "Sign in"),
                 body: L10n.string(
                     "mobile.setupHelp.signInBody",
-                    defaultValue: "Sign in to cmux on this phone with the same account your computer uses. Once you sign in, your computer is found automatically."
+                    defaultValue: "Sign in to Fleet on this phone with the same account your computer uses. Once you sign in, your computer is found automatically."
                 ),
                 link: nil,
                 identifierSuffix: "notSignedIn",
@@ -32,7 +32,7 @@ struct SetupHelpGateContent {
         case .signedInNeverPaired:
             return SetupHelpGateContent(
                 systemImage: "desktopcomputer",
-                title: L10n.string("mobile.setupHelp.macAppTitle", defaultValue: "Run cmux on your computer"),
+                title: L10n.string("mobile.setupHelp.macAppTitle", defaultValue: "Run Fleet on your computer"),
                 body: L10n.string(
                     "mobile.setupHelp.macAppBody",
                     defaultValue: """
@@ -54,7 +54,7 @@ struct SetupHelpGateContent {
                 title: L10n.string("mobile.setupHelp.unreachableTitle", defaultValue: "Wake the computer"),
                 body: L10n.string(
                     "mobile.setupHelp.unreachableBody",
-                    defaultValue: "You paired this computer before, but it is not reachable now. Wake it and make sure cmux is running; this phone reconnects on its own."
+                    defaultValue: "You paired this computer before, but it is not reachable now. Wake it and make sure Fleet is running; this phone reconnects on its own."
                 ),
                 link: nil,
                 identifierSuffix: "macUnreachable",
@@ -66,7 +66,7 @@ struct SetupHelpGateContent {
                 title: L10n.string("mobile.setupHelp.mismatchTitle", defaultValue: "Match the account"),
                 body: L10n.string(
                     "mobile.setupHelp.mismatchBody",
-                    defaultValue: "The computer rejected this phone's sign-in, so the two are on different cmux accounts or this phone's session is stale. Sign either one out and back in so both use the same account, then try again."
+                    defaultValue: "The computer rejected this phone's sign-in, so the two are on different Fleet accounts or this phone's session is stale. Sign either one out and back in so both use the same account, then try again."
                 ),
                 link: nil,
                 identifierSuffix: "accountMismatch",

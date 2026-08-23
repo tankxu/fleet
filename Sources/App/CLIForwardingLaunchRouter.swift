@@ -119,21 +119,21 @@ enum CLIForwardingLaunchRouter {
     private static func localizedMissingBundledCLIError() -> String {
         String(
             localized: "cli.forwarding.error.missingBundledCLI",
-            defaultValue: "cmux could not run this command from the app bundle. Reinstall cmux or run the command from a standard cmux CLI installation."
+            defaultValue: "Fleet could not run this command from the app bundle. Reinstall Fleet or run the command from a standard Fleet CLI installation."
         )
     }
 
     private static func localizedArgumentAllocationError() -> String {
         String(
             localized: "cli.forwarding.error.allocateArguments",
-            defaultValue: "cmux could not start this command. Try again, or reinstall cmux if the problem continues."
+            defaultValue: "Fleet could not start this command. Try again, or reinstall Fleet if the problem continues."
         )
     }
 
     private static func localizedExecFailureError() -> String {
         String(
             localized: "cli.forwarding.error.execFailed",
-            defaultValue: "cmux could not start the command-line tool from the app bundle. Reinstall cmux or run the command from a standard cmux CLI installation."
+            defaultValue: "Fleet could not start the command-line tool from the app bundle. Reinstall Fleet or run the command from a standard Fleet CLI installation."
         )
     }
 

@@ -28,7 +28,7 @@ extension MobilePairingView {
                     .cmuxFont(.caption)
                     .foregroundStyle(.secondary)
                 Link(
-                    String(localized: "mobile.pairing.getApp.link", defaultValue: "Get cmux for iPhone"),
+                    String(localized: "mobile.pairing.getApp.link", defaultValue: "Get Fleet for iPhone"),
                     destination: Self.iphoneAppURL
                 )
                 .cmuxFont(.caption)

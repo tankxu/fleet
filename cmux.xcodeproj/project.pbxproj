@@ -1187,6 +1187,7 @@ C0DE71B10000000000000001 /* AppDelegate+AgentChatNotifications.swift in Sources 
 		FC1EE7000000000000000024 /* FleetCanvasTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000025 /* FleetCanvasTheme.swift */; };
 		FC1EE7000000000000000026 /* FleetCanvasVisualEffectBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000027 /* FleetCanvasVisualEffectBackground.swift */; };
 		FC1EE7000000000000000069 /* FleetLaunchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000006A /* FleetLaunchConfig.swift */; };
+		FC1EE700000000000000006B /* FleetWelcomeLaunchGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000006C /* FleetWelcomeLaunchGate.swift */; };
 		FC1EE7000000000000000028 /* FleetWorkspaceAgentCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000029 /* FleetWorkspaceAgentCatalog.swift */; };
 		FC1EE7000000000000000040 /* FleetWorkspaceAgentCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE7000000000000000041 /* FleetWorkspaceAgentCatalogTests.swift */; };
 		FC1EE700000000000000002A /* FleetWorkspaceAgentPresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1EE700000000000000002B /* FleetWorkspaceAgentPresence.swift */; };
@@ -4023,6 +4024,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 		FC1EE7000000000000000025 /* FleetCanvasTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasTheme.swift; sourceTree = "<group>"; };
 		FC1EE7000000000000000027 /* FleetCanvasVisualEffectBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCanvasVisualEffectBackground.swift; sourceTree = "<group>"; };
 		FC1EE700000000000000006A /* FleetLaunchConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetLaunchConfig.swift; sourceTree = "<group>"; };
+		FC1EE700000000000000006C /* FleetWelcomeLaunchGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWelcomeLaunchGate.swift; sourceTree = "<group>"; };
 		FC1EE7000000000000000029 /* FleetWorkspaceAgentCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceAgentCatalog.swift; sourceTree = "<group>"; };
 		FC1EE7000000000000000041 /* FleetWorkspaceAgentCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceAgentCatalogTests.swift; sourceTree = "<group>"; };
 		FC1EE700000000000000002B /* FleetWorkspaceAgentPresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetWorkspaceAgentPresence.swift; sourceTree = "<group>"; };
@@ -7706,6 +7708,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				FC1EE7000000000000000039 /* TerminalSurfaceFocusPolicy.swift */,
 				FC1EE700000000000000003B /* WorkspaceAttentionRingPulse.swift */,
 				FC1EE7000000000000000058 /* Workspace+AgentQuickLaunch.swift */,
+				FC1EE700000000000000006C /* FleetWelcomeLaunchGate.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -9785,6 +9788,7 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 				FC1EE7000000000000000024 /* FleetCanvasTheme.swift in Sources */,
 				FC1EE7000000000000000026 /* FleetCanvasVisualEffectBackground.swift in Sources */,
 				FC1EE7000000000000000069 /* FleetLaunchConfig.swift in Sources */,
+				FC1EE700000000000000006B /* FleetWelcomeLaunchGate.swift in Sources */,
 				FC1EE7000000000000000028 /* FleetWorkspaceAgentCatalog.swift in Sources */,
 				FC1EE700000000000000002A /* FleetWorkspaceAgentPresence.swift in Sources */,
 				FC1EE700000000000000002C /* FleetWorkspaceCard.swift in Sources */,

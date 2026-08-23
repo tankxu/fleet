@@ -233,7 +233,7 @@ public struct AutomationSection: View {
                 String(localized: "settings.automation.claudeCode", defaultValue: "Claude Code Integration"),
                 subtitle: claudeCodeModel.current
                     ? String(localized: "settings.automation.claudeCode.subtitleOn", defaultValue: "Sidebar shows Claude session status and notifications.")
-                    : String(localized: "settings.automation.claudeCode.subtitleOff", defaultValue: "Claude Code runs without cmux integration.")
+                    : String(localized: "settings.automation.claudeCode.subtitleOff", defaultValue: "Claude Code runs without Fleet integration.")
             ) {
                 Toggle("", isOn: Binding(get: { claudeCodeModel.current }, set: { claudeCodeModel.set($0) }))
                     .labelsHidden()
@@ -241,7 +241,7 @@ public struct AutomationSection: View {
                     .accessibilityIdentifier("SettingsClaudeCodeHooksToggle")
             }
             SettingsCardDivider()
-            SettingsCardNote(String(localized: "settings.automation.claudeCode.note", defaultValue: "When enabled, cmux wraps the claude command to inject session tracking and notification hooks. Disable if you prefer to manage Claude Code hooks yourself."))
+            SettingsCardNote(String(localized: "settings.automation.claudeCode.note", defaultValue: "When enabled, Fleet wraps the claude command to inject session tracking and notification hooks. Disable if you prefer to manage Claude Code hooks yourself."))
         }
     }
 
@@ -253,7 +253,7 @@ public struct AutomationSection: View {
                 String(localized: "settings.automation.codex", defaultValue: "Codex Integration"),
                 subtitle: codexModel.current
                     ? String(localized: "settings.automation.codex.subtitleOn", defaultValue: "Sidebar shows Codex session status and notifications.")
-                    : String(localized: "settings.automation.codex.subtitleOff", defaultValue: "Codex runs without cmux integration.")
+                    : String(localized: "settings.automation.codex.subtitleOff", defaultValue: "Codex runs without Fleet integration.")
             ) {
                 Toggle("", isOn: Binding(get: { codexModel.current }, set: { codexModel.set($0) }))
                     .labelsHidden()
@@ -261,7 +261,7 @@ public struct AutomationSection: View {
                     .accessibilityIdentifier("SettingsCodexHooksToggle")
             }
             SettingsCardDivider()
-            SettingsCardNote(String(localized: "settings.automation.codex.note", defaultValue: "When enabled, cmux wraps the codex command to inject session tracking and notification hooks. Disable if you prefer to manage Codex hooks yourself. cmux still tracks live Codex sessions it can observe even when this is off. To also track Codex launched through a custom launcher that bypasses the wrapper (e.g. a subrouter), run `cmux hooks setup --agent codex`, which installs hooks into ~/.codex/hooks.json."))
+            SettingsCardNote(String(localized: "settings.automation.codex.note", defaultValue: "When enabled, Fleet wraps the codex command to inject session tracking and notification hooks. Disable if you prefer to manage Codex hooks yourself. Fleet still tracks live Codex sessions it can observe even when this is off. To also track Codex launched through a custom launcher that bypasses the wrapper (e.g. a subrouter), run `Fleet hooks setup --agent codex`, which installs hooks into ~/.codex/hooks.json."))
         }
     }
 
@@ -326,11 +326,11 @@ public struct AutomationSection: View {
                 }
             }
             SettingsCardDivider()
-            SettingsCardNote(String(localized: "settings.automation.workspaceAutoNaming.note", defaultValue: "When enabled, cmux summarizes supported agent sessions into short workspace and tab names using each agent's own binary, refreshed as the topic shifts. Manual renames always win and stop auto-naming for that workspace or tab. Uses your agent account for the short summarization calls."))
+            SettingsCardNote(String(localized: "settings.automation.workspaceAutoNaming.note", defaultValue: "When enabled, Fleet summarizes supported agent sessions into short workspace and tab names using each agent's own binary, refreshed as the topic shifts. Manual renames always win and stop auto-naming for that workspace or tab. Uses your agent account for the short summarization calls."))
             if autoNamingModel.current,
                !claudeCodeModel.current,
                autoNamingAgentModel.current == AutoNamingAgentCatalog.autoSlug || autoNamingAgentModel.current == "claude" {
-                autoNamingFootnote(String(localized: "settings.automation.workspaceAutoNaming.hooksOffWarning", defaultValue: "Claude Code Integration is off, so Claude sessions will not be auto-named. Other supported agents still name when their cmux hooks are installed."))
+                autoNamingFootnote(String(localized: "settings.automation.workspaceAutoNaming.hooksOffWarning", defaultValue: "Claude Code Integration is off, so Claude sessions will not be auto-named. Other supported agents still name when their Fleet hooks are installed."))
             }
             if autoNamingModel.current, let status = currentAutoNamingStatus {
                 autoNamingFootnote(AutoNamingAgentDisplay.statusMessage(status))
@@ -400,7 +400,7 @@ public struct AutomationSection: View {
                 String(localized: "settings.automation.amp", defaultValue: "Amp Integration"),
                 subtitle: ampModel.current
                     ? String(localized: "settings.automation.amp.subtitleOn", defaultValue: "Sidebar shows Amp agent status and notifications.")
-                    : String(localized: "settings.automation.amp.subtitleOff", defaultValue: "Amp runs without cmux integration.")
+                    : String(localized: "settings.automation.amp.subtitleOff", defaultValue: "Amp runs without Fleet integration.")
             ) {
                 Toggle("", isOn: Binding(get: { ampModel.current }, set: { ampModel.set($0) }))
                     .labelsHidden()
@@ -408,7 +408,7 @@ public struct AutomationSection: View {
                     .accessibilityIdentifier("SettingsAmpHooksToggle")
             }
             SettingsCardDivider()
-            SettingsCardNote(String(localized: "settings.automation.amp.note", defaultValue: "Hooks must be installed with `cmux hooks amp install`. They no-op outside cmux terminals. When disabled, the installed Amp plugin stays inactive without needing to be removed."))
+            SettingsCardNote(String(localized: "settings.automation.amp.note", defaultValue: "Hooks must be installed with `Fleet hooks amp install`. They no-op outside Fleet terminals. When disabled, the installed Amp plugin stays inactive without needing to be removed."))
         }
     }
 
@@ -420,7 +420,7 @@ public struct AutomationSection: View {
                 String(localized: "settings.automation.cursor", defaultValue: "Cursor Integration"),
                 subtitle: cursorModel.current
                     ? String(localized: "settings.automation.cursor.subtitleOn", defaultValue: "Sidebar shows Cursor agent status and notifications.")
-                    : String(localized: "settings.automation.cursor.subtitleOff", defaultValue: "Cursor runs without cmux integration.")
+                    : String(localized: "settings.automation.cursor.subtitleOff", defaultValue: "Cursor runs without Fleet integration.")
             ) {
                 Toggle("", isOn: Binding(get: { cursorModel.current }, set: { cursorModel.set($0) }))
                     .labelsHidden()
@@ -428,7 +428,7 @@ public struct AutomationSection: View {
                     .accessibilityIdentifier("SettingsCursorHooksToggle")
             }
             SettingsCardDivider()
-            SettingsCardNote(String(localized: "settings.automation.cursor.note", defaultValue: "Hooks must be installed with `cmux hooks cursor install`. They no-op outside cmux terminals."))
+            SettingsCardNote(String(localized: "settings.automation.cursor.note", defaultValue: "Hooks must be installed with `Fleet hooks cursor install`. They no-op outside Fleet terminals."))
         }
     }
 
@@ -440,7 +440,7 @@ public struct AutomationSection: View {
                 String(localized: "settings.automation.gemini", defaultValue: "Gemini CLI Integration"),
                 subtitle: geminiModel.current
                     ? String(localized: "settings.automation.gemini.subtitleOn", defaultValue: "Sidebar shows Gemini session status and notifications.")
-                    : String(localized: "settings.automation.gemini.subtitleOff", defaultValue: "Gemini runs without cmux integration.")
+                    : String(localized: "settings.automation.gemini.subtitleOff", defaultValue: "Gemini runs without Fleet integration.")
             ) {
                 Toggle("", isOn: Binding(get: { geminiModel.current }, set: { geminiModel.set($0) }))
                     .labelsHidden()
@@ -448,7 +448,7 @@ public struct AutomationSection: View {
                     .accessibilityIdentifier("SettingsGeminiHooksToggle")
             }
             SettingsCardDivider()
-            SettingsCardNote(String(localized: "settings.automation.gemini.note", defaultValue: "Hooks must be installed with `cmux hooks gemini install`. They no-op outside cmux terminals."))
+            SettingsCardNote(String(localized: "settings.automation.gemini.note", defaultValue: "Hooks must be installed with `Fleet hooks gemini install`. They no-op outside Fleet terminals."))
         }
     }
 
@@ -460,7 +460,7 @@ public struct AutomationSection: View {
                 String(localized: "settings.automation.kiro", defaultValue: "Kiro CLI Integration"),
                 subtitle: kiroModel.current
                     ? String(localized: "settings.automation.kiro.subtitleOn", defaultValue: "Sidebar shows Kiro session status, notifications, and Feed tool events.")
-                    : String(localized: "settings.automation.kiro.subtitleOff", defaultValue: "Kiro runs without cmux integration.")
+                    : String(localized: "settings.automation.kiro.subtitleOff", defaultValue: "Kiro runs without Fleet integration.")
             ) {
                 Toggle("", isOn: Binding(get: { kiroModel.current }, set: { kiroModel.set($0) }))
                     .labelsHidden()
@@ -484,7 +484,7 @@ public struct AutomationSection: View {
                 .accessibilityIdentifier("SettingsKiroNotificationLevelPicker")
             }
             SettingsCardDivider()
-            SettingsCardNote(String(localized: "settings.automation.kiro.note", defaultValue: "Hooks must be installed with `cmux hooks kiro install`, then run Kiro with `kiro-cli chat --agent cmux` (or set it as your default agent). They no-op outside cmux terminals."))
+            SettingsCardNote(String(localized: "settings.automation.kiro.note", defaultValue: "Hooks must be installed with `Fleet hooks kiro install`, then run Kiro with `kiro-cli chat --agent Fleet` (or set it as your default agent). They no-op outside Fleet terminals."))
         }
     }
 

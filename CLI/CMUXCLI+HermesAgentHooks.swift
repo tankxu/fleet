@@ -219,14 +219,14 @@ extension CMUXCLI {
         let configDirectoryFileError = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.error.configDirectoryIsFile",
-                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
+                defaultValue: "Fleet could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
             ),
             configDir
         )
         let configDirectoryCreateError = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.error.configDirectoryCreateFailed",
-                defaultValue: "cmux could not create the hooks directory at %@. Check the parent directory permissions and try again."
+                defaultValue: "Fleet could not create the hooks directory at %@. Check the parent directory permissions and try again."
             ),
             configDir
         )

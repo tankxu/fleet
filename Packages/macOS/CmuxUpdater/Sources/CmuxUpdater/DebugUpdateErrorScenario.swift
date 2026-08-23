@@ -106,7 +106,7 @@ public enum DebugUpdateErrorScenario: String, CaseIterable, Hashable, Sendable {
             return NSError(domain: UpdateStateModel.updateErrorDomain, code: UpdateStateModel.installDidNotStartCode, userInfo: [
                 NSLocalizedDescriptionKey: String(
                     localized: "update.error.didNotStart.message",
-                    defaultValue: "cmux couldn’t start the update. Check your internet connection and try again."
+                    defaultValue: "Fleet couldn’t start the update. Check your internet connection and try again."
                 ),
             ])
         case .updaterNotReady:

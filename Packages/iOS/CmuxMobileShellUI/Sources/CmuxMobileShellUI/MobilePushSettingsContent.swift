@@ -159,7 +159,7 @@ struct MobilePushSettingsContent: View {
             if !supportsMacSettings {
                 Text(L10n.string(
                     "mobile.notifications.macUpdateRequired",
-                    defaultValue: "Update cmux on this Mac to change forwarding from iPhone."
+                    defaultValue: "Update Fleet on this Mac to change forwarding from iPhone."
                 ))
                 .font(.footnote)
                 .foregroundStyle(.secondary)

@@ -1331,8 +1331,9 @@ class TabManager: ObservableObject {
                 "selectedTabId": select ? newWorkspace.id.uuidString : (snapshot.selectedTabId?.uuidString ?? "")
             ])
 #endif
+            // Once per launch, not once per install: see FleetWelcomeLaunchGate.
             if autoWelcomeIfNeeded && select && initialSurface == .terminal
-                && !UserDefaults.standard.bool(forKey: AccountCatalogSection().welcomeShown.userDefaultsKey) {
+                && FleetWelcomeLaunchGate.shouldShow {
                 if let appDelegate = AppDelegate.shared {
                     appDelegate.sendWelcomeCommandWhenReady(to: newWorkspace, markShownOnSend: true)
                 } else {
@@ -1348,6 +1349,7 @@ class TabManager: ObservableObject {
         if let terminalPanel = workspace.focusedTerminalPanel,
            terminalPanel.surface.surface != nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                FleetWelcomeLaunchGate.markShown()
                 UserDefaults.standard.set(true, forKey: AccountCatalogSection().welcomeShown.userDefaultsKey)
                 terminalPanel.sendText("fleet welcome\n")
             }
@@ -1368,6 +1370,7 @@ class TabManager: ObservableObject {
             }
             panelsCancellable?.cancel()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                FleetWelcomeLaunchGate.markShown()
                 UserDefaults.standard.set(true, forKey: AccountCatalogSection().welcomeShown.userDefaultsKey)
                 terminalPanel.sendText("fleet welcome\n")
             }

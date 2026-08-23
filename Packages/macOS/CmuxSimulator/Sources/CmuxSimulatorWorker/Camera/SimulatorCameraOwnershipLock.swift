@@ -26,7 +26,7 @@ final class SimulatorCameraOwnershipLock: @unchecked Sendable {
             throw SimulatorWorkerFailure.cameraOwnershipBusy(
                 String(
                     localized: "simulator.failure.cameraOwnershipBusy",
-                    defaultValue: "Another cmux Simulator pane already owns the camera feed for this device."
+                    defaultValue: "Another Fleet Simulator pane already owns the camera feed for this device."
                 )
             )
         }

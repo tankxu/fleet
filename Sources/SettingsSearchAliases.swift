@@ -138,7 +138,7 @@ enum SettingsSearchAliasIndex {
         "mobile:iOSPairingPort": localized("settings.search.alias.setting.mobile.iOSPairingPort", defaultValue: "mobile ios iphone pairing port tcp listener firewall conflict bind"),
         "mobile:iOSPairingDisplayName": localized("settings.search.alias.setting.mobile.iOSPairingDisplayName", defaultValue: "mobile ios iphone pairing display name mac hostname device label"),
         "mobile:artifactFolderAccess": localized("settings.search.alias.setting.mobile.artifactFolderAccess", defaultValue: "mobile ios iphone files folders directory subtree one level authorization security"),
-        "networking:relayPreference": localized("settings.search.alias.setting.networking.relayPreference", defaultValue: "iroh relay preference automatic managed selected cmux fleet provider region account"),
+        "networking:relayPreference": localized("settings.search.alias.setting.networking.relayPreference", defaultValue: "iroh relay preference automatic managed selected Fleet fleet provider region account"),
         "networking:customRelays": localized("settings.search.alias.setting.networking.customRelays", defaultValue: "iroh custom relay self hosted server url secret credential device authentication"),
         "networking:privateNetworks": localized("settings.search.alias.setting.networking.privateNetworks", defaultValue: "private network lan vpn direct peer path local address generic provider automatic"),
         "networking:tailscaleCompatibility": localized("settings.search.alias.setting.networking.tailscaleCompatibility", defaultValue: "tailscale tailnet private ip compatibility vpn legacy tcp automatic"),
@@ -182,7 +182,7 @@ enum SettingsSearchAliasIndex {
         "workspaceColors:selection": localized("settings.search.alias.setting.workspaceColors.selection", defaultValue: "workspaceColors.selectionColor selected workspace color highlight background active tab"),
         "workspaceColors:badge": localized("settings.search.alias.setting.workspaceColors.badge", defaultValue: "workspaceColors.notificationBadgeColor unread notification badge color dot count"),
         "workspaceColors:palette": localized("settings.search.alias.setting.workspaceColors.palette", defaultValue: "workspaceColors.colors workspace palette named colors custom color reset built-in"),
-        "settingsJSON:open-file": localized("settings.search.alias.setting.settingsJSON.open-file", defaultValue: "open config file json jsonc config editor ~/.config cmux preferences"),
+        "settingsJSON:open-file": localized("settings.search.alias.setting.settingsJSON.open-file", defaultValue: "open config file json jsonc config editor ~/.config Fleet preferences"),
         "settingsJSON:documentation": localized("settings.search.alias.setting.settingsJSON.documentation", defaultValue: "docs documentation schema reference fleet json keys configuration"),
         "reset:reset-all": localized("settings.search.alias.setting.reset.reset-all", defaultValue: "factory reset restore defaults clear preferences")
     ]

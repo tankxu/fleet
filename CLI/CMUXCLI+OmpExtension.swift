@@ -473,7 +473,7 @@ export default function cmuxOmpSessionExtension(api: ExtensionAPI) {
             throw CLIError(message: String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.omp.error.notCmuxExtension",
-                    defaultValue: "%@ exists and is not a cmux extension; leaving it alone"
+                    defaultValue: "%@ exists and is not a Fleet extension; leaving it alone"
                 ),
                 extensionURL.path
             ))
@@ -512,7 +512,7 @@ export default function cmuxOmpSessionExtension(api: ExtensionAPI) {
             print(String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.omp.noneFound",
-                    defaultValue: "No OMP cmux extension found at %@"
+                    defaultValue: "No OMP Fleet extension found at %@"
                 ),
                 extensionURL.path
             ))
@@ -523,7 +523,7 @@ export default function cmuxOmpSessionExtension(api: ExtensionAPI) {
             print(String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.omp.refuseRemoveMissingMarker",
-                    defaultValue: "Refusing to remove %@: missing cmux marker"
+                    defaultValue: "Refusing to remove %@: missing Fleet marker"
                 ),
                 extensionURL.path
             ))
@@ -533,7 +533,7 @@ export default function cmuxOmpSessionExtension(api: ExtensionAPI) {
         print(String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.omp.removed",
-                defaultValue: "Removed OMP cmux extension from %@"
+                defaultValue: "Removed OMP Fleet extension from %@"
             ),
             extensionURL.path
         ))

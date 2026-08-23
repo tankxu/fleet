@@ -30,7 +30,7 @@ struct AboutLicenseContent {
         ) ?? missingMessage
         let projectHeading = String(
             localized: "about.licenses.projectHeading",
-            defaultValue: "cmux Project License",
+            defaultValue: "Fleet Project License",
             bundle: bundle
         )
         let projectSourceLabel = String(

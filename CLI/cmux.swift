@@ -4108,7 +4108,7 @@ struct CMUXCLI {
                         detail: String(reflecting: error),
                         message: String(
                             localized: "cli.restore.error.socketNotReady",
-                            defaultValue: "restore: cmux is still opening. Retry the visible restore command in a moment."
+                            defaultValue: "restore: Fleet is still opening. Retry the visible restore command in a moment."
                         )
                     )
                 }
@@ -5048,7 +5048,7 @@ struct CMUXCLI {
                 stableAttachArgs.contains("--require-existing") {
                 let notice = String(
                     localized: "cli.sshPtyAttach.remoteSessionLostRespawn",
-                    defaultValue: "[cmux] remote session was lost; starting a new shell."
+                    defaultValue: "[Fleet] remote session was lost; starting a new shell."
                 )
                 cliWriteStderr(Data((notice + "\n").utf8))
                 try runSSHPTYAttach(
@@ -6435,7 +6435,7 @@ struct CMUXCLI {
     private func openDirectoryWithLaunchServices(_ directory: String) throws {
         try runOpenTool(
             arguments: ["-a", appLaunchTarget(), directory],
-            failureMessage: localizedFormat("cli.pathOpen.error.openFailed", defaultValue: "Failed to open %@ in cmux", directory),
+            failureMessage: localizedFormat("cli.pathOpen.error.openFailed", defaultValue: "Failed to open %@ in Fleet", directory),
             environment: launchServicesPathOpenEnvironment()
         )
     }
@@ -6737,14 +6737,14 @@ struct CMUXCLI {
     private func launchApp() throws {
         try runOpenTool(
             arguments: ["-a", appLaunchTarget()],
-            failureMessage: String(localized: "cli.pathOpen.error.launchFailed", defaultValue: "Failed to launch cmux")
+            failureMessage: String(localized: "cli.pathOpen.error.launchFailed", defaultValue: "Failed to launch Fleet")
         )
     }
 
     private func activateApp() throws {
         try runOpenTool(
             arguments: ["-a", appLaunchTarget()],
-            failureMessage: String(localized: "cli.pathOpen.error.activateFailed", defaultValue: "Failed to activate cmux")
+            failureMessage: String(localized: "cli.pathOpen.error.activateFailed", defaultValue: "Failed to activate Fleet")
         )
     }
 
@@ -11708,7 +11708,7 @@ struct CMUXCLI {
            let url = Self.firstHTTPURL(in: errorText) {
             let reason = String(
                 localized: "cli.vm.sshInfo.retry.localServerOffline",
-                defaultValue: "Waiting for the local cmux web server"
+                defaultValue: "Waiting for the local Fleet web server"
             )
             return "[cmux] \(reason) at \(url). \(retryText)"
         }
@@ -18983,7 +18983,7 @@ struct CMUXCLI {
         do {
             return try client.sendV2(method: "system.top", params: params, responseTimeout: responseTimeout)
         } catch let error as CLIError where error.message.hasPrefix("method_not_found:") {
-            throw CLIError(message: String(localized: "cli.top.error.processDiagnosticsUnsupported", defaultValue: "fleet top requires a running cmux build that supports process diagnostics"))
+            throw CLIError(message: String(localized: "cli.top.error.processDiagnosticsUnsupported", defaultValue: "fleet top requires a running Fleet build that supports process diagnostics"))
         }
     }
 
@@ -24033,7 +24033,7 @@ struct CMUXCLI {
             guard parsed.hasFlag("-k") else {
                 throw CLIError(message: String(
                     localized: "cli.tmuxCompat.respawnPane.requiresForce",
-                    defaultValue: "respawn-pane requires -k in cmux tmux compatibility mode"
+                    defaultValue: "respawn-pane requires -k in Fleet tmux compatibility mode"
                 ))
             }
             let target = try tmuxResolveSurfaceTarget(parsed.value("-t"), client: client)
@@ -29919,7 +29919,7 @@ export default CMUXSessionRestore;
         let configDirectoryFileError = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.error.configDirectoryIsFile",
-                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
+                defaultValue: "Fleet could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
             ),
             configDir
         )
@@ -30045,7 +30045,7 @@ export default CMUXSessionRestore;
                 print(String.localizedStringWithFormat(
                     String(
                         localized: "cli.hooks.antigravity.removedZero",
-                        defaultValue: "Removed 0 cmux hook(s) from %@"
+                        defaultValue: "Removed 0 Fleet hook(s) from %@"
                     ),
                     filePath
                 ))
@@ -30122,7 +30122,7 @@ export default CMUXSessionRestore;
         let configDirectoryFileError = String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.error.configDirectoryIsFile",
-                defaultValue: "cmux could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
+                defaultValue: "Fleet could not create the hooks directory: a file exists at %@. Remove or rename the conflicting file, then run `fleet hooks setup` again."
             ),
             configDir
         )
@@ -36554,14 +36554,19 @@ export default CMUXSessionRestore;
             subdued = trueColor(100, 100, 108)
         }
 
+        // ASCII wordmark. Block Elements plus Box Drawing only: all narrow, so
+        // every row is exactly 41 columns and the right edge stays flush. Letter
+        // interiors keep the shape legible, unlike solid bars which fuse together
+        // because terminal rows have no vertical gap.
         let logo = """
-        \(c1)  ::\(reset)
-        \(c2)    ::::\(reset)              \(c1)f\(c2)l\(c3)e\(c5)e\(c7)t\(reset)
-        \(c3)      ::::::\(reset)
-        \(c4)        ::::::\(reset)        \(tagline)the open source terminal\(reset)
-        \(c5)      ::::::\(reset)          \(tagline)built for coding agents\(reset)
-        \(c6)    ::::\(reset)
-        \(c7)  ::\(reset)
+        \(c1)  ███████╗██╗     ███████╗███████╗████████╗\(reset)
+        \(c2)  ██╔════╝██║     ██╔════╝██╔════╝╚══██╔══╝\(reset)
+        \(c3)  █████╗  ██║     █████╗  █████╗     ██║   \(reset)
+        \(c5)  ██╔══╝  ██║     ██╔══╝  ██╔══╝     ██║   \(reset)
+        \(c6)  ██║     ███████╗███████╗███████╗   ██║   \(reset)
+        \(c7)  ╚═╝     ╚══════╝╚══════╝╚══════╝   ╚═╝   \(reset)
+
+        \(tagline)  the open source terminal built for coding agents\(reset)
         """
 
         let shortcuts = """

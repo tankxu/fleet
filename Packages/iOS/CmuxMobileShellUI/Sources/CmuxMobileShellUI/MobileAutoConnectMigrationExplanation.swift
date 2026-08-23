@@ -40,7 +40,7 @@ struct MobileAutoConnectMigrationExplanation: View {
     private var title: some View {
         Text(L10n.string(
             "mobile.autoConnectMigration.title",
-            defaultValue: "Check cmux on your Mac"
+            defaultValue: "Check Fleet on your Mac"
         ))
         .font(.title.bold())
         .accessibilityAddTraits(.isHeader)
@@ -50,7 +50,7 @@ struct MobileAutoConnectMigrationExplanation: View {
     private var bodyText: some View {
         Text(L10n.string(
             "mobile.autoConnectMigration.body",
-            defaultValue: "Auto-Connect needs cmux 0.64.20 or later on your Mac for its authenticated, end-to-end encrypted connection."
+            defaultValue: "Auto-Connect needs Fleet 0.64.20 or later on your Mac for its authenticated, end-to-end encrypted connection."
         ))
         .font(.body)
         .accessibilityIdentifier("MobileAutoConnectMigrationBody")
@@ -59,7 +59,7 @@ struct MobileAutoConnectMigrationExplanation: View {
     private var guidance: some View {
         Text(L10n.string(
             "mobile.autoConnectMigration.guidance",
-            defaultValue: "cmux 0.64.17 still works over Tailscale. Choose Connect iPhone/iPad on that Mac and scan its Pair iPhone code once."
+            defaultValue: "Fleet 0.64.17 still works over Tailscale. Choose Connect iPhone/iPad on that Mac and scan its Pair iPhone code once."
         ))
         .font(.body)
         .foregroundStyle(.secondary)

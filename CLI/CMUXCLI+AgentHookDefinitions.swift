@@ -401,7 +401,7 @@ extension CMUXCLI {
         }
         throw CLIError(message: String(
             localized: "cli.hooks.error.pinnedTargetMissing",
-            defaultValue: "cmux could not connect this hook installation to a running app. Open a fleet workspace and run this command again."
+            defaultValue: "Fleet could not connect this hook installation to a running app. Open a fleet workspace and run this command again."
         ))
     }
 

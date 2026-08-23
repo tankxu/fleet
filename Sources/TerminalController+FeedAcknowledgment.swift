@@ -196,7 +196,7 @@ extension TerminalController {
             code: "unavailable",
             message: String(
                 localized: "agent.deliveryTarget.error.unavailable",
-                defaultValue: "Delivery target resolution is unavailable; retry after cmux finishes starting."
+                defaultValue: "Delivery target resolution is unavailable; retry after Fleet finishes starting."
             ),
             data: nil
         )

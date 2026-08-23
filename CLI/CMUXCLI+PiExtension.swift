@@ -130,7 +130,7 @@ extension CMUXCLI {
             throw CLIError(message: String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.pi.error.notCmuxExtension",
-                    defaultValue: "%@ exists and is not a cmux extension; leaving it alone"
+                    defaultValue: "%@ exists and is not a Fleet extension; leaving it alone"
                 ),
                 extensionURL.path
             ))
@@ -158,7 +158,7 @@ extension CMUXCLI {
                 throw CLIError(message: String.localizedStringWithFormat(
                     String(
                         localized: "cli.hooks.pi.error.notCmuxExtension",
-                        defaultValue: "%@ exists and is not a cmux extension; leaving it alone"
+                        defaultValue: "%@ exists and is not a Fleet extension; leaving it alone"
                     ),
                     extensionURL.path
                 ))
@@ -183,7 +183,7 @@ extension CMUXCLI {
             print(String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.pi.noneFound",
-                    defaultValue: "No Pi cmux extension found at %@"
+                    defaultValue: "No Pi Fleet extension found at %@"
                 ),
                 extensionURL.path
             ))
@@ -209,7 +209,7 @@ extension CMUXCLI {
             print(String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.pi.refuseRemoveMissingMarker",
-                    defaultValue: "Refusing to remove %@: missing cmux marker"
+                    defaultValue: "Refusing to remove %@: missing Fleet marker"
                 ),
                 extensionURL.path
             ))
@@ -219,7 +219,7 @@ extension CMUXCLI {
             print(String.localizedStringWithFormat(
                 String(
                     localized: "cli.hooks.pi.noneFound",
-                    defaultValue: "No Pi cmux extension found at %@"
+                    defaultValue: "No Pi Fleet extension found at %@"
                 ),
                 extensionURL.path
             ))
@@ -228,7 +228,7 @@ extension CMUXCLI {
         print(String.localizedStringWithFormat(
             String(
                 localized: "cli.hooks.pi.removed",
-                defaultValue: "Removed Pi cmux extension from %@"
+                defaultValue: "Removed Pi Fleet extension from %@"
             ),
             extensionURL.path
         ))

@@ -71,12 +71,12 @@ extension RemoteTmuxError {
         case .windowCreationFailed:
             return String(
                 localized: "remoteTmux.error.windowCreationFailed",
-                defaultValue: "cmux could not create a new window"
+                defaultValue: "Fleet could not create a new window"
             )
         case let .unsupportedTmux(detected):
             let format = String(
                 localized: "remoteTmux.error.unsupportedVersion",
-                defaultValue: "remote session server is too old (found %@; cmux needs version %@ or newer)"
+                defaultValue: "remote session server is too old (found %@; Fleet needs version %@ or newer)"
             )
             return String(
                 format: format,

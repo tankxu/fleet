@@ -98,7 +98,7 @@ struct MobileSettingsView: View {
                     } footer: {
                         Text(L10n.string(
                             "mobile.settings.teamFooter",
-                            defaultValue: "Switches which cmux team's computers and devices this app shows."
+                            defaultValue: "Switches which Fleet team's computers and devices this app shows."
                         ))
                     }
                 }
@@ -235,7 +235,7 @@ struct MobileSettingsView: View {
                 } footer: {
                     Text(L10n.string(
                         "mobile.settings.hapticFeedbackFooter",
-                        defaultValue: "When off, cmux does not vibrate for actions, confirmations, warnings, or errors."
+                        defaultValue: "When off, Fleet does not vibrate for actions, confirmations, warnings, or errors."
                     ))
                 }
 

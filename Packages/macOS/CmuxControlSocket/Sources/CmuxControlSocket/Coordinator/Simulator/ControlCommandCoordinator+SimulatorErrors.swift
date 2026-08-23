@@ -19,7 +19,7 @@ extension ControlCommandCoordinator {
             code: "unavailable",
             message: String(
                 localized: "cli.simulator.error.noActiveWindow",
-                defaultValue: "No active cmux window"
+                defaultValue: "No active Fleet window"
             ),
             data: nil
         )

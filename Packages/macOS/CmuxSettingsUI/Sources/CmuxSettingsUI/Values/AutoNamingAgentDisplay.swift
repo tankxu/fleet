@@ -22,7 +22,7 @@ enum AutoNamingAgentDisplay {
         }
         return String(
             localized: "settings.automation.autoNamingAgent.requirement.unsupported",
-            defaultValue: "\(name) can't generate names yet, so cmux uses each session's own agent."
+            defaultValue: "\(name) can't generate names yet, so Fleet uses each session's own agent."
         )
     }
 

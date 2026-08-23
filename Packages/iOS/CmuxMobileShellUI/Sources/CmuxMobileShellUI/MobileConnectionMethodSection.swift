@@ -65,7 +65,7 @@ struct MobileConnectionMethodSection: View {
         case .automatic:
             L10n.string(
                 "mobile.settings.connectionMethod.automaticFooter",
-                defaultValue: "Requires cmux 0.64.20 or later on your Mac. Connects automatically over an authenticated, end-to-end encrypted connection."
+                defaultValue: "Requires Fleet 0.64.20 or later on your Mac. Connects automatically over an authenticated, end-to-end encrypted connection."
             )
         case .tailscale:
             L10n.string(

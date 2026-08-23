@@ -99,7 +99,7 @@ public struct MobileSection: View {
                 }
                 SettingsCardNote(String(
                     localized: "settings.mobile.port.note",
-                    defaultValue: "Click Apply to change the port. cmux checks the port is free first: if it's in use, the current listener keeps running untouched; if it's free, it rebinds and connected devices reconnect on the new port."
+                    defaultValue: "Click Apply to change the port. Fleet checks the port is free first: if it's in use, the current listener keeps running untouched; if it's free, it rebinds and connected devices reconnect on the new port."
                 ))
             }
         }
@@ -130,7 +130,7 @@ public struct MobileSection: View {
             subtitle: phonePush.current.forwardingEnabled
                 ? String(
                     localized: "settings.mobile.phonePush.forwarding.subtitleOn",
-                    defaultValue: "Sends local agent alerts from this Mac to cmux on your iPhone and iPad."
+                    defaultValue: "Sends local agent alerts from this Mac to Fleet on your iPhone and iPad."
                 )
                 : String(
                     localized: "settings.mobile.phonePush.forwarding.subtitleOff",

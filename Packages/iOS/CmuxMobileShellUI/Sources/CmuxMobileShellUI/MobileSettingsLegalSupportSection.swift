@@ -37,7 +37,7 @@ struct MobileSettingsLegalSupportSection: View {
         components.queryItems = [
             URLQueryItem(
                 name: "subject",
-                value: L10n.string("mobile.settings.supportEmailSubject", defaultValue: "cmux iOS support")
+                value: L10n.string("mobile.settings.supportEmailSubject", defaultValue: "Fleet iOS support")
             )
         ]
         return components.url!

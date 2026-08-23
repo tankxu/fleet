@@ -35,7 +35,7 @@ public struct CmuxSidebarProviderDescriptor: Identifiable, Codable, Equatable, S
     public static let defaultWorkspaces = CmuxSidebarProviderDescriptor(
         id: defaultWorkspacesID,
         title: CmuxSidebarProviderLocalizedText(key: "sidebar.provider.default.title", defaultValue: "Default Workspaces"),
-        subtitle: CmuxSidebarProviderLocalizedText(key: "sidebar.provider.default.subtitle", defaultValue: "cmux"),
+        subtitle: CmuxSidebarProviderLocalizedText(key: "sidebar.provider.default.subtitle", defaultValue: "Fleet"),
         systemImageName: "list.bullet",
         isHostProvided: true
     )

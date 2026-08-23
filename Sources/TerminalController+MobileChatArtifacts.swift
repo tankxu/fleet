@@ -461,7 +461,7 @@ extension TerminalController {
                 code: "permission_denied",
                 message: String(
                     localized: "mobile.chat.artifact.error.permissionDenied",
-                    defaultValue: "cmux does not have permission to read that file."
+                    defaultValue: "Fleet does not have permission to read that file."
                 ),
                 data: data
             )

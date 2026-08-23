@@ -19,7 +19,7 @@ struct NotificationFeedAvailabilityBanner: View {
             )
         case .requiresMacUpdate:
             banner(
-                title: L10n.string("mobile.notificationFeed.update.title", defaultValue: "Update cmux on your Mac"),
+                title: L10n.string("mobile.notificationFeed.update.title", defaultValue: "Update Fleet on your Mac"),
                 body: L10n.string(
                     "mobile.notificationFeed.update.inlineBody",
                     defaultValue: "Some paired Macs cannot sync notifications yet."
@@ -176,7 +176,7 @@ struct NotificationFeedEmptyRow: View {
         case .unavailable:
             L10n.string("mobile.notificationFeed.offline.title", defaultValue: "Notifications are offline")
         case .requiresMacUpdate:
-            L10n.string("mobile.notificationFeed.update.title", defaultValue: "Update cmux on your Mac")
+            L10n.string("mobile.notificationFeed.update.title", defaultValue: "Update Fleet on your Mac")
         }
     }
 
@@ -210,7 +210,7 @@ struct NotificationFeedEmptyRow: View {
         case .requiresMacUpdate:
             L10n.string(
                 "mobile.notificationFeed.update.body",
-                defaultValue: "Install the latest cmux on your paired Macs to sync their notification history."
+                defaultValue: "Install the latest Fleet on your paired Macs to sync their notification history."
             )
         }
     }
