@@ -44,6 +44,10 @@ xattr -dr com.apple.quarantine /Applications/Fleet.app
 
 Then open it normally. Universal binary, Apple silicon and Intel.
 
+Fleet carries its own version line, independent of upstream: this is Fleet
+0.1.0, built from cmux 0.64.22. Each release states the upstream version it was
+built from.
+
 To get the `fleet` command in your `PATH` as well, link it after installing:
 
 ```bash
