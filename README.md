@@ -6,74 +6,114 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/tankxu/fleet/releases/latest"><img src="https://img.shields.io/github/v/release/tankxu/fleet?label=download&color=2ea043" alt="Download" /></a>
   <a href="#license"><img src="https://img.shields.io/badge/license-GPL--3.0--or--later-555" alt="GPL-3.0-or-later" /></a>
   <img src="https://img.shields.io/badge/platform-macOS-555" alt="macOS" />
 </p>
 
-> **Fleet is a personal fork of [cmux](https://github.com/manaflow-ai/cmux)** by Manaflow, Inc.
-> Nearly everything here — the Ghostty-backed terminal, vertical tabs, the agent
-> notification system, the scriptable browser, the CLI — is upstream work. Fleet
-> renames the app, adds the fleet canvas, and gives the build its own identity so it
-> can be installed alongside cmux. It is not affiliated with or endorsed by Manaflow.
->
-> If you want the real thing, maintained, signed, and with a download link, get
-> [cmux](https://github.com/manaflow-ai/cmux).
+<p align="center">
+  <img src="docs/assets/fleet-canvas.png" alt="Four coding agents running side by side as live cards on the Fleet canvas" width="100%" />
+</p>
 
-## What Fleet adds
+## What this is
 
-### Fleet canvas
+[cmux](https://github.com/manaflow-ai/cmux) is a native macOS terminal built for
+running coding agents. It embeds [Ghostty](https://ghostty.org) as its terminal
+core, organises work into *workspaces* — a directory plus the terminals open on
+it — and adds the things you need when an agent is doing the typing: vertical
+tabs, notification rings that tell you which session wants your attention,
+session restore, a scriptable in-app browser, and a CLI and socket API for
+driving the app from a script.
 
-A board view where every workspace in a window is a live card — real terminals,
-not previews. Built for running several coding agents at once and seeing all of
-them at a glance.
+Fleet is a fork of cmux that keeps all of that and adds a **canvas**: instead of
+one workspace filling the window while the rest wait in a sidebar, every
+workspace becomes a live card on a single board. It installs alongside cmux
+rather than replacing it.
 
-- **Cards group, they don't just split.** The layout is an n-ary tree: a container
-  holds any number of members, so three workspaces sit at equal width instead of
-  collapsing into nested halves. Dragging one card next to another does not force
-  a 1/2 split.
-- **Drop targets read intent from position.** Dragging into a card's interior
-  groups with it; dropping in the gap between cards, or at either end of a row,
-  inserts as a sibling. Shift-click selects several cards, and the context menu's
-  *Group workspace* / *Exit group* do the same thing as dragging for when a drag
-  is awkward.
-- **Cards hold still.** They resize by proportion, remember it, and never
-  reposition themselves because a session got busy.
-- **Titles say something useful.** One terminal shows its path; a running agent
-  shows the agent and session title with that agent's icon; several terminals
-  show the shared path. Rename a card and it stops being overwritten.
-- **Quick launch.** Claude and Codex buttons in each card's action row start in
-  the workspace's own directory — reusing the current terminal when it's idle,
-  splitting a new pane when it's busy.
+## Download
 
-### Elsewhere
+Grab the latest build from [**Releases**](https://github.com/tankxu/fleet/releases/latest),
+unzip it, and drag `Fleet.app` into `/Applications`.
 
-- **One accent color.** The theme accent (green) replaces scattered
-  `Color.accentColor` use, including the tab-bar chrome, which previously followed
-  the macOS system accent rather than the app's own theme.
-- **A pulsing yellow attention ring** on workspaces waiting for you, instead of a
-  steady ring that was easy to miss. Respects Reduce Motion.
-- **Only one blinking cursor.** Ghostty surfaces adopt the focus intent they were
-  created with, so panes that never held first responder used to keep blinking a
-  solid cursor. They no longer do.
+The build is ad-hoc signed, not notarised, so macOS quarantines it on first
+launch. Clear the quarantine flag once:
 
-### Its own identity
+```bash
+xattr -dr com.apple.quarantine /Applications/Fleet.app
+```
+
+Then open it normally. Universal binary, Apple silicon and Intel.
+
+To get the `fleet` command in your `PATH` as well, link it after installing:
+
+```bash
+ln -sf /Applications/Fleet.app/Contents/Resources/bin/fleet ~/bin/fleet
+```
+
+## The canvas
+
+<p align="center">
+  <img src="docs/assets/fleet-canvas-browser.png" alt="Canvas cards holding terminals, agent sessions, and the in-app browser at once" width="100%" />
+</p>
+
+Every workspace in a window is a card, and every card is a real terminal — not a
+preview or a thumbnail. Cards run whatever a workspace holds: a shell, a Claude
+Code or Codex session, split panes, the in-app browser. The point is to run
+several agents at once and see all of them without cycling tabs.
+
+**Cards group, they don't just split.** The layout is an n-ary tree: one
+container holds any number of members, so three workspaces sit at equal width
+instead of collapsing into nested halves. Dragging one card next to another does
+not force a 1/2 split.
+
+**Drop targets read intent from position.** Dragging into a card's interior
+groups with it; dropping in the gap between cards, or at either end of a row,
+inserts as a sibling. Shift-click selects several cards at once, and the context
+menu's *Group workspace* / *Exit group* do the same thing as a drag, for when a
+drag is awkward.
+
+**Cards hold still.** They resize by proportion, remember that proportion, and
+never reposition themselves because a session got busy. A board you arranged
+stays arranged.
+
+**Titles say something useful.** One terminal shows its path. A running agent
+shows the agent and the session title, with that agent's icon. Several terminals
+in one card show the shared path. Rename a card and the rename sticks — nothing
+overwrites it.
+
+**Quick launch.** Each card's action row has Claude and Codex buttons that start
+in that workspace's own directory, reusing the current terminal when it is idle
+and splitting a new pane when it is busy.
+
+## Interface changes
+
+**One accent color.** The theme accent (green) replaces scattered
+`Color.accentColor` use throughout the app, including the tab-bar chrome, which
+previously followed the macOS system accent rather than the app's own theme.
+
+**A pulsing attention ring.** Workspaces waiting on you pulse yellow instead of
+showing a steady ring that was easy to miss. It respects Reduce Motion.
+
+**Only one blinking cursor.** Ghostty surfaces now adopt the focus intent they
+were created with, so panes that never held first responder no longer sit there
+blinking a solid cursor at you.
+
+## Its own identity
 
 Fleet's Release build is `com.tankxu.fleet`, so it installs next to cmux rather
-than replacing it. State is keyed to that identity — `~/.config/fleet/fleet.json`
-and `~/Library/Application Support/fleet/` — because two apps sharing one session
-snapshot file overwrite each other's workspaces. An existing cmux install is left
-completely alone.
+than replacing it. State is keyed to that identity —
+`~/.config/fleet/fleet.json` and `~/Library/Application Support/fleet/` —
+because two apps sharing one session snapshot file overwrite each other's
+workspaces. An existing cmux install is left completely alone.
 
-The directory name is derived from the running bundle id rather than compiled in,
-so Debug and nightly builds keep reading the `cmux` state they already have.
+The directory name is derived from the running bundle id rather than compiled
+in, so Debug and nightly builds keep reading the `cmux` state they already have.
 
 Per-repo `.cmux/` config directories are deliberately unchanged: they are an
 in-repo convention shared with cmux, and renaming them would break configs cmux
 still has to read.
 
-## Install
-
-There is no DMG, no Homebrew cask, and no auto-update — build it yourself:
+## Building from source
 
 ```bash
 ./scripts/setup.sh          # submodules + GhosttyKit
@@ -90,21 +130,20 @@ be aware that path registers `com.tankxu.fleet` as an App ID in that team.
 
 ## Known limitations
 
-These are real and unfixed, not roadmap items:
-
 - **Sign-in does not work yet.** Fleet registers `fleet://` as its callback
   scheme, because two installed apps claiming `cmux://` means macOS can hand the
-  callback to the wrong one. The server's scheme allowlist needs `fleet` deployed
-  before sign-in completes. `CMUX_AUTH_CALLBACK_SCHEME=cmux` is a workaround.
-  Local terminal use — terminals, workspaces, splits, the canvas — needs no
-  account at all; sign-in only gates phone pairing, cloud workspaces, and sync.
+  callback to the wrong one. The server's scheme allowlist needs `fleet`
+  deployed before sign-in completes; `CMUX_AUTH_CALLBACK_SCHEME=cmux` is a
+  workaround. Local terminal use — terminals, workspaces, splits, the canvas —
+  needs no account at all. Sign-in only gates phone pairing, cloud workspaces,
+  and sync.
+- **Released builds are not notarised.** There is no Developer ID certificate
+  behind this fork, hence the `xattr` step above. There is also no auto-update.
 - **The iOS app is still cmux.** Renaming it needs an Apple Developer App ID, an
   APNs key, and a backend push-routing change.
-- **Internal identifiers still say `com.cmuxterm`** in logger subsystems, dispatch
-  queue labels, and notification names. They aren't user-facing, and rewriting 225
-  of them is churn with a real chance of typos.
-- **No screenshots in this README.** The upstream ones show cmux's UI, which no
-  longer matches.
+- **Internal identifiers still say `com.cmuxterm`** in logger subsystems,
+  dispatch queue labels, and notification names. They are not user-facing, and
+  rewriting 225 of them is churn with a real chance of typos.
 
 ## Everything else
 
@@ -117,6 +156,10 @@ panes, keyboard shortcuts. Upstream is the accurate reference for all of it:
 
 Where this fork and those docs disagree about names or colors, this fork is the
 one that changed.
+
+Fleet is a personal fork, not affiliated with or endorsed by Manaflow, Inc. If
+you want the maintained, signed, notarised build with an official download,
+get [cmux](https://github.com/manaflow-ai/cmux).
 
 ## License
 
