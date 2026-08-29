@@ -67,51 +67,44 @@ preview or a thumbnail. Cards run whatever a workspace holds: a shell, a Claude
 Code or Codex session, split panes, the in-app browser. The point is to run
 several agents at once and see all of them without cycling tabs.
 
-**Cards group, they don't just split.** The layout is an n-ary tree: one
-container holds any number of members, so three workspaces sit at equal width
-instead of collapsing into nested halves. Dragging one card next to another does
-not force a 1/2 split.
-
-**Drop targets read intent from position.** Dragging into a card's interior
-groups with it; dropping in the gap between cards, or at either end of a row,
-inserts as a sibling. Shift-click selects several cards at once, and the context
-menu's *Group workspace* / *Exit group* do the same thing as a drag, for when a
-drag is awkward.
-
-**Cards hold still.** They resize by proportion, remember that proportion, and
-never reposition themselves because a session got busy. A board you arranged
-stays arranged.
-
-**Titles say something useful.** One terminal shows its path. A running agent
-shows the agent and the session title, with that agent's icon. Several terminals
-in one card show the shared path.
-
-**Rename in place, close from the card.** Click a card's title to edit it
-inline, or use *Rename Workspace…* in its context menu; the name you set is
-never overwritten by the automatic one. *Close Workspace* sits in the same menu.
-The menu lives on the card header only — a card's body is a terminal, and
-right-clicking a terminal belongs to the terminal.
+- **Cards group, they don't just split.** The layout is an n-ary tree: one
+  container holds any number of members, so three workspaces sit at equal width
+  instead of collapsing into nested halves. Dragging one card next to another does
+  not force a 1/2 split.
+- **Drop targets read intent from position.** Dragging into a card's interior
+  groups with it; dropping in the gap between cards, or at either end of a row,
+  inserts as a sibling. Shift-click selects several cards at once, and the context
+  menu's *Group workspace* / *Exit group* do the same thing as a drag, for when a
+  drag is awkward.
+- **Cards hold still.** They resize by proportion, remember that proportion, and
+  never reposition themselves because a session got busy. A board you arranged
+  stays arranged.
+- **Titles say something useful.** One terminal shows its path. A running agent
+  shows the agent and the session title, with that agent's icon. Several terminals
+  in one card show the shared path.
+- **Rename in place, close from the card.** Click a card's title to edit it
+  inline, or use *Rename Workspace…* in its context menu; the name you set is
+  never overwritten by the automatic one. *Close Workspace* sits in the same menu.
+  The menu lives on the card header only — a card's body is a terminal, and
+  right-clicking a terminal belongs to the terminal.
 
 ## Smaller additions
 
-**A yellow pulse when a session finishes.** The moment an agent stops and wants
-you, its workspace pulses yellow. Upstream showed a steady ring, which is easy
-to miss on a board of a dozen cards; a pulse is not. It respects Reduce Motion.
-
-**Claude and Codex are one click away.** Each pane's tab bar carries Claude and
-Codex buttons that start the agent in that pane's own working directory — no
-`cd`, no typing the command. An idle prompt takes the command directly; a busy
-one gets a new pane beside it, so a click can never interrupt a running session.
-New terminal, new browser, and the two split directions sit in the same row, and
-the whole row is configurable in `cmux.json`.
-
-**One accent color.** The theme accent (green) replaces scattered
-`Color.accentColor` use throughout the app, including the tab-bar chrome, which
-previously followed the macOS system accent rather than the app's own theme.
-
-**Only one blinking cursor.** Ghostty surfaces now adopt the focus intent they
-were created with, so panes that never held first responder no longer sit there
-blinking a solid cursor at you.
+- **A yellow pulse when a session finishes.** The moment an agent stops and wants
+  you, its workspace pulses yellow. Upstream showed a steady ring, which is easy
+  to miss on a board of a dozen cards; a pulse is not. It respects Reduce Motion.
+- **Claude and Codex are one click away.** Each pane's tab bar carries Claude and
+  Codex buttons that start the agent in that pane's own working directory — no
+  `cd`, no typing the command. An idle prompt takes the command directly; a busy
+  one gets a new pane beside it, so a click can never interrupt a running session.
+  New terminal, new browser, and the two split directions sit in the same row, and
+  the whole row is configurable in `cmux.json`.
+- **One accent color.** The theme accent (green) replaces scattered
+  `Color.accentColor` use throughout the app, including the tab-bar chrome, which
+  previously followed the macOS system accent rather than the app's own theme.
+- **Only one blinking cursor.** Ghostty surfaces now adopt the focus intent they
+  were created with, so panes that never held first responder no longer sit there
+  blinking a solid cursor at you.
 
 ## Its own identity
 
