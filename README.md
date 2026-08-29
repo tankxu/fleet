@@ -108,21 +108,30 @@ stays arranged.
 
 **Titles say something useful.** One terminal shows its path. A running agent
 shows the agent and the session title, with that agent's icon. Several terminals
-in one card show the shared path. Rename a card and the rename sticks — nothing
-overwrites it.
+in one card show the shared path.
 
-**Quick launch.** Each card's action row has Claude and Codex buttons that start
-in that workspace's own directory, reusing the current terminal when it is idle
-and splitting a new pane when it is busy.
+**Rename in place, close from the card.** Click a card's title to edit it
+inline, or use *Rename Workspace…* in its context menu; the name you set is
+never overwritten by the automatic one. *Close Workspace* sits in the same menu.
+The menu lives on the card header only — a card's body is a terminal, and
+right-clicking a terminal belongs to the terminal.
 
-## Interface changes
+## Smaller additions
+
+**A yellow pulse when a session finishes.** The moment an agent stops and wants
+you, its workspace pulses yellow. Upstream showed a steady ring, which is easy
+to miss on a board of a dozen cards; a pulse is not. It respects Reduce Motion.
+
+**Claude and Codex are one click away.** Each pane's tab bar carries Claude and
+Codex buttons that start the agent in that pane's own working directory — no
+`cd`, no typing the command. An idle prompt takes the command directly; a busy
+one gets a new pane beside it, so a click can never interrupt a running session.
+New terminal, new browser, and the two split directions sit in the same row, and
+the whole row is configurable in `cmux.json`.
 
 **One accent color.** The theme accent (green) replaces scattered
 `Color.accentColor` use throughout the app, including the tab-bar chrome, which
 previously followed the macOS system accent rather than the app's own theme.
-
-**A pulsing attention ring.** Workspaces waiting on you pulse yellow instead of
-showing a steady ring that was easy to miss. It respects Reduce Motion.
 
 **Only one blinking cursor.** Ghostty surfaces now adopt the focus intent they
 were created with, so panes that never held first responder no longer sit there
