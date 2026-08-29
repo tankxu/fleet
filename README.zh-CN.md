@@ -1,5 +1,9 @@
+<p align="center">
+  <img src="docs/assets/fleet-icon.png" alt="Fleet app icon" width="128" />
+</p>
+
 <h1 align="center">Fleet</h1>
-<p align="center">原生 macOS 终端，每个工作区都是同一块看板上的实时卡片</p>
+<p align="center">Fleet（舰队）—— 原生 macOS 终端，每个工作区都是同一块看板上的实时卡片</p>
 
 <p align="center">
   <a href="README.md">English</a> | 简体中文
@@ -17,15 +21,33 @@
 
 ## 这是什么
 
-[cmux](https://github.com/manaflow-ai/cmux) 是一个为「跑编码 agent」而做的原生 macOS 终端。
-它把 [Ghostty](https://ghostty.org) 作为终端内核，以**工作区**（一个目录，加上开在它上面的
-若干终端）来组织工作，并补上了「打字的是 agent」时才需要的那些东西：竖向标签页、告诉你哪个
-会话在等你的通知边框、会话恢复、可脚本化的内置浏览器，以及可以用脚本驱动整个 app 的 CLI 和
-socket API。
+Fleet（中文名「舰队」）是 [cmux](https://github.com/manaflow-ai/cmux) 的一个 fork。
+cmux 是一个为「跑编码 agent」而做的原生 macOS 终端 —— 用 Swift 和 AppKit 写的，不是
+Electron，终端内核是 [Ghostty](https://ghostty.org)。
 
-Fleet 是 cmux 的一个 fork，保留了上面全部能力，并加上一块**画布**：不再是一个工作区占满窗口、
-其余的排在侧边栏里等着，而是每个工作区都成为同一块看板上的一张实时卡片。它与 cmux 并存安装，
-不会替换它。
+Fleet 保留了 cmux 的全部能力，并加上一块**画布**：不再是一个工作区占满窗口、其余的排在
+侧边栏里等着，而是每个工作区都成为同一块看板上的一张实时卡片。它与 cmux 并存安装，不会
+替换它。
+
+### 从 cmux 继承来的
+
+它以**工作区**（一个目录，加上开在它上面的若干终端）来组织工作，整个 app 都是围绕
+「打字的是 agent」这件事设计的：
+
+- **通知边框。** agent 需要你时，面板会亮起边框、标签页跟着高亮。通知面板把所有待处理的
+  集中在一处，可以直接跳到最近一条未读。
+- **带上下文的竖向标签页。** 侧边栏显示 git 分支、关联 PR 的编号与状态、工作目录、正在
+  监听的端口，以及最新一条通知的内容。支持横向和纵向分割。
+- **可脚本化的内置浏览器。** 在终端旁边分出一个浏览器，并用脚本驱动它 —— 这套 API 移植自
+  [agent-browser](https://github.com/vercel-labs/agent-browser)。还能从 Chrome、Firefox、
+  Arc 等 20 多种浏览器导入 cookie、历史和会话，所以浏览器面板一开就是已登录状态。
+- **SSH 工作区。** `fleet ssh user@remote` 直接为远程机器开一个工作区。浏览器面板走远程
+  机器的网络，所以 localhost 就是通的；把图片拖进远程会话会自动用 scp 上传。
+- **Claude Code Teams。** `fleet claude-teams` 一条命令跑起 Claude Code 的 teammate 模式，
+  队友会以原生分割面板的形式出现，各自带侧边栏信息和通知 —— 不需要 tmux。
+- **可编程。** CLI 和 socket API 可以创建工作区、分割面板、发送按键、自动化浏览器；还可以
+  在 `cmux.json` 里定义项目专属命令，从命令面板里启动。
+- **会话恢复。** 重开 app，工作区都还在。
 
 ## 下载
 
@@ -127,8 +149,7 @@ app；在别处则指向 Fleet。已有的 `cmux` 命令不会被改动。
 
 ## 其余部分
 
-Fleet 原封不动地继承了 cmux 的其余部分 —— 竖向标签页、agent 通知边框、会话恢复、可脚本化的
-内置浏览器、socket API、分割面板、键盘快捷键。这些内容以上游为准：
+上面列出的能力全部原样继承，这些内容以上游为准：
 
 - [cmux README](https://github.com/manaflow-ai/cmux/blob/main/README.md) —— 功能与键盘快捷键
 - [cmux 文档](https://cmux.com/docs/getting-started) —— 配置说明

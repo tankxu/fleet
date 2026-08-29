@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/fleet-icon.png" alt="Fleet app icon" width="128" />
+</p>
+
 <h1 align="center">Fleet</h1>
 <p align="center">A native macOS terminal where every workspace is a live card on one board</p>
 
@@ -17,18 +21,40 @@
 
 ## What this is
 
-[cmux](https://github.com/manaflow-ai/cmux) is a native macOS terminal built for
-running coding agents. It embeds [Ghostty](https://ghostty.org) as its terminal
-core, organises work into *workspaces* — a directory plus the terminals open on
-it — and adds the things you need when an agent is doing the typing: vertical
-tabs, notification rings that tell you which session wants your attention,
-session restore, a scriptable in-app browser, and a CLI and socket API for
-driving the app from a script.
+Fleet is a fork of [cmux](https://github.com/manaflow-ai/cmux) — a native macOS
+terminal, Swift and AppKit rather than Electron, built for running coding agents,
+with [Ghostty](https://ghostty.org) as its terminal core.
 
-Fleet is a fork of cmux that keeps all of that and adds a **canvas**: instead of
-one workspace filling the window while the rest wait in a sidebar, every
-workspace becomes a live card on a single board. It installs alongside cmux
-rather than replacing it.
+Fleet keeps all of that and adds a **canvas**: instead of one workspace filling
+the window while the rest wait in a sidebar, every workspace becomes a live card
+on a single board. It installs alongside cmux rather than replacing it.
+
+### What it inherits from cmux
+
+Work is organised into *workspaces* — a directory plus the terminals open on it —
+and the app is built around the fact that the one doing the typing is an agent:
+
+- **Notification rings.** Panes get a ring and tabs light up when an agent needs
+  you. A notification panel collects every pending one and jumps to the most
+  recent unread.
+- **Vertical tabs that carry context.** The sidebar shows the git branch, linked
+  PR status and number, working directory, listening ports, and the latest
+  notification text. Split horizontally and vertically.
+- **A scriptable in-app browser.** Split a browser beside the terminal and drive
+  it from a script, through an API ported from
+  [agent-browser](https://github.com/vercel-labs/agent-browser). Import cookies,
+  history, and sessions from Chrome, Firefox, Arc, and 20+ others so browser
+  panes start authenticated.
+- **SSH workspaces.** `fleet ssh user@remote` opens a workspace on a remote
+  machine. Browser panes route through that machine's network, so localhost just
+  works, and dragging an image into a remote session uploads it over scp.
+- **Claude Code Teams.** `fleet claude-teams` runs Claude Code's teammate mode in
+  one command. Teammates spawn as native splits with their own sidebar metadata
+  and notifications — no tmux.
+- **Programmable.** A CLI and socket API to create workspaces, split panes, send
+  keystrokes, and automate the browser, plus per-project custom commands defined
+  in `cmux.json` and launched from the command palette.
+- **Session restore.** Reopen the app and the workspaces come back.
 
 ## Download
 
@@ -151,9 +177,8 @@ be aware that path registers `com.tankxu.fleet` as an App ID in that team.
 
 ## Everything else
 
-Fleet inherits the rest of cmux unchanged — vertical tabs, agent notification
-rings, session restore, the scriptable in-app browser, the socket API, split
-panes, keyboard shortcuts. Upstream is the accurate reference for all of it:
+Everything listed above is inherited unchanged, and upstream is the accurate
+reference for all of it:
 
 - [cmux README](https://github.com/manaflow-ai/cmux/blob/main/README.md) — features and keyboard shortcuts
 - [cmux docs](https://cmux.com/docs/getting-started) — configuration
