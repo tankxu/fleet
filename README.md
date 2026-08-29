@@ -56,30 +56,6 @@ and the app is built around the fact that the one doing the typing is an agent:
   in `cmux.json` and launched from the command palette.
 - **Session restore.** Reopen the app and the workspaces come back.
 
-## Download
-
-Grab the latest build from [**Releases**](https://github.com/tankxu/fleet/releases/latest),
-unzip it, and drag `Fleet.app` into `/Applications`.
-
-The build is ad-hoc signed, not notarised, so macOS quarantines it on first
-launch. Clear the quarantine flag once:
-
-```bash
-xattr -dr com.apple.quarantine /Applications/Fleet.app
-```
-
-Then open it normally. Universal binary, Apple silicon and Intel.
-
-Fleet carries its own version line, independent of upstream: this is Fleet
-0.1.0, built from cmux 0.64.22. Each release states the upstream version it was
-built from.
-
-To get the `fleet` command in your `PATH` as well, link it after installing:
-
-```bash
-ln -sf /Applications/Fleet.app/Contents/Resources/bin/fleet ~/bin/fleet
-```
-
 ## The canvas
 
 <p align="center">
@@ -151,6 +127,30 @@ in, so Debug and nightly builds keep reading the `cmux` state they already have.
 Per-repo `.cmux/` config directories are deliberately unchanged: they are an
 in-repo convention shared with cmux, and renaming them would break configs cmux
 still has to read.
+
+## Download
+
+Grab the latest build from [**Releases**](https://github.com/tankxu/fleet/releases/latest),
+unzip it, and drag `Fleet.app` into `/Applications`.
+
+The build is ad-hoc signed, not notarised, so macOS quarantines it on first
+launch. Clear the quarantine flag once:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/Fleet.app
+```
+
+Then open it normally. Universal binary, Apple silicon and Intel.
+
+Fleet carries its own version line, independent of upstream: this is Fleet
+0.1.0, built from cmux 0.64.22. Each release states the upstream version it was
+built from.
+
+To get the `fleet` command in your `PATH` as well, link it after installing:
+
+```bash
+ln -sf /Applications/Fleet.app/Contents/Resources/bin/fleet ~/bin/fleet
+```
 
 ## Building from source
 

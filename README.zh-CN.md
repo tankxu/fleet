@@ -49,28 +49,6 @@ Fleet 保留了 cmux 的全部能力，并加上一块**画布**：不再是一�
   在 `cmux.json` 里定义项目专属命令，从命令面板里启动。
 - **会话恢复。** 重开 app，工作区都还在。
 
-## 下载
-
-到 [**Releases**](https://github.com/tankxu/fleet/releases/latest) 下载最新构建，解压后把
-`Fleet.app` 拖进 `/Applications`。
-
-构建是 ad-hoc 签名、未经公证的，所以 macOS 首次启动时会拦下它。清一次隔离属性即可：
-
-```bash
-xattr -dr com.apple.quarantine /Applications/Fleet.app
-```
-
-然后正常打开。通用二进制，Apple 芯片和 Intel 都能跑。
-
-Fleet 有自己独立于上游的版本号：当前是 Fleet 0.1.0，基于 cmux 0.64.22 构建。
-每个 release 都会写明它所基于的上游版本。
-
-想让 `fleet` 命令进 `PATH`，装好后再链一下：
-
-```bash
-ln -sf /Applications/Fleet.app/Contents/Resources/bin/fleet ~/bin/fleet
-```
-
 ## 画布
 
 <p align="center">
@@ -126,6 +104,28 @@ Fleet 的 Release 构建是 `com.tankxu.fleet`，因此它与 cmux 并存安装�
 
 仓库内的 `.cmux/` 项目配置目录**故意保持不变**：那是与 cmux 共享的仓库内约定，改名会让
 cmux 读不了这些配置。
+
+## 下载
+
+到 [**Releases**](https://github.com/tankxu/fleet/releases/latest) 下载最新构建，解压后把
+`Fleet.app` 拖进 `/Applications`。
+
+构建是 ad-hoc 签名、未经公证的，所以 macOS 首次启动时会拦下它。清一次隔离属性即可：
+
+```bash
+xattr -dr com.apple.quarantine /Applications/Fleet.app
+```
+
+然后正常打开。通用二进制，Apple 芯片和 Intel 都能跑。
+
+Fleet 有自己独立于上游的版本号：当前是 Fleet 0.1.0，基于 cmux 0.64.22 构建。
+每个 release 都会写明它所基于的上游版本。
+
+想让 `fleet` 命令进 `PATH`，装好后再链一下：
+
+```bash
+ln -sf /Applications/Fleet.app/Contents/Resources/bin/fleet ~/bin/fleet
+```
 
 ## 从源码构建
 
