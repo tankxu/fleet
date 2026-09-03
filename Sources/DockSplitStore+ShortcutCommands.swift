@@ -55,12 +55,10 @@ extension DockSplitStore {
     func performShortcutCommand(_ command: DockShortcutCommand) -> Bool {
         switch command {
         case .selectNextSurface:
-            bonsplitController.selectNextTab()
-            applyFocusedShortcutSelection()
+            _ = cycleDockSurface(forward: true)
             return true
         case .selectPreviousSurface:
-            bonsplitController.selectPreviousTab()
-            applyFocusedShortcutSelection()
+            _ = cycleDockSurface(forward: false)
             return true
         case .selectSurface(let number):
             return selectDockSurface(number: number)
@@ -159,6 +157,33 @@ extension DockSplitStore {
               let tab = bonsplitController.selectedTab(inPane: pane),
               let panelId = surfaceIdToPanelId[tab.id] else { return }
         focusPanelFromDockInteraction(panelId, window: nil)
+    }
+
+    private func cycleDockSurface(forward: Bool) -> Bool {
+        let livePaneIds = bonsplitController.allPaneIds
+        let orderedPaneIds = bonsplitController.treeSnapshot()
+            .orderedPaneIds
+            .compactMap(UUID.init(uuidString:))
+        let tabsByPaneId = Dictionary(uniqueKeysWithValues: livePaneIds.map {
+            ($0.id, bonsplitController.tabs(inPane: $0).map(\.id))
+        })
+        guard let focusedPaneId = bonsplitController.focusedPaneId,
+              let selectedTabId = bonsplitController.selectedTab(inPane: focusedPaneId)?.id,
+              let target = SurfaceCycleNavigator().targetSurface(
+                  orderedPaneIds: orderedPaneIds,
+                  livePaneIds: livePaneIds,
+                  tabsByPaneId: tabsByPaneId,
+                  focusedPaneId: focusedPaneId,
+                  selectedTabId: selectedTabId,
+                  forward: forward
+              ) else {
+            return false
+        }
+
+        bonsplitController.focusPane(target.paneId)
+        bonsplitController.selectTab(target.tabId)
+        applyFocusedShortcutSelection()
+        return true
     }
 
     private func selectDockSurface(number: Int) -> Bool {
