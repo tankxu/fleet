@@ -211,34 +211,46 @@ extension Workspace {
         }
     }
 
-    /// Select the next surface in the currently focused split pane, or in
-    /// workspace Canvas order when Canvas layout is active.
+    /// Select the next surface across split panes, or in workspace Canvas order
+    /// when Canvas layout is active.
     func selectNextSurface() {
         if layoutMode == .canvas {
             _ = selectAdjacentCanvasTab(offset: 1)
             return
         }
-        bonsplitController.selectNextTab()
-
-        if let paneId = bonsplitController.focusedPaneId,
-           let tabId = bonsplitController.selectedTab(inPane: paneId)?.id {
-            applyTabSelection(tabId: tabId, inPane: paneId)
-        }
+        _ = cycleSurface(forward: true)
     }
 
-    /// Select the previous surface in the currently focused split pane, or in
-    /// workspace Canvas order when Canvas layout is active.
+    /// Select the previous surface across split panes, or in workspace Canvas
+    /// order when Canvas layout is active.
     func selectPreviousSurface() {
         if layoutMode == .canvas {
             _ = selectAdjacentCanvasTab(offset: -1)
             return
         }
-        bonsplitController.selectPreviousTab()
+        _ = cycleSurface(forward: false)
+    }
 
-        if let paneId = bonsplitController.focusedPaneId,
-           let tabId = bonsplitController.selectedTab(inPane: paneId)?.id {
-            applyTabSelection(tabId: tabId, inPane: paneId)
+    private func cycleSurface(forward: Bool) -> Bool {
+        let livePaneIds = bonsplitController.allPaneIds
+        let tabsByPaneId = Dictionary(uniqueKeysWithValues: livePaneIds.map {
+            ($0.id, bonsplitController.tabs(inPane: $0).map(\.id))
+        })
+        guard let focusedPaneId = bonsplitController.focusedPaneId,
+              let selectedTabId = bonsplitController.selectedTab(inPane: focusedPaneId)?.id,
+              let target = SurfaceCycleNavigator().targetSurface(
+                  orderedPaneIds: spatiallyOrderedPaneIds,
+                  livePaneIds: livePaneIds,
+                  tabsByPaneId: tabsByPaneId,
+                  focusedPaneId: focusedPaneId,
+                  selectedTabId: selectedTabId,
+                  forward: forward
+              ) else {
+            return false
         }
+
+        applyTabSelection(tabId: target.tabId, inPane: target.paneId)
+        return true
     }
 
     /// Cycles focus to the next or previous split pane in tree order, wrapping at the ends.

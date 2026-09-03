@@ -639,6 +639,18 @@ struct BrowserPanelView: View {
         }
     }
 
+    private func handleOpenInDefaultBrowserButtonAction() {
+        guard let app = AppDelegate.shared,
+              let target = app.browserActionTarget(for: panel),
+              BrowserActionDispatcher(appDelegate: app).perform(
+                  .openInDefaultBrowser,
+                  on: target
+              ) else {
+            NSSound.beep()
+            return
+        }
+    }
+
     private var browserFocusModeButtonHelp: String {
         let format = String(localized: "browser.focusMode.helpWithShortcut.format", defaultValue: "%@ (%@)")
         if panel.isBrowserFocusModeActive {
@@ -1144,6 +1156,7 @@ struct BrowserPanelView: View {
                     browserThemeModeButton
                     developerToolsButton
                 }
+                openInDefaultBrowserButton
             }
         }
         .padding(.horizontal, 8)
@@ -1289,6 +1302,35 @@ struct BrowserPanelView: View {
             }
         }
         .animation(.easeOut(duration: 0.12), value: screenshotPageCopied)
+    }
+
+    private var openInDefaultBrowserButton: some View {
+        Button(action: handleOpenInDefaultBrowserButtonAction) {
+            CmuxSystemSymbolImage(
+                systemName: "arrow.up.forward.app.fill",
+                pointSize: chromeMetrics.navigationIconFontSize,
+                weight: .medium
+            )
+            .foregroundStyle(devToolsColorOption.color)
+            .frame(
+                width: addressBarButtonSize,
+                height: addressBarButtonSize,
+                alignment: .center
+            )
+        }
+        .buttonStyle(OmnibarAddressButtonStyle())
+        .frame(
+            width: addressBarButtonSize,
+            height: addressBarButtonSize,
+            alignment: .center
+        )
+        .safeHelp(
+            String(
+                localized: "browser.openInDefaultBrowser",
+                defaultValue: "Open in Default Browser"
+            )
+        )
+        .accessibilityIdentifier("BrowserOpenInDefaultBrowserButton")
     }
 
     private var browserFocusModeButtonWithShortcutHint: some View {

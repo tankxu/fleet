@@ -86,6 +86,29 @@ struct WorkspaceAdjacentPaneMoveTests {
         #expect(workspace.focusedPanelId == bottomRightPanel.id)
     }
 
+    @Test func surfaceNavigationCyclesAcrossVisibleSplitPanes() throws {
+        let workspace = Workspace()
+        let topPanelId = try #require(workspace.focusedPanelId)
+        let bottomPanel = try #require(
+            workspace.newTerminalSplit(
+                from: topPanelId,
+                orientation: .vertical,
+                focus: false
+            )
+        )
+
+        workspace.focusPanel(topPanelId)
+
+        workspace.selectNextSurface()
+        #expect(workspace.focusedPanelId == bottomPanel.id)
+
+        workspace.selectNextSurface()
+        #expect(workspace.focusedPanelId == topPanelId)
+
+        workspace.selectPreviousSurface()
+        #expect(workspace.focusedPanelId == bottomPanel.id)
+    }
+
     @Test func cycleFocusReturnsFalseWithASinglePane() throws {
         let workspace = Workspace()
         let panelId = try #require(workspace.focusedPanelId)

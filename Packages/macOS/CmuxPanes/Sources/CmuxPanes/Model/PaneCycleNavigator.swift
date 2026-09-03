@@ -43,3 +43,59 @@ public struct PaneCycleNavigator {
         return orderedLivePaneIds[targetIndex]
     }
 }
+
+/// A concrete surface target resolved from pane order and per-pane tab order.
+public struct SurfaceCycleTarget: Equatable, Sendable {
+    public let paneId: PaneID
+    public let tabId: TabID
+
+    public init(paneId: PaneID, tabId: TabID) {
+        self.paneId = paneId
+        self.tabId = tabId
+    }
+}
+
+/// Resolves wrapping previous/next surface targets across every split pane.
+public struct SurfaceCycleNavigator {
+    /// Creates a stateless surface-cycle navigator.
+    public init() {}
+
+    /// Returns the surface reached by cycling one step through pane and tab order.
+    ///
+    /// Panes follow the authoritative visual/tree order. Tabs within each pane
+    /// keep their controller order, preserving existing tab-only navigation while
+    /// allowing the cycle to cross into simultaneously visible split panes.
+    public func targetSurface(
+        orderedPaneIds: [UUID],
+        livePaneIds: [PaneID],
+        tabsByPaneId: [UUID: [TabID]],
+        focusedPaneId: PaneID?,
+        selectedTabId: TabID?,
+        forward: Bool
+    ) -> SurfaceCycleTarget? {
+        var panesById: [UUID: PaneID] = [:]
+        for paneId in livePaneIds {
+            panesById[paneId.id] = paneId
+        }
+
+        let orderedTargets = orderedPaneIds.flatMap { paneUUID -> [SurfaceCycleTarget] in
+            guard let paneId = panesById[paneUUID] else { return [] }
+            return (tabsByPaneId[paneUUID] ?? []).map {
+                SurfaceCycleTarget(paneId: paneId, tabId: $0)
+            }
+        }
+        guard orderedTargets.count > 1,
+              let focusedPaneId,
+              let selectedTabId,
+              let currentIndex = orderedTargets.firstIndex(where: {
+                  $0.paneId == focusedPaneId && $0.tabId == selectedTabId
+              }) else {
+            return nil
+        }
+
+        let targetIndex = forward
+            ? (currentIndex + 1) % orderedTargets.count
+            : (currentIndex - 1 + orderedTargets.count) % orderedTargets.count
+        return orderedTargets[targetIndex]
+    }
+}

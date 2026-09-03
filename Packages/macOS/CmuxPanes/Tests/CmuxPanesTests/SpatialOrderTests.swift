@@ -12,6 +12,10 @@ import Bonsplit
         PaneID(id: UUID(uuidString: String(format: "00000000-0000-0000-0000-%012d", index))!)
     }
 
+    private func tabId(_ index: Int) -> TabID {
+        TabID(uuid: UUID(uuidString: String(format: "10000000-0000-0000-0000-%012d", index))!)
+    }
+
     /// Depth-first, first/top before second/bottom: the on-screen order.
     @Test func orderedPaneIdsWalksDepthFirst() {
         let tree = ExternalTreeNode.split(ExternalSplitNode(
@@ -86,5 +90,48 @@ import Bonsplit
             focusedPaneId: panes[0],
             forward: true
         ) == nil)
+    }
+
+    @Test func surfaceCycleNavigatorTraversesTabsAcrossSpatialPanes() {
+        let panes = [paneId(1), paneId(2)]
+        let tabs = [tabId(1), tabId(2), tabId(3)]
+        let navigator = SurfaceCycleNavigator()
+        let tabsByPaneId = [
+            panes[0].id: [tabs[0], tabs[1]],
+            panes[1].id: [tabs[2]],
+        ]
+
+        #expect(navigator.targetSurface(
+            orderedPaneIds: panes.map(\.id),
+            livePaneIds: panes,
+            tabsByPaneId: tabsByPaneId,
+            focusedPaneId: panes[0],
+            selectedTabId: tabs[0],
+            forward: true
+        ) == SurfaceCycleTarget(paneId: panes[0], tabId: tabs[1]))
+        #expect(navigator.targetSurface(
+            orderedPaneIds: panes.map(\.id),
+            livePaneIds: panes,
+            tabsByPaneId: tabsByPaneId,
+            focusedPaneId: panes[0],
+            selectedTabId: tabs[1],
+            forward: true
+        ) == SurfaceCycleTarget(paneId: panes[1], tabId: tabs[2]))
+        #expect(navigator.targetSurface(
+            orderedPaneIds: panes.map(\.id),
+            livePaneIds: panes,
+            tabsByPaneId: tabsByPaneId,
+            focusedPaneId: panes[1],
+            selectedTabId: tabs[2],
+            forward: true
+        ) == SurfaceCycleTarget(paneId: panes[0], tabId: tabs[0]))
+        #expect(navigator.targetSurface(
+            orderedPaneIds: panes.map(\.id),
+            livePaneIds: panes,
+            tabsByPaneId: tabsByPaneId,
+            focusedPaneId: panes[0],
+            selectedTabId: tabs[0],
+            forward: false
+        ) == SurfaceCycleTarget(paneId: panes[1], tabId: tabs[2]))
     }
 }
