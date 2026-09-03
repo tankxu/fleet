@@ -1307,8 +1307,8 @@ struct BrowserPanelView: View {
     private var openInDefaultBrowserButton: some View {
         Button(action: handleOpenInDefaultBrowserButtonAction) {
             CmuxSystemSymbolImage(
-                systemName: "arrow.up.right.square",
-                pointSize: devToolsButtonIconSize,
+                systemName: "arrow.up.forward.app.fill",
+                pointSize: chromeMetrics.navigationIconFontSize,
                 weight: .medium
             )
             .foregroundStyle(devToolsColorOption.color)
