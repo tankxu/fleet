@@ -2,6 +2,14 @@
 
 All notable changes to cmux are documented here.
 
+## [0.1.1] - 2026-09-04
+
+### Added
+- Add a far-right browser toolbar action that opens the current page in the system default browser.
+
+### Fixed
+- Make Next Surface and Previous Surface cycle across all visible split panes in Fleet Canvas, not only tabs in the focused pane.
+
 ## [0.64.22] - 2026-08-03
 
 ### Fixed

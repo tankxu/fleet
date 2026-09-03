@@ -111,7 +111,7 @@ xattr -dr com.apple.quarantine /Applications/Fleet.app
 
 然后正常打开。通用二进制，Apple 芯片和 Intel 都能跑。
 
-Fleet 有自己独立于上游的版本号：当前是 Fleet 0.1.0，基于 cmux 0.64.22 构建。
+Fleet 有自己独立于上游的版本号：当前是 Fleet 0.1.1，基于 cmux 0.64.22 构建。
 每个 release 都会写明它所基于的上游版本。
 
 想让 `fleet` 命令进 `PATH`，装好后再链一下：
