@@ -1162,6 +1162,7 @@ struct BrowserPanelView: View {
         .padding(.horizontal, 8)
         .padding(.vertical, addressBarVerticalPadding)
         .background(browserChromeBackground)
+        .background(ChromeHitRegion.Marker())
         .background {
             GeometryReader { geo in
                 Color.clear.preference(

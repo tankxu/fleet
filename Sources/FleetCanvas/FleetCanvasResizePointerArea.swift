@@ -1,4 +1,5 @@
 import AppKit
+import Bonsplit
 import SwiftUI
 
 /// AppKit pointer handling for a board divider: cursor, hover position, and drag.
@@ -14,6 +15,12 @@ import SwiftUI
 ///
 /// Since this view must accept hit testing for the cursor to work, it also owns
 /// the drag — a SwiftUI gesture underneath would never see the events.
+///
+/// The area overhangs into the cards, so it gives way wherever it lies over
+/// marked interactive chrome (``ChromeHitRegion``): a pane's tab bar or a
+/// browser omnibar, which can sit at any height in a card once its panes are
+/// split. There it declines hits, keeps the arrow cursor, and hides the
+/// indicator, so the tabs and buttons underneath behave as if it were absent.
 struct FleetCanvasResizePointerArea: NSViewRepresentable {
     let axis: FleetCanvasResizeAxis
     /// Pointer position along the divider, or `nil` once the pointer leaves.
@@ -73,16 +80,28 @@ struct FleetCanvasResizePointerArea: NSViewRepresentable {
             trackingArea = area
         }
 
+        override func hitTest(_ point: NSPoint) -> NSView? {
+            guard let hit = super.hitTest(point) else { return nil }
+            // `point` is in the superview's coordinates.
+            guard let superview, dragOrigin == nil,
+                  isOverChrome(windowPoint: superview.convert(point, to: nil)) else {
+                return hit
+            }
+            return nil
+        }
+
         override func cursorUpdate(with event: NSEvent) {
-            axis.cursor.set()
+            updatePointer(for: event)
         }
 
         override func mouseEntered(with event: NSEvent) {
-            reportOffset(for: event)
+            updatePointer(for: event)
         }
 
         override func mouseMoved(with event: NSEvent) {
-            reportOffset(for: event)
+            // Re-evaluated on every move: `cursorUpdate` fires only on entry, and
+            // the pointer can slide onto or off a tab bar without leaving the area.
+            updatePointer(for: event)
         }
 
         override func mouseExited(with event: NSEvent) {
@@ -125,7 +144,19 @@ struct FleetCanvasResizePointerArea: NSViewRepresentable {
             }
         }
 
-        private func reportOffset(for event: NSEvent) {
+        private func isOverChrome(windowPoint: NSPoint) -> Bool {
+            guard let window else { return false }
+            return ChromeHitRegion.contains(windowPoint: windowPoint, in: window)
+        }
+
+        private func updatePointer(for event: NSEvent) {
+            guard dragOrigin == nil else { return }
+            if isOverChrome(windowPoint: event.locationInWindow) {
+                NSCursor.arrow.set()
+                onPointerOffset?(nil)
+                return
+            }
+            axis.cursor.set()
             let point = convert(event.locationInWindow, from: nil)
             onPointerOffset?(axis == .columns ? point.y : point.x)
         }
