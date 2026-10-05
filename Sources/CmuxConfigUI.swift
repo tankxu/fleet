@@ -299,6 +299,11 @@ extension CmuxButtonIcon {
         case .imageData(let data):
             guard let image = NSImage(data: data) else { return nil }
             return Self.normalizedContextMenuImage(image)
+        case .templateImageData(let data):
+            guard let image = NSImage(data: data) else { return nil }
+            let normalized = Self.normalizedContextMenuImage(image)
+            normalized.isTemplate = true
+            return normalized
         }
     }
 

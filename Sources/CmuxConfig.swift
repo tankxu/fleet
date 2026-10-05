@@ -516,7 +516,14 @@ enum CmuxButtonIcon: Codable, Sendable, Hashable {
                 NSLog("[CmuxConfig] icon asset is missing: %@", name)
                 return .systemImage("questionmark.circle")
             }
-            return .imageData(data)
+            // A mark on a transparent background is a silhouette, so it takes
+            // the button's foreground color like the SF Symbols beside it; in
+            // its own colors (Claude's orange, Codex's solid black) it stood out
+            // from the rest of the row. An opaque tile is artwork and would
+            // template into a solid square, so it keeps its colors.
+            return Self.pngDataHasTransparentCorner(data)
+                ? .templateImageData(data)
+                : .imageData(data)
         case .imagePath(let path):
             guard let preparedImage = Self.preparedImageAsset(
                 path,
@@ -534,6 +541,15 @@ enum CmuxButtonIcon: Codable, Sendable, Hashable {
     }
 
     /// PNG data for a bundled asset, at a size that stays sharp on Retina.
+    /// Whether a rasterized mark sits on a transparent background, judged from
+    /// its top-left pixel. Asset-catalog reps do not report `hasAlpha`
+    /// reliably, and a full-bleed tile is opaque in every corner.
+    static func pngDataHasTransparentCorner(_ data: Data) -> Bool {
+        guard let rep = NSBitmapImageRep(data: data),
+              let corner = rep.colorAt(x: 0, y: 0) else { return false }
+        return corner.alphaComponent < 0.5
+    }
+
     static func bundledAssetPNGData(named name: String, side: CGFloat = 40) -> Data? {
         guard let image = NSImage(named: name) else { return nil }
         let target = NSSize(width: side, height: side)

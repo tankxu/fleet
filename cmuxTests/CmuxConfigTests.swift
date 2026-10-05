@@ -1,3 +1,4 @@
+import AppKit
 import Combine
 import XCTest
 
@@ -457,6 +458,29 @@ final class CmuxConfigDecodingTests: XCTestCase {
             ),
             .imageData(data)
         )
+    }
+
+    func testBundledMarkTemplatesOnlyWhenBackgroundIsTransparent() throws {
+        func png(fillingBackground: Bool) throws -> Data {
+            let rep = try XCTUnwrap(NSBitmapImageRep(
+                bitmapDataPlanes: nil, pixelsWide: 8, pixelsHigh: 8,
+                bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+                colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0
+            ))
+            NSGraphicsContext.saveGraphicsState()
+            NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: rep)
+            if fillingBackground {
+                NSColor.white.setFill()
+                NSRect(x: 0, y: 0, width: 8, height: 8).fill()
+            }
+            NSColor.orange.setFill()
+            NSRect(x: 2, y: 2, width: 4, height: 4).fill()
+            NSGraphicsContext.restoreGraphicsState()
+            return try XCTUnwrap(rep.representation(using: .png, properties: [:]))
+        }
+
+        XCTAssertTrue(CmuxButtonIcon.pngDataHasTransparentCorner(try png(fillingBackground: false)))
+        XCTAssertFalse(CmuxButtonIcon.pngDataHasTransparentCorner(try png(fillingBackground: true)))
     }
 
     func testProjectLocalSVGIconRejectsExternalReferences() throws {
