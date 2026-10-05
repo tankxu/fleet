@@ -60,7 +60,7 @@ struct FleetCanvasBoardView: View {
             let intent = dropIntent(solution: solution, tree: tree, canvas: canvas)
 
             ZStack(alignment: .topLeading) {
-                FleetCanvasGlassSurface(depth: .canvas)
+                FleetCanvasGlassSurface(depth: .canvas, colorScheme: appearance.chromeColorScheme)
                 ForEach(solution.frames) { frame in
                     if let workspace = workspacesById[frame.workspaceId] {
                         card(

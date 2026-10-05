@@ -108,9 +108,12 @@ struct FleetWorkspaceCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // The header sits on the terminal fill, so its text follows the
+            // terminal theme rather than the system appearance.
             header
+                .environment(\.colorScheme, colorScheme)
             Divider()
-                .overlay(Color.white.opacity(0.08))
+                .overlay(FleetCanvasTheme.cardHeaderDivider(colorScheme))
             WorkspaceContentView(
                 workspace: workspace,
                 isWorkspaceVisible: true,
@@ -129,7 +132,7 @@ struct FleetWorkspaceCard: View {
         .clipShape(shape)
         .overlay {
             shape.stroke(
-                isSelected ? FleetCanvasTheme.selectedCardBorder : FleetCanvasTheme.cardBorder,
+                isSelected ? FleetCanvasTheme.selectedCardBorder : FleetCanvasTheme.cardBorder(colorScheme),
                 lineWidth: isSelected ? 2 : 1
             )
         }
@@ -156,7 +159,7 @@ struct FleetWorkspaceCard: View {
                     .padding(dropEdge.axis == .horizontal ? .vertical : .horizontal, 6)
             }
         }
-        .shadow(color: Color.black.opacity(0.34), radius: 14, y: 7)
+        .shadow(color: FleetCanvasTheme.cardShadow(colorScheme), radius: 14, y: 7)
     }
 
     private var header: some View {
@@ -284,7 +287,7 @@ struct FleetWorkspaceCard: View {
                 .padding(.vertical, 1)
                 .background(
                     RoundedRectangle(cornerRadius: 4, style: .continuous)
-                        .fill(Color.white.opacity(isTitleHovered ? 0.10 : 0))
+                        .fill(isTitleHovered ? FleetCanvasTheme.cardTitleHoverFill(colorScheme) : .clear)
                 )
                 .contentShape(Rectangle())
                 // A tap on the title edits it without selecting the workspace:
@@ -381,6 +384,12 @@ struct FleetWorkspaceCard: View {
     private var headerBackgroundColor: Color {
         // A card's header has to read as chrome over its own terminal fill, so
         // it lifts off the card background instead of adding another material.
-        Color.white.opacity(isSelected ? 0.10 : 0.06)
+        FleetCanvasTheme.cardHeaderFill(colorScheme, isSelected: isSelected)
+    }
+
+    /// Scheme readable against this card's terminal fill, which is what the
+    /// header and border sit on.
+    private var colorScheme: ColorScheme {
+        appearance.chromeColorScheme
     }
 }

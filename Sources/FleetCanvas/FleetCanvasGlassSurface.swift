@@ -8,6 +8,10 @@ import SwiftUI
 /// the difference between "translucent" and "the whole window went yellow".
 struct FleetCanvasGlassSurface: View {
     let depth: FleetCanvasGlassDepth
+    /// Scheme the surface's content is drawn in. Passed explicitly rather than
+    /// read from the environment: it follows the terminal theme, which can
+    /// differ from the system appearance the environment would report.
+    let colorScheme: ColorScheme
     var cornerRadius: CGFloat = 0
 
     var body: some View {
@@ -16,7 +20,9 @@ struct FleetCanvasGlassSurface: View {
         if #available(macOS 26.0, *) {
             shape
                 .fill(Color.clear)
-                .glassEffect(.regular.tint(depth.tint), in: shape)
+                .glassEffect(.regular.tint(depth.tint(colorScheme)), in: shape)
+                // The glass's own highlights and edge follow the environment.
+                .environment(\.colorScheme, colorScheme)
         } else {
             fallback(shape)
         }
@@ -28,10 +34,11 @@ struct FleetCanvasGlassSurface: View {
     @ViewBuilder
     private func fallback(_ shape: RoundedRectangle) -> some View {
         FleetCanvasVisualEffectBackground(
-            material: depth.fallbackMaterial,
+            material: depth.fallbackMaterial(colorScheme),
+            colorScheme: colorScheme,
             cornerRadius: cornerRadius
         )
-        .overlay(shape.fill(depth.tint))
+        .overlay(shape.fill(depth.tint(colorScheme)))
         .clipShape(shape)
     }
 }

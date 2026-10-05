@@ -15,7 +15,32 @@ enum FleetCanvasTheme {
     static var selectedCardBorder: Color { accent.opacity(0.92) }
 
     /// Border of every other workspace card.
-    static let cardBorder = Color.white.opacity(0.12)
+    static func cardBorder(_ scheme: ColorScheme) -> Color {
+        scheme == .light ? Color.black.opacity(0.10) : Color.white.opacity(0.12)
+    }
+
+    /// Hairline between a card's header and its content.
+    static func cardHeaderDivider(_ scheme: ColorScheme) -> Color {
+        scheme == .light ? Color.black.opacity(0.07) : Color.white.opacity(0.08)
+    }
+
+    /// Fill that lifts a card's header off its terminal background.
+    static func cardHeaderFill(_ scheme: ColorScheme, isSelected: Bool) -> Color {
+        scheme == .light
+            ? Color.black.opacity(isSelected ? 0.05 : 0.03)
+            : Color.white.opacity(isSelected ? 0.10 : 0.06)
+    }
+
+    /// Hover fill behind an editable card title.
+    static func cardTitleHoverFill(_ scheme: ColorScheme) -> Color {
+        scheme == .light ? Color.black.opacity(0.06) : Color.white.opacity(0.10)
+    }
+
+    /// Drop shadow under a card. A light board needs far less: the dark-board
+    /// shadow reads as a smudge on pale glass.
+    static func cardShadow(_ scheme: ColorScheme) -> Color {
+        Color.black.opacity(scheme == .light ? 0.12 : 0.34)
+    }
 
     /// Insertion marker shown while a card is dragged to a new position.
     static var reorderIndicator: Color { accent }
@@ -38,15 +63,29 @@ enum FleetCanvasTheme {
     /// so a thin tint lets a saturated wallpaper bleed across the whole window
     /// even when the colored region is nowhere near it. The glass still supplies
     /// the highlights and edge treatment; the tint is what keeps the surface
-    /// reading as cmux's own dark chrome instead of as whatever is on the desktop.
-    static let canvasGlassTint = Color(red: 0.043, green: 0.063, blue: 0.058).opacity(0.86)
+    /// reading as cmux's own chrome instead of as whatever is on the desktop.
+    ///
+    /// Follows the window's chrome scheme, which tracks the terminal theme: a
+    /// light theme puts light cards on the board, and a dark board around them
+    /// would read as a hole cut in the window.
+    ///
+    /// The light tint is much thinner than the dark one. Light glass already
+    /// whitens what it refracts, so at the dark board's opacity it reads as a
+    /// flat panel; a wallpaper bleeding through pale glass also reads as
+    /// translucency rather than as a color cast.
+    static func canvasGlassTint(_ scheme: ColorScheme) -> Color {
+        scheme == .light
+            ? Color(red: 0.925, green: 0.945, blue: 0.935).opacity(0.40)
+            : Color(red: 0.043, green: 0.063, blue: 0.058).opacity(0.86)
+    }
 
-    /// Tint pushed into a card's glass, under the terminal fill.
-    static let cardGlassTint = Color(red: 0.04, green: 0.06, blue: 0.055).opacity(0.28)
-
-    /// Tint pushed into the right sidebar's glass. Slightly lighter than the
+    /// Tint pushed into the right sidebar's glass. Set slightly apart from the
     /// canvas so the sidebar still separates from the board behind it.
-    static let sidebarGlassTint = Color(red: 0.055, green: 0.075, blue: 0.07).opacity(0.82)
+    static func sidebarGlassTint(_ scheme: ColorScheme) -> Color {
+        scheme == .light
+            ? Color(red: 0.955, green: 0.968, blue: 0.962).opacity(0.82)
+            : Color(red: 0.055, green: 0.075, blue: 0.07).opacity(0.82)
+    }
 
     /// Opacity applied to a card's terminal background fill. Cards must stay
     /// legible, so they sit far closer to opaque than the canvas behind them —

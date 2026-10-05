@@ -1966,7 +1966,7 @@ struct ContentView: View {
             // layering over it: the backdrop is opaque, and glass over an
             // opaque fill is just a tint.
             if fleetCanvasEnabled, role == .rightSidebar {
-                FleetCanvasGlassSurface(depth: .sidebar)
+                FleetCanvasGlassSurface(depth: .sidebar, colorScheme: appearance.sidebarContentColorScheme)
                     .frame(width: width)
                     .allowsHitTesting(false)
             } else {

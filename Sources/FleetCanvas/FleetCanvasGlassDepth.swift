@@ -14,10 +14,10 @@ enum FleetCanvasGlassDepth {
     /// The right sidebar — slightly see-through, still readable as chrome.
     case sidebar
 
-    var tint: Color {
+    func tint(_ scheme: ColorScheme) -> Color {
         switch self {
-        case .canvas: FleetCanvasTheme.canvasGlassTint
-        case .sidebar: FleetCanvasTheme.sidebarGlassTint
+        case .canvas: FleetCanvasTheme.canvasGlassTint(scheme)
+        case .sidebar: FleetCanvasTheme.sidebarGlassTint(scheme)
         }
     }
 
@@ -27,9 +27,12 @@ enum FleetCanvasGlassDepth {
     /// region *below* a window and, blended behind the window, samples far
     /// enough across the desktop that a saturated wallpaper bleeds its hue over
     /// the whole canvas even when nothing colorful sits behind the window.
-    var fallbackMaterial: NSVisualEffectView.Material {
+    ///
+    /// `.hudWindow` only has a dark rendering, so a light board uses the plain
+    /// window material instead.
+    func fallbackMaterial(_ scheme: ColorScheme) -> NSVisualEffectView.Material {
         switch self {
-        case .canvas: .hudWindow
+        case .canvas: scheme == .light ? .windowBackground : .hudWindow
         case .sidebar: .sidebar
         }
     }
