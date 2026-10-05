@@ -2,6 +2,15 @@
 
 All notable changes to cmux are documented here.
 
+## [0.1.2] - 2026-10-06
+
+### Changed
+- Fleet Canvas follows the terminal theme: a light theme now gets a light, more translucent board, sidebar glass, card borders, and card headers instead of a black board.
+- Claude and Codex buttons in a pane's tab bar are drawn in the button color, matching the symbol buttons beside them.
+
+### Fixed
+- Buttons and tabs along a card's edge on Fleet Canvas (browser toolbar buttons, tab bars of lower split panes) no longer lose their clicks to the divider between cards.
+
 ## [0.1.1] - 2026-09-04
 
 ### Added
